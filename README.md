@@ -7,7 +7,7 @@ Docente: Dr. Alcides Guillermo Joo Aguayo.
 
 | Integrante | Código | Subsección responsable |
 |---|---|---|
-| Zamudio Salazar, Joseluis Omar | 20193529C | [ ] |
+| Zamudio Salazar, Joseluis Omar | 20193529C | Desarrollo de E1.1–E1.6, escenarios y repositorio |
 | Nava Laburiano, David Adrián | 20211012C | Verificación de los códigos; desarrollo independiente de la mitad del laboratorio para comparar resultados |
 
 ## Cómo reproducir todo
