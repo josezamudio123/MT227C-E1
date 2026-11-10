@@ -114,8 +114,8 @@ estructura del informe técnico.
 
 \paragraph{Resultado.}
 Todos los resultados reportados se obtuvieron ejecutando el código en MATLAB y se confirmaron por un
-segundo camino (sección~\ref{sec:registro}). Se registran 49 usos relevantes: 19 correctos al primer
-intento, 24 con errores o afirmaciones incorrectas de la IA detectados por verificación y corregidos, y
+segundo camino (sección~\ref{sec:registro}). Se registran 50 usos relevantes: 19 correctos al primer
+intento, 25 con errores o afirmaciones incorrectas de la IA detectados por verificación y corregidos, y
 6 hipótesis o lecturas de la IA refutadas o confirmadas solo en parte por los experimentos. Una predicción con
 base IA (E1-P3) resultó incorrecta, al igual que E1-P2 (base TEORIA).
 
@@ -393,13 +393,16 @@ Ejecución completa en MATLAB; la caché reproduce los valores de la corrida ori
 49 & -- & Sincronización de los números del informe: \texttt{src/anotar.m} en cada script, clave \texttt{valores\_informe} en \texttt{results.json} y \texttt{valores\_E1.tex} leído por las fichas, las predicciones y las pruebas. &
 Comparación de los números escritos a mano con \texttt{run\_all\_log.txt} y con los \texttt{.mat}. & error &
 Ocho números no coincidían con la última corrida (p.\,ej. $9.7\times10^{-15}$ por $9.6\times10^{-15}$, $t=-4.6$ por $-4.5$, $1.7\times10^{-19}$ por $1.5\times10^{-19}$) y dos afirmaciones de E1.3 eran inexactas (peor caso de F2 con balanceo, ``idénticos fila a fila''); corregidos. \\
+50 & -- & Redacción del cuerpo del informe (introducción, modelo, E1.1--E1.6, escenarios, conclusiones), \texttt{referencias.bib} (22 entradas) y el script \texttt{verificar\_\allowbreak referencias.m}. &
+Números solo con \texttt{\textbackslash V\{clave\}} (234 claves, sin ``??''); DOIs consultados en Crossref; relectura contra los registros de \texttt{run\_all}. & error &
+La propia IA corrigió antes de entregar dos afirmaciones: ``Newton--Kleinman queda en $10^{-13}$--$10^{-15}$ en todas las familias'' (falso: $2.1\times10^{-9}$ en F1) y la atribución del condicionamiento a Kenney et al.\ (es una cota de error; se cita a Sun). Un DOI propuesto para Armstrong (1975) no correspondía y se reemplazó. El respaldo de cada cita queda pendiente de lectura por el grupo. \\
 \bottomrule
 \end{longtable}
 }
 
 \paragraph{Resumen del registro.}
-49 usos relevantes: 19 correctos, 24 errores detectados y corregidos (3 de ellos por la propia IA antes de
-entregar el código: N.° 7, 18 y 33), 3 hipótesis refutadas (N.° 10, 24 y 39) y 3 confirmadas en parte (N.° 22, 40 y 45).
+50 usos relevantes: 19 correctos, 25 errores detectados y corregidos (4 de ellos por la propia IA antes de
+entregar: N.° 7, 18, 33 y 50), 3 hipótesis refutadas (N.° 10, 24 y 39) y 3 confirmadas en parte (N.° 22, 40 y 45).
 Salvo las predicciones E1-P2 y E1-P3, que se reportan como incorrectas (E1-P1 resultó correcta), ningún error llegó a los resultados
 reportados: todos se detectaron por ejecución, por comparación con una referencia independiente o por
 revisión del PDF.

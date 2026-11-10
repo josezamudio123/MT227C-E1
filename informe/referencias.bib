@@ -1,0 +1,155 @@
+% Referencias del informe E1. Cada entrada con DOI se comprueba con verificar_referencias.m contra
+% Crossref. Campo "respalda": qué afirmación del informe sostiene (lo que el grupo debe confirmar
+% leyendo la fuente). Campo "revisado": "si" cuando un integrante leyó la fuente y confirmó el respaldo.
+
+@article{potter1966,
+  author  = {Potter, James E.}, title = {Matrix Quadratic Solutions},
+  journal = {SIAM Journal on Applied Mathematics}, year = {1966}, volume = {14}, number = {3}, pages = {496--501},
+  doi = {10.1137/0114044},
+  respalda = {La solución estabilizante de la ecuación de Riccati se obtiene de los vectores propios de la Hamiltoniana (método a).},
+  revisado = {no}}
+
+@article{laub1979,
+  author  = {Laub, Alan J.}, title = {A {S}chur method for solving algebraic {R}iccati equations},
+  journal = {IEEE Transactions on Automatic Control}, year = {1979}, volume = {24}, number = {6}, pages = {913--921},
+  doi = {10.1109/TAC.1979.1102178},
+  respalda = {Método (b): base ortogonal del subespacio estable con la forma real de Schur ordenada; más estable que los vectores propios.},
+  revisado = {no}}
+
+@article{kleinman1968,
+  author  = {Kleinman, David L.}, title = {On an iterative technique for {R}iccati equation computations},
+  journal = {IEEE Transactions on Automatic Control}, year = {1968}, volume = {13}, number = {1}, pages = {114--115},
+  doi = {10.1109/TAC.1968.1098829},
+  respalda = {Método (c): iteración de Newton con una ecuación de Lyapunov por paso; requiere ganancia inicial estabilizante; convergencia cuadrática.},
+  revisado = {no}}
+
+@article{armstrong1975,
+  author  = {Armstrong, Ernest S.}, title = {An extension of {B}ass' algorithm for stabilizing linear continuous constant systems},
+  journal = {IEEE Transactions on Automatic Control}, year = {1975}, volume = {20}, number = {1}, pages = {153--154},
+  doi = {10.1109/TAC.1975.1100874},
+  respalda = {Ganancia estabilizante de Bass con desplazamiento beta mayor que el autovalor más rápido (ganancia inicial de Newton).},
+  revisado = {no}}
+
+@article{arnold1984,
+  author  = {Arnold, William F. and Laub, Alan J.}, title = {Generalized eigenproblem algorithms and software for algebraic {R}iccati equations},
+  journal = {Proceedings of the IEEE}, year = {1984}, volume = {72}, number = {12}, pages = {1746--1754},
+  doi = {10.1109/PROC.1984.13083},
+  respalda = {Haz extendido que evita formar S = B R^-1 B'; equilibrado (balanceo) de los datos.},
+  revisado = {no}}
+
+@article{vandooren1981,
+  author  = {Van Dooren, Paul}, title = {A generalized eigenvalue approach for solving {R}iccati equations},
+  journal = {SIAM Journal on Scientific and Statistical Computing}, year = {1981}, volume = {2}, number = {2}, pages = {121--135},
+  doi = {10.1137/0902010},
+  respalda = {Formulación del problema como haz de matrices (extendido), útil cuando R está mal condicionada.},
+  revisado = {no}}
+
+@article{kenney1990,
+  author  = {Kenney, Charles and Laub, Alan J. and Wette, Matt}, title = {Error bounds for {N}ewton refinement of solutions to algebraic {R}iccati equations},
+  journal = {Mathematics of Control, Signals, and Systems}, year = {1990}, volume = {3}, number = {3}, pages = {211--224},
+  doi = {10.1007/BF02551369},
+  respalda = {Cotas de error a posteriori de una solución aproximada a partir del residuo y del operador de Lyapunov del lazo cerrado.},
+  revisado = {no}}
+
+@article{sun1998,
+  author  = {Sun, Ji-guang}, title = {Perturbation theory for algebraic {R}iccati equations},
+  journal = {SIAM Journal on Matrix Analysis and Applications}, year = {1998}, volume = {19}, number = {1}, pages = {39--65},
+  doi = {10.1137/S0895479895291303},
+  respalda = {Números de condición de la ecuación de Riccati frente a perturbaciones de los datos.},
+  revisado = {no}}
+
+@book{higham2002,
+  author  = {Higham, Nicholas J.}, title = {Accuracy and Stability of Numerical Algorithms}, edition = {2},
+  publisher = {SIAM}, address = {Philadelphia}, year = {2002},
+  doi = {10.1137/1.9780898718027},
+  respalda = {Error directo frente a error inverso (residuo); efecto del escalado y del equilibrado en la precisión.},
+  revisado = {no}}
+
+@article{bartels1972,
+  author  = {Bartels, Richard H. and Stewart, G. W.}, title = {Algorithm 432: Solution of the matrix equation {AX + XB = C}},
+  journal = {Communications of the ACM}, year = {1972}, volume = {15}, number = {9}, pages = {820--826},
+  doi = {10.1145/361573.361582},
+  respalda = {Solución de ecuaciones de Sylvester y Lyapunov por la forma de Schur (sylvester, lyap).},
+  revisado = {no}}
+
+@book{bryson2018,
+  author  = {Bryson, Arthur E. and Ho, Yu-Chi}, title = {Applied Optimal Control: Optimization, Estimation, and Control},
+  publisher = {Routledge}, year = {2018}, note = {Reimpresión de la edición de 1975},
+  doi = {10.1201/9781315137667},
+  respalda = {Normalización de los pesos por el cuadrado del valor máximo admisible (regla de Bryson).},
+  revisado = {no}}
+
+@article{marler2004,
+  author  = {Marler, R. Timothy and Arora, Jasbir S.}, title = {Survey of multi-objective optimization methods for engineering},
+  journal = {Structural and Multidisciplinary Optimization}, year = {2004}, volume = {26}, number = {6}, pages = {369--395},
+  doi = {10.1007/s00158-003-0368-6},
+  respalda = {La escalarización por suma ponderada con pesos positivos da puntos Pareto-óptimos.},
+  revisado = {no}}
+
+@article{kleywegt2002,
+  author  = {Kleywegt, Anton J. and Shapiro, Alexander and Homem-de-Mello, Tito}, title = {The sample average approximation method for stochastic discrete optimization},
+  journal = {SIAM Journal on Optimization}, year = {2002}, volume = {12}, number = {2}, pages = {479--502},
+  doi = {10.1137/S1052623499363220},
+  respalda = {Aproximación por promedio muestral (SAA) y validación del óptimo con una muestra independiente.},
+  revisado = {no}}
+
+@article{smith2006,
+  author  = {Smith, James E. and Winkler, Robert L.}, title = {The optimizer's curse: skepticism and postdecision surprise in decision analysis},
+  journal = {Management Science}, year = {2006}, volume = {52}, number = {3}, pages = {311--322},
+  doi = {10.1287/mnsc.1050.0451},
+  respalda = {El mejor valor estimado de una optimización con ruido está sesgado de forma optimista (maldición del optimizador).},
+  revisado = {no}}
+
+@article{chilali1996,
+  author  = {Chilali, Mahmoud and Gahinet, Pascal}, title = {{$H_\infty$} design with pole placement constraints: an {LMI} approach},
+  journal = {IEEE Transactions on Automatic Control}, year = {1996}, volume = {41}, number = {3}, pages = {358--367},
+  doi = {10.1109/9.486637},
+  respalda = {Regiones LMI (semiplano y cono de amortiguamiento) con una sola matriz de Lyapunov; conservadurismo de la formulación.},
+  revisado = {no}}
+
+@book{boyd1994,
+  author  = {Boyd, Stephen and El Ghaoui, Laurent and Feron, Eric and Balakrishnan, Venkataramanan},
+  title = {Linear Matrix Inequalities in System and Control Theory}, publisher = {SIAM}, address = {Philadelphia}, year = {1994},
+  doi = {10.1137/1.9781611970777},
+  respalda = {Síntesis LQR como problema LMI con la cota tr(Z) del costo.},
+  revisado = {no}}
+
+@book{hu2001,
+  author  = {Hu, Tingshu and Lin, Zongli}, title = {Control Systems with Actuator Saturation},
+  publisher = {Birkh{\"a}user}, address = {Boston}, year = {2001},
+  doi = {10.1007/978-1-4612-0205-9},
+  respalda = {Conjuntos elipsoidales invariantes en la región lineal del actuador; estimación conservadora de la región de atracción.},
+  revisado = {no}}
+
+@article{lasalle1960,
+  author  = {LaSalle, J. P.}, title = {Some extensions of {L}iapunov's second method},
+  journal = {IRE Transactions on Circuit Theory}, year = {1960}, volume = {7}, number = {4}, pages = {520--527},
+  doi = {10.1109/TCT.1960.1086720},
+  respalda = {Convergencia al equilibrio con derivada de Lyapunov semidefinida negativa (principio de invariancia).},
+  revisado = {no}}
+
+@article{furuta1992,
+  author  = {Furuta, K. and Yamakita, M. and Kobayashi, S.}, title = {Swing-up control of inverted pendulum using pseudo-state feedback},
+  journal = {Proceedings of the Institution of Mechanical Engineers, Part I: Journal of Systems and Control Engineering},
+  year = {1992}, volume = {206}, number = {4}, pages = {263--269},
+  doi = {10.1243/PIME_PROC_1992_206_341_02},
+  respalda = {El péndulo rotatorio (de Furuta) como banco de pruebas de control.},
+  revisado = {no}}
+
+@article{cazzolato2011,
+  author  = {Cazzolato, Benjamin Seth and Prime, Zebb}, title = {On the dynamics of the {F}uruta pendulum},
+  journal = {Journal of Control Science and Engineering}, year = {2011}, volume = {2011}, pages = {528341},
+  doi = {10.1155/2011/528341},
+  respalda = {Ecuaciones de Euler--Lagrange del péndulo de Furuta y su linealización en el equilibrio superior.},
+  revisado = {no}}
+
+@manual{quanser2016,
+  author = {{Quanser Inc.}}, title = {{QUBE-Servo 2} User Manual}, organization = {Quanser Inc.}, address = {Markham, Ontario}, year = {2016},
+  respalda = {Parámetros nominales de la planta (sin DOI; registro estable: editor, versión y año).},
+  revisado = {no}}
+
+@manual{mathworks2026,
+  author = {{The MathWorks, Inc.}}, title = {Control System Toolbox Reference: icare, lqr, lyap (R2026b)}, organization = {The MathWorks, Inc.},
+  address = {Natick, MA}, year = {2026},
+  respalda = {icare resuelve la ecuación de Riccati por el haz extendido con escalado de estados y entrada (info.Sx, info.Sr).},
+  revisado = {no}}
