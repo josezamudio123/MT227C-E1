@@ -38,6 +38,8 @@ for m = 1:3
     v = verificar_riccati(A, B, Q, R, P);
     Res = A'*P + P*A - P*S*P + Q;
     cota = nLinvA * norm(Res, 'fro') / norm(P, 'fro');      % ||D||/||P|| <~ ||L^-1|| ||Res|| / ||P||
+    cotas(m) = cota; err_real(m) = erel(P, Pref);
+    vres(m) = v.residuo; vasim(m) = v.asimetria; vmin(m) = v.min_eig_P; vmaxre(m) = v.max_re_cl;
     fprintf('%-17s %10.2e %10.2e %10.2e %10.3f | %12.2e %12.2e\n', nom{m}, v.residuo, v.asimetria, ...
             v.min_eig_P, v.max_re_cl, cota, erel(P, Pref));
 end
@@ -84,6 +86,7 @@ for k = 1:numel(epss)
     Dp = Pp - Ps;
     Res = Ao'*Pp + Pp*Ao - Pp*So*Pp + Qo;
     LD  = Aco'*Dp + Dp*Aco;
+    disc(k) = norm(Res - LD, 'fro')/norm(Res, 'fro');
     fprintf('%8.0e %12.2e %12.2e %12.2e %12.2e %12.2e %12.2e %12.2e\n', e, max(real(eig(Aco))), nLinv, ...
             erel(Pp, Ps), r_peor, r_azar, norm(Res - LD, 'fro')/norm(Res, 'fro'), e_icare);
     tab(k, :) = [e, nLinv, r_peor, r_azar, erel(Pp, Ps), e_icare];
@@ -109,3 +112,13 @@ exportgraphics(gcf, fullfile(raiz, 'figuras', 'E1_2_residuo_vs_error.png'), 'Res
 
 save(fullfile(raiz, 'resultados', 'E1_2.mat'), 'tab', 'sepA', 'nLinvA');
 fprintf('\nGuardado: resultados/E1_2.mat y figuras/E1_2_residuo_vs_error.png\n');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e12_nLinv_pend', nLinvA, 'f0');
+anotar('e12_cota_max', max(cotas), 'e1'); anotar('e12_err_real_max', max(err_real), 'e1');
+anotar('e12_res_max', max(vres), 'e1'); anotar('e12_asim_max', max(vasim), 'e1');
+anotar('e12_mineigP', min(vmin), 'e1'); anotar('e12_maxRe_cl', max(vmaxre), 'f3');
+anotar('e12_nLinv_epsmin', tab(end,2), 'e2');
+anotar('e12_res_peor_epsmin', tab(end,3), 'e1'); anotar('e12_res_azar_epsmin', tab(end,4), 'e1');
+anotar('e12_disc_min', min(disc), 'p1'); anotar('e12_disc_max', max(disc), 'p1');
+anotar('e12_icare_epsmax', tab(1,6), 'e1'); anotar('e12_icare_epsmin', tab(end,6), 'e1');

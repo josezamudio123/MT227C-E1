@@ -152,3 +152,14 @@ exportgraphics(gcf, fullfile(raiz, 'figuras', 'E1_3_newton.png'), 'Resolution', 
 
 save(fullfile(raiz, 'resultados', 'E1_3.mat'), 'res', 'fam', 'ek', 'eH', 'eS', 'pendH', 'pendS');
 fprintf('\nGuardado: resultados/E1_3.mat, figuras/E1_3_estres.png, figuras/E1_3_newton.png\n');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e13_n_problemas', numel(fam(1).prob) + numel(fam(2).prob) + numel(fam(3).prob), 'd');
+anotar('e13_ref_correccion', max([paso_ref{:}]), 'e1');
+anotar('e13_P3_ham', eH, 'e1'); anotar('e13_P3_schur', eS, 'e1');
+anotar('e13_P3_pend_ham', pendH(1), 'f2'); anotar('e13_P3_pend_schur', pendS(1), 'f2');
+anotar('e13_F1_cifras', log10(eS/2^-52), 'f0');
+anotar('e13_F2_schur_smax', res(2).E(end,2), 'e1'); anotar('e13_F2_cifras', log10(res(2).E(end,2)/2^-52), 'f0');
+anotar('e13_F3_max', max(res(3).E(:)), 'e1');
+anotar('e13_condU11_peor', res(1).diag(1,2), 'f1');
+for k = 6:8, anotar(sprintf('e13_nk_cociente%d', k), ek(k)/ek(k-1)^2, 'f2'); end

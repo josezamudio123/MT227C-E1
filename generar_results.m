@@ -46,6 +46,11 @@ for f = {'J', 'ts', 'max_uc', 'max_theta'}
 end
 s.C4 = r4;
 s.C5 = struct('estado', 'no_aplica');
+% Números que cita el informe (fichas, predicciones, pruebas), registrados con anotar por cada script
+anotar('esc_C2_sat', s.C2.frac_sat, 'p1'); anotar('esc_C2_th', s.C2.max_theta, 'f3');
+Vi = load(fullfile(raiz, 'resultados', 'valores_informe.mat')); Vi = Vi.V;
+claves = fieldnames(Vi);
+for i = 1:numel(claves), s.valores_informe.(claves{i}) = Vi.(claves{i}).valor; end
 
 archivo = fullfile(raiz, 'results.json');
 fid = fopen(archivo, 'w'); fprintf(fid, '%s', jsonencode(s, 'PrettyPrint', true)); fclose(fid);
@@ -72,8 +77,54 @@ fprintf(ft, 'C5 & %s & \\multicolumn{6}{l}{(solo se exige a E4)} \\\\\n\\bottomr
 fclose(ft);
 fprintf('Escrito: informe/tabla_escenarios.tex (desde results.json)\n');
 
+%% Valores citados en el informe, leídos DEL MISMO results.json (el informe los usa con \V{clave})
+fv = fopen(fullfile(raiz, 'informe', 'valores_E1.tex'), 'w');
+fprintf(fv, '%% Generado automáticamente por generar_results.m desde results.json (clave valores_informe). No editar a mano.\n');
+fprintf(fv, '\\providecommand{\\V}[1]{\\ifcsname val@#1\\endcsname\\csname val@#1\\endcsname\\else\\textbf{??\\detokenize{#1}??}\\fi}\n');
+for i = 1:numel(claves)
+    v = r.valores_informe.(claves{i});
+    if isempty(v), v = NaN; end
+    fprintf(fv, '\\expandafter\\def\\csname val@%s\\endcsname{%s}\n', claves{i}, fmt_tex(v, Vi.(claves{i}).formato));
+end
+fclose(fv);
+% Comprobación: toda clave \V{...} que usa el informe existe en results.json
+txt = '';
+for f = {'informe_E1.tex', 'fichas_E1.tex', 'predicciones_E1.tex', 'pruebas_conocidas_E1.tex'}
+    txt = [txt fileread(fullfile(raiz, 'informe', f{1}))]; %#ok<AGROW>
+end
+tok = regexp(txt, '\\V\{(\w+)\}', 'tokens');
+usadas = unique(cellfun(@(c) c{1}, tok, 'UniformOutput', false));
+faltan = setdiff(usadas, claves);
+fprintf('Escrito: informe/valores_E1.tex (%d valores; el informe usa %d)\n', numel(claves), numel(usadas));
+if isempty(faltan)
+    fprintf('Todas las claves que usa el informe están en results.json.\n');
+else
+    warning('Claves usadas en el informe que NO están en results.json: %s', strjoin(faltan, ', '));
+end
+
 function s = num_o_null(x, fmt)
 if isempty(x) || (isnumeric(x) && isnan(x)), s = 'null'; else, s = sprintf(fmt, x); end
+end
+
+function t = fmt_tex(x, f)
+%FMT_TEX  Número -> texto LaTeX (modo matemático) según el formato declarado en anotar.
+if ~isfinite(x), t = '\mathrm{null}'; return; end
+n = str2double(f(2:end)); if isnan(n), n = 0; end
+switch f(1)
+    case 'e'
+        if x == 0, t = '0'; return; end
+        ex = floor(log10(abs(x))); m = round(x/10^ex, n);
+        if abs(m) >= 10, m = m/10; ex = ex + 1; end
+        t = sprintf('%.*f', n, m);
+        if ex ~= 0, t = sprintf('%s\\times10^{%d}', t, ex); end
+    case 'f', t = sprintf('%.*f', n, x);
+    case 'p', t = sprintf('%.*f', n, 100*x);
+    case 'g', t = sprintf('%.*g', n, x);
+    case 'd'
+        t = sprintf('%d', round(x));
+        if abs(round(x)) >= 10000, t = regexprep(t, '(\d)(?=(\d{3})+$)', '$1\\,'); end
+    otherwise, error('fmt_tex: formato desconocido: %s', f);
+end
 end
 
 function v = nulo(x)

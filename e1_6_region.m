@@ -201,6 +201,27 @@ save(fullfile(raiz, 'resultados', 'E1_6.mat'), 'rho', 'P', 'K', 'corte', 'semi',
      'R4', 'X4', 's_emp', 's_cert', 'razon', 'D', 'G', 'al_emp', 'al_cert');
 fprintf('\nGuardado: resultados/E1_6.mat, figuras/E1_6_cortes.png, figuras/E1_6_razon.png\n');
 
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e16_rho', rho, 'e3');
+anotar('e16_corte_theta', corte(1), 'f3'); anotar('e16_corte_alpha', corte(2), 'f4');
+anotar('e16_franja', Vmax/abs(K(2)), 'f3');
+anotar('e16_al_emp', al_emp, 'f3');
+anotar('e16_rad_ideal_exito', rad.ideal_exito, 'f3'); anotar('e16_rad_oficial_exito', rad.oficial_exito, 'f3');
+anotar('e16_rad_oficial_rec', rad.oficial_recuperado, 'f3');
+anotar('e16_efecto_sensor', rad.oficial_exito/rad.ideal_exito - 1, 'p1');
+anotar('e16_P1_razon_id', al_emp/al_cert, 'f0'); anotar('e16_P1_razon_of', rad.oficial_exito/al_cert, 'f0');
+anotar('e16_razon_min', min(razon(9:end)), 'f1'); anotar('e16_razon_max', max(razon(9:end)), 'f1');
+anotar('e16_razon_med', median(razon(9:end)), 'f1'); anotar('e16_n_dir', numel(razon) - 8, 'd');
+anotar('e16_mc_N', N4, 'd'); anotar('e16_mc_rec', mean(R4.recuperado), 'p1'); anotar('e16_mc_exito', mean(R4.exito), 'p1');
+anotar('e16_C2_margen', rad.oficial_exito - 0.35, 'f3');
+anotar('e16_max_Kx', max(abs(K*Xb)), 'f3');
+anotar('e16_dV_neg', mean(dVnl < 0), 'p0'); anotar('e16_rango_obs', rank(Ob), 'd');
+anotar('e16_in_rec', sum(Ri.recuperado), 'd'); anotar('e16_in_n', numel(Ri.recuperado), 'd');
+anotar('e16_in_max_uc', max(Ri.max_uc), 'f3'); anotar('e16_in_sat', sum(Ri.max_uc > Vmax), 'd');
+anotar('e16_lote_coinc', coinc, 'd'); anotar('e16_lote_n', size(Xv, 2), 'd'); anotar('e16_lote_dif', dmax, 'e1');
+anotar('e16_vol_razon', mean(R4.recuperado)*prod(2*caja) / (pi^2/2*rho^2/sqrt(det(P))), 'f0');
+anotar('e16_radio_theta', s_emp(1)*max(abs(D(:,1))), 'f1');
+
 %% ======================= Funciones locales =======================
 function dx = dinamica_nl(x, u, p)
 w = x(3,:); ad = x(4,:); s = sin(x(2,:)); c = cos(x(2,:));

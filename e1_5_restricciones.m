@@ -187,6 +187,16 @@ save(fullfile(raiz, 'resultados', 'E1_5.mat'), 'K_opt', 'best', 'H', 'cfg', 'Jre
      'okR3', 'okR4', 'bar_', 'val', 'Jsem', 'mejora', 'J0o', 'J0b');
 fprintf('\nGuardado: resultados/E1_5.mat y figuras E1_5_factibilidad, E1_5_validacion, E1_5_barrido_R\n');
 
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e15_sigma_min', cfg.sigma_min, 'f3');
+anotar('e15_fmin_desde_base', bJ(1), 'f4'); anotar('e15_fmin_desde_malla', bJ(2), 'f4');
+anotar('e15_Jrel_semilla1', best.Jrel, 'f3');
+anotar('e15_val_Jrel', mean(Jrel_s), 'f4'); anotar('e15_val_Jrel_desv', std(Jrel_s), 'f3');
+anotar('e15_ts_C1_max', max(val(1).ts), 'f3');
+i1 = find(~bar_.ex, 1);
+anotar('e15_P2_K2_base', bar_.K2(1), 'f1');
+anotar('e15_P2_m_falla', ms_(i1), 'f1'); anotar('e15_P2_K2_falla', bar_.K2(i1), 'f0');
+
 %% ======================= Funciones locales =======================
 function [Jv, ms] = J_oficial(K, cfg, semilla)
 % Costo del Anexo B en el simulador oficial (estimador, cuantización, ruido) para cada escenario.

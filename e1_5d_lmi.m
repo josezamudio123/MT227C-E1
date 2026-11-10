@@ -78,6 +78,7 @@ for q = 1:3
         ok = ok && all(cellfun(@(m) m.exito, ms)) && ms{2}.frac_sat <= cfg.sat_max;
         satm = max(satm, ms{2}.frac_sat);
     end
+    jr5(q,:) = [mean(jr) std(jr)];
     fprintf('%-18s K = %-40s Jrel = %.4f ± %.4f | R3-R4 en las 5 semillas: %d | sat. máx C2 %.1f %%\n', nomc{q}, ...
             mat2str(cand{q}, 4), mean(jr), std(jr), ok, 100*satm);
 end
@@ -113,6 +114,7 @@ fprintf('\n=== 5) Diagnóstico del diseño LMI sigma >= 4 ===\n');
 for c = {'C1', 'C2'}
     mi = metricas_qube(simular_qube(controlador_lineal(K_t), [], escenario_qube(c{1}), struct('ideal', true)));
     mr = metricas_qube(simular_qube(controlador_lineal(K_t), cfg.est, escenario_qube(c{1}), struct('semilla', 1)));
+    diag5.(c{1}) = mi;
     fprintf('%s  ideal: éxito %d, max|u_c| = %7.1f V, saturado %5.1f %% | oficial: éxito %d, max|u_c| = %7.1f V, saturado %5.1f %%\n', ...
             c{1}, mi.exito, mi.max_uc, 100*mi.frac_sat, mr.exito, mr.max_uc, 100*mr.frac_sat);
 end
@@ -134,6 +136,29 @@ sgtitle('E1.5 (bonificación): región de polos por LMI frente a ajuste de Q');
 exportgraphics(gcf, fullfile(raiz, 'figuras', 'E1_5_lmi.png'), 'Resolution', 200);
 save(fullfile(raiz, 'resultados', 'E1_5_lmi.mat'), 'K_l', 'K_g', 'K_t', 'res', 'J0b', 'Jv0', 'Jvg', 'okg', 'mej', 'jr', 'tJ');
 fprintf('\nGuardado: resultados/E1_5_lmi.mat y figuras/E1_5_lmi.png\n');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e15d_K_lmi_vs_K0', erel(K_l, d.K0), 'e1'); anotar('e15d_J_lmi_libre', J0f(K_l)/J0b, 'f6');
+anotar('e15d_costo_region', J0f(K_g)/J0b - 1, 'p1');
+anotar('e15d_sigma_g', sg_g, 'f3'); anotar('e15d_zeta_g', zt_g, 'f3');
+anotar('e15d_base_sigma', sb, 'f3'); anotar('e15d_base_zeta', zb, 'f3');
+i4 = find(abs(res(1).v - 4) < 1e-9); i6 = find(abs(res(1).v - 6) < 1e-9);
+z85 = find(abs(res(2).v - 0.85) < 1e-9); z90 = find(abs(res(2).v - 0.9) < 1e-9);
+anotar('e15d_s4_Q', res(1).Jq(i4), 'f2'); anotar('e15d_s4_LMI', res(1).Jl(i4), 'f2');
+anotar('e15d_s6_Q', res(1).Jq(i6), 'f2'); anotar('e15d_s6_LMI', res(1).Jl(i6), 'f2');
+anotar('e15d_z85_Q', res(2).Jq(z85), 'f2'); anotar('e15d_z85_LMI', res(2).Jl(z85), 'f2');
+anotar('e15d_z90_Q', res(2).Jq(z90), 'f2'); anotar('e15d_z90_LMI', res(2).Jl(z90), 'f2');
+okr = [res(1).ach(:,1) >= res(1).v(:) - 1e-6 & res(1).ach(:,2) >= cfg.zeta_min - 1e-6; ...
+       res(2).ach(:,2) >= res(2).v(:) - 1e-6 & res(2).ach(:,1) >= cfg.sigma_min - 1e-6];
+anotar('e15d_n_casos', numel(okr), 'd'); anotar('e15d_n_region_ok', sum(okr), 'd');
+anotar('e15d_n_cota_ok', sum([res(1).Jcl(:) >= res(1).Jl(:); res(2).Jcl(:) >= res(2).Jl(:)]), 'd');
+anotar('e15d_s4_C2_sat_ideal', diag5.C2.frac_sat, 'p1');
+anotar('e15d_5sem_Jrel', jr5(2,1), 'f3'); anotar('e15d_5sem_desv', jr5(2,2), 'f3');
+anotar('e15d_5sem_mejora', 1 - jr5(2,1), 'p1');
+anotar('e15d_val_ok', sum(okg), 'd');
+anotar('e15d_val_Jrel', mean(jr), 'f4'); anotar('e15d_val_Jrel_desv', std(jr), 'f4'); anotar('e15d_val_t', tJ, 'f2');
+anotar('e15d_val_mej_C1', mean(mej(:,1)), 'p1'); anotar('e15d_val_mej_C2', mean(mej(:,2)), 'p1');
+anotar('e15d_val_mej_C3b', mean(mej(:,4)), 'p1');
 
 %% ======================= Funciones locales =======================
 function [sigma, zeta] = sig_zeta(lam)

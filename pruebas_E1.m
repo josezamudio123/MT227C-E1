@@ -20,13 +20,14 @@ fprintf('=== PRUEBA 1: xdot = x + u, Q = q, R = 1 ===\n\n');
 fprintf('%9s %10s %10s %10s %10s %9s %9s %8s %8s\n', 'q', 'K exacta', 'err Ham.', 'err Schur', 'err Newt.', ...
         'MF [deg]', 'MF num.', 'g_min', '');
 qs = [1 0.1 1e-2 1e-4 1e-6];
-mf_ant = Inf; ok1 = true;
+mf_ant = Inf; ok1 = true; emax1 = 0;
 for q = qs
     Kex = 1 + sqrt(1 + q);                              % solución analítica
     Pa = riccati_hamiltoniano(1, 1, q, 1);
     Pb = riccati_schur(1, 1, q, 1);
     Pc = riccati_newton(1, 1, q, 1, 2);                 % K_ini = 2 estabiliza (1 - 2 < 0)
     ea = abs(Pa - Kex)/Kex; eb = abs(Pb - Kex)/Kex; ec = abs(Pc - Kex)/Kex;   % K = P porque B = R = 1
+    emax1 = max([emax1 ea eb ec]);
     % Margen de fase: L(s) = K/(s - 1); |L(jw)| = 1 -> wc = sqrt(K^2 - 1)
     wc = sqrt(Kex^2 - 1);
     MF = 180 + rad2deg(angle(Kex/(1j*wc - 1)));         % analítico: atan(wc)
@@ -55,6 +56,8 @@ try
     fprintf('Control System Toolbox, allmargin(): MF = %.4f grados (dif. %.1e), margen de ganancia = %.4f\n', ...
             Sm.PhaseMargin(1), abs(Sm.PhaseMargin(1) - MF1), Sm.GainMargin(1));
     ok_655 = ok_655 && abs(Pm - MF1) < 1e-2 && abs(Gm - 1/(1 + sqrt(2))) < 1e-3;
+    anotar('p1_MF_margin', Pm, 'f4'); anotar('p1_MF_margin_dif', abs(Pm - MF1), 'e0');
+    anotar('p1_GM_margin', Gm, 'f4');
 catch
     fprintf('(margin no disponible: se omite el tercer camino)\n');
 end
@@ -98,6 +101,7 @@ for i = 1:3
     if isempty(Plib), e_lib = NaN; else, e_lib = erel(sol{i}, Plib); end
     ok = e_kit < tol && (isnan(e_lib) || e_lib < tol) && v.ok;
     ok2 = ok2 && ok;
+    ekit(i) = e_kit; elib(i) = e_lib;
     fprintf('%-22s %10.2e %10.2e %10.2e %10.2e %10.2e %10.3f  %s\n', nom{i}, e_kit, e_lib, ...
             v.residuo, v.asimetria, v.min_eig_P, v.max_re_cl, marca(ok));
 end
@@ -129,6 +133,14 @@ fprintf('PRUEBA 2: %s\n', marca(ok2));
 fprintf('\nRESULTADO PRUEBAS E1: %s\n', ternario(todo_ok, 'TODAS SUPERADAS', 'HAY PRUEBAS QUE FALLAN'));
 
 save(fullfile(raiz, 'pruebas_E1.mat'), 'Pa', 'Pb', 'Pc', 'Plib', 'hist', 'K_ini', 'beta');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('p1_err_escalar', emax1, 'e1');
+anotar('p1_MF_q1', MF1, 'f4');
+anotar('p1_MF_qmin', MF, 'f4'); anotar('p1_gmin_qmin', gmin, 'f5');
+anotar('p2_err_kit_max', max(ekit), 'e1'); anotar('p2_err_icare_max', max(elib), 'e1');
+anotar('p2_K_vs_K0', eK, 'e1');
+for k = 6:9, anotar(sprintf('p2_nk_res%d', k), hist(k).residuo, 'e1'); end
 
 function s = ternario(c, a, b)
 if c, s = a; else, s = b; end

@@ -20,6 +20,8 @@ pasos = {'modelo_propio', 'pruebas_kit', 'pruebas_E1', 'e1_1_metodos', 'e1_2_ver
          'e1_4_pareto', 'e1_5_restricciones', 'e1_5b_saa', 'e1_5c_sensibilidad', 'e1_5d_lmi', ...
          'e1_6_region', 'escenarios_E1', 'generar_results'};
 tiempos = zeros(1, numel(pasos)); estado = repmat({'ok'}, 1, numel(pasos));
+vinf = fullfile(raiz_ra, 'resultados', 'valores_informe.mat');   % números del informe: se rearman desde cero
+if isfile(vinf), delete(vinf); end
 diario = fullfile(raiz_ra, 'resultados', 'run_all_log.txt');
 if isfile(diario), delete(diario); end
 diary(diario);

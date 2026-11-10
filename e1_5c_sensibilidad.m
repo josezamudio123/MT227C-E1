@@ -27,6 +27,7 @@ for mo = 1:2
             J(i,c) = m.J;
         end
     end
+    dJ{mo} = abs(J - J(1,:))./J(1,:); %#ok<SAGROW>
     fprintf('=== Simulador %s ===\n', nom{mo});
     fprintf('%8s | %12s %12s %12s %12s   (cambio relativo de J frente a delta = 0)\n', 'delta', esc{:});
     for i = 1:numel(deltas)
@@ -36,3 +37,8 @@ for mo = 1:2
 end
 fprintf('Diferencia entre K de icare (Q0, R0) y K0 del kit: %.1e (relativa)\n', ...
         norm(d.R0\(d.B'*icare(d.A, d.B, d.Q0, d.R0)) - d.K0)/norm(d.K0));
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e15c_piso_C1', dJ{1}(2,1), 'p2'); anotar('e15c_piso_C2', dJ{1}(2,2), 'p2');
+anotar('e15c_piso_C3', dJ{1}(2,3), 'p1'); anotar('e15c_piso_C3b', dJ{1}(2,4), 'p2');
+anotar('e15c_piso_ideal_max', max(dJ{2}(2,:)), 'e0');

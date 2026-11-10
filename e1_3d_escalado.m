@@ -55,3 +55,6 @@ sgtitle('E1.3: haz extendido con escalado progresivo frente a icare');
 exportgraphics(gcf, fullfile(raiz, 'figuras', 'E1_3_escalado.png'), 'Resolution', 200);
 save(fullfile(raiz, 'resultados', 'E1_3d.mat'), 'res');
 fprintf('Guardado: resultados/E1_3d.mat y figuras/E1_3_escalado.png\n');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e13d_F1_N3_peor', max(res(1).E(:,4)), 'e1');

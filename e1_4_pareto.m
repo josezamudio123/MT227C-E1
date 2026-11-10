@@ -176,6 +176,22 @@ save(fullfile(raiz, 'resultados', 'E1_4.mat'), 'RTH', 'RAL', 'K', 'J', 'Jn', 'Jl
      'e_dual', 'e_suma', 'e_sim', 'dif_solver', 'nd');
 fprintf('\nGuardado: resultados/E1_4.mat, figuras/E1_4_pareto3d.png, figuras/E1_4_proyecciones.png\n');
 
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e14_N', N, 'd'); anotar('e14_n_estables', sum(maxre < 0), 'd'); anotar('e14_n_nd', sum(nd), 'd');
+anotar('e14_Jth_min', min(Jn(:,1)), 'e2'); anotar('e14_Jth_max', max(Jn(:,1)), 'e2');
+anotar('e14_Jal_min', min(Jn(:,2)), 'e2'); anotar('e14_Jal_max', max(Jn(:,2)), 'f3');
+anotar('e14_Ju_min', min(Jn(:,3)), 'e2'); anotar('e14_Ju_max', max(Jn(:,3)), 'f2');
+anotar('e14_ok_C1', sum(NL.exito(:,1)), 'd'); anotar('e14_ok_C2_ideal', sum(NL.exito(:,2)), 'd');
+anotar('e14_ok_C2_real', sum(NL.exito(:,3)), 'd'); anotar('e14_ok_C2_real_sat', sum(okC2r), 'd');
+anotar('e14_sensor_falla', sum(NL.exito(:,2) & ~NL.exito(:,3)), 'd');
+anotar('e14_cambian', sum(NL.exito(:,2) ~= NL.exito(:,3)), 'd');
+anotar('e14_dif_lyap', e_dual, 'e1'); anotar('e14_dif_suma', e_suma, 'e1');
+anotar('e14_dif_ode', max(e_sim(:)), 'e1'); anotar('e14_n_ode', numel(idx), 'd');
+anotar('e14_dif_solver', max(dif_solver), 'e1');
+anotar('e14_base_C1_uc', NL.max_uc(ib,1), 'f2'); anotar('e14_base_C2_th', NL.max_th(ib,2), 'f3');
+anotar('e14_base_C2r_uc', NL.max_uc(ib,3), 'f2'); anotar('e14_base_C2r_th', NL.max_th(ib,3), 'f3');
+anotar('e14_spearman', rho, 'f3');
+
 function rho = spearman(x, y)
 % Correlación de rangos de Spearman sin Statistics Toolbox (sin empates relevantes).
 rx = zeros(size(x)); ry = rx;

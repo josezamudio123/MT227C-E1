@@ -14,7 +14,7 @@
 
 clear; clc;
 raiz = fileparts(mfilename('fullpath'));
-addpath(fullfile(raiz, 'kit'));
+addpath(fullfile(raiz, 'kit'), fullfile(raiz, 'src'));
 p   = parametros_qube();
 tol = 1e-6;
 erel = @(X, Xref) norm(X - Xref, 'fro') / norm(Xref, 'fro');   % error relativo
@@ -103,6 +103,13 @@ fprintf('\nRESULTADO OE1: %s\n', ternario(ok_total, 'TODAS LAS VERIFICACIONES SU
 modelo.A = A_p; modelo.B = B_p; modelo.eig_A = eigA;
 modelo.A5 = A5_p; modelo.B5 = B5_p; modelo.polo_electrico = real(polo_electrico);
 save(fullfile(raiz, 'modelo_propio.mat'), 'modelo');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('m_A_kit', erel(A_p, A_k), 'e1');
+anotar('m_A_jac', erel(A_p, A_jp), 'e1');
+anotar('m_polo_e', real(polo_electrico), 'f1');
+anotar('m_sep_polo', abs(real(polo_electrico)) / max(abs(real(eigA))), 'f0');
+if exist('A_s', 'var'), anotar('m_EL', max(erel(A_p, A_s), erel(B_p, B_s)), 'e1'); end
 
 %% ======================= Funciones locales =======================
 

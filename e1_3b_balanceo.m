@@ -74,3 +74,8 @@ sgtitle('E1.3: efecto del balanceo de H (vectores propios vs Schur)');
 exportgraphics(gcf, fullfile(raiz, 'figuras', 'E1_3_balanceo.png'), 'Resolution', 200);
 save(fullfile(raiz, 'resultados', 'E1_3b.mat'), 'res', 'e11');
 fprintf('\nGuardado: resultados/E1_3b.mat y figuras/E1_3_balanceo.png\n');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e13b_F1_hambal_Rmin', res(1).E(1,1), 'e1');
+anotar('e13b_F2_bal_peor', max(max(res(2).E(:, [1 4]))), 'e1');
+anotar('e13b_P11_schur_max', max(e11(:,2)), 'e1'); anotar('e13b_P11_nk_max', max(e11(:,4)), 'e1');

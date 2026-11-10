@@ -61,7 +61,7 @@ for i = 1:numel(pb)
         fprintf('%-17s %10.2e %10.2e %10.2e %10.2e %10.3f %10.3f %6s\n', metodos{m}, e, v.residuo, ...
                 v.asimetria, v.min_eig_P, v.max_re_cl, 1e3*t(m), num2str(it(m)));
         res(i).err(m) = e; res(i).residuo(m) = v.residuo; res(i).asim(m) = v.asimetria;
-        res(i).t(m) = t(m); res(i).ok(m) = v.ok;
+        res(i).t(m) = t(m); res(i).ok(m) = v.ok; res(i).min_eig(m) = v.min_eig_P;
     end
     vl = verificar_riccati(A, B, Q, R, Plib);
     fprintf('%-17s %10s %10.2e %10.2e %10.2e %10.3f\n', 'icare (ref.)', '-', vl.residuo, ...
@@ -70,6 +70,7 @@ for i = 1:numel(pb)
             max([erel(P{1},P{2}), erel(P{1},P{3}), erel(P{2},P{3})]));
     res(i).nombre = pb(i).nombre; res(i).iter_newton = it(3); res(i).P = P; res(i).Plib = Plib;
     res(i).K = R \ (pb(i).B'*P{2});
+    res(i).difmax = max([erel(P{1},P{2}), erel(P{1},P{3}), erel(P{2},P{3})]);
 end
 
 % Comparación 4 vs 5 estados: ¿cambia el regulador al incluir la armadura?
@@ -97,3 +98,13 @@ exportgraphics(gcf, fullfile(raiz, 'figuras', 'E1_1_errores.png'), 'Resolution',
 
 save(fullfile(raiz, 'resultados', 'E1_1.mat'), 'res', 'pb');
 fprintf('\nGuardado: resultados/E1_1.mat y figuras/E1_1_errores.png\n');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e11_difmax_base', res(2).difmax, 'e1');
+anotar('e11_err_ham_base', res(2).err(1), 'e1');
+anotar('e11_err_schur_base', res(2).err(2), 'e1');
+anotar('e11_err_nk_base', res(2).err(3), 'e1');
+anotar('e11_err_schur_5est', res(6).err(2), 'e1');
+anotar('e11_mineigP_5est', min(res(6).min_eig), 'e1');
+anotar('e11_err_ac_max', max(max(E(:, [1 3]))), 'e1');
+anotar('e11_err_b_max_4est', max(E(1:5, 2)), 'e1');

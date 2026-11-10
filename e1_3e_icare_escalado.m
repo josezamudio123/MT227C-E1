@@ -78,3 +78,14 @@ sgtitle('E1.3: icare = haz extendido + escalado de estados y entrada');
 exportgraphics(gcf, fullfile(raiz, 'figuras', 'E1_3_icare_escalado.png'), 'Resolution', 200);
 save(fullfile(raiz, 'resultados', 'E1_3e.mat'), 'res');
 fprintf('\nGuardado: resultados/E1_3e.mat y figuras/E1_3_icare_escalado.png\n');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e13e_F3_haz_max', max(res(3).E(:,3)), 'e1'); anotar('e13e_F3_nosc_max', max(res(3).E(:,2)), 'e1');
+anotar('e13e_F2_haz_s5', res(2).E(end-1,3), 'e1'); anotar('e13e_F2_nosc_s5', res(2).E(end-1,2), 'e1');
+anotar('e13e_F2_nosc_fallos', sum(isinf(res(2).E(:,2))), 'd');
+for i = 1:3
+    anotar(sprintf('e13e_F%d_hazSx_peor', i), max(res(i).E(:,4)), 'e1');
+    anotar(sprintf('e13e_F%d_icare_peor', i), max(res(i).E(:,1)), 'e1');
+end
+anotar('e13e_hazSx_peor', max([max(res(1).E(:,4)), max(res(2).E(:,4)), max(res(3).E(:,4))]), 'e1');
+anotar('e13e_D6_2', D6(2,2), 'e0');

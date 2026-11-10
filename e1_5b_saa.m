@@ -95,8 +95,10 @@ for q = 2:3
     tJ = (1 - mean(jr)) / (std(jr)/sqrt(numel(jr)));
     fprintf('\n%s: R3-R4 en %d de %d semillas; C2 max|theta| máx %.3f rad (base %.3f)\n', nomd{q}, ...
             sum(ok3(:,q)), numel(sem_val), max(thm(:,q)), max(thm(:,1)));
+    vq(q).mej = mean(mej); vq(q).jr = [mean(jr) std(jr) tJ];
     for c = 1:4
         tc = mean(mej(:,c)) / (std(mej(:,c))/sqrt(size(mej,1)));
+        vq(q).tc(c) = tc;
         fprintf('  %-4s mejora %+6.1f %% ± %4.1f %%  (t = %+6.2f, %s; mejora en %2d de %d)\n', cfg.esc{c}, ...
                 100*mean(mej(:,c)), 100*std(mej(:,c)), tc, ternario(abs(tc) > t_crit, 'significativo', 'no significativo'), ...
                 sum(mej(:,c) > 0), size(mej,1));
@@ -132,6 +134,16 @@ exportgraphics(gcf, fullfile(raiz, 'figuras', 'E1_5_saa_validacion.png'), 'Resol
 save(fullfile(raiz, 'resultados', 'E1_5b.mat'), 'K_saa', 'X', 'Jm', 'Jse', 'fac', 'Kx', 'sg', 'zt', 'kb', ...
      'Jv_', 'ok3', 'thm', 'sem_opt', 'sem_val');
 fprintf('\nGuardado: resultados/E1_5b.mat, figuras/E1_5_saa.png, figuras/E1_5_saa_validacion.png\n');
+
+% Números citados en el informe: anotar -> results.json -> informe/valores_E1.tex
+anotar('e15b_r_th', 10^X(kb,1), 'g3'); anotar('e15b_r_al', 10^X(kb,2), 'g3');
+anotar('e15b_Jrel_base_malla', Jm(k00), 'f4');
+anotar('e15b_saa_Jrel', vq(2).jr(1), 'f4'); anotar('e15b_saa_Jrel_desv', vq(2).jr(2), 'f4');
+anotar('e15b_saa_t', vq(2).jr(3), 'f2');
+anotar('e15b_saa_mej_C1', vq(2).mej(1), 'p1'); anotar('e15b_saa_t_C1', vq(2).tc(1), 'f1');
+anotar('e15b_saa_mej_C2', vq(2).mej(2), 'p1'); anotar('e15b_saa_t_C2', vq(2).tc(2), 'f1');
+anotar('e15b_s1_mej_C1', vq(3).mej(1), 'p1');
+anotar('e15b_s1_mej_C3b', vq(3).mej(4), 'p1'); anotar('e15b_s1_t_C3b', vq(3).tc(4), 'f1');
 
 %% ======================= Funciones locales =======================
 function [Jv, ms] = J_oficial(K, cfg, semilla)
