@@ -114,7 +114,7 @@ estructura del informe técnico.
 
 \paragraph{Resultado.}
 Todos los resultados reportados se obtuvieron ejecutando el código en MATLAB y se confirmaron por un
-segundo camino (sección~\ref{sec:registro}). Se registran 50 usos relevantes: 19 correctos al primer
+segundo camino (sección~\ref{sec:registro}). Se registran 51 usos relevantes: 20 correctos al primer
 intento, 25 con errores o afirmaciones incorrectas de la IA detectados por verificación y corregidos, y
 6 hipótesis o lecturas de la IA refutadas o confirmadas solo en parte por los experimentos. Una predicción con
 base IA (E1-P3) resultó incorrecta, al igual que E1-P2 (base TEORIA).
@@ -396,12 +396,15 @@ Ocho números no coincidían con la última corrida (p.\,ej. $9.7\times10^{-15}$
 50 & -- & Redacción del cuerpo del informe (introducción, modelo, E1.1--E1.6, escenarios, conclusiones), \texttt{referencias.bib} (22 entradas) y el script \texttt{verificar\_\allowbreak referencias.m}. &
 Números solo con \texttt{\textbackslash V\{clave\}} (234 claves, sin ``??''); DOIs consultados en Crossref; relectura contra los registros de \texttt{run\_all}. & error &
 La propia IA corrigió antes de entregar dos afirmaciones: ``Newton--Kleinman queda en $10^{-13}$--$10^{-15}$ en todas las familias'' (falso: $2.1\times10^{-9}$ en F1) y la atribución del condicionamiento a Kenney et al.\ (es una cota de error; se cita a Sun). Un DOI propuesto para Armstrong (1975) no correspondía y se reemplazó. El respaldo de cada cita queda pendiente de lectura por el grupo. \\
+51 & -- & Resumen de resultados en inglés (\texttt{resumen\_en\_E1.tex}): tres afirmaciones con sus fichas y tabla de claves de \texttt{results.json}. &
+Compilación (una página, sin ``??''); números solo con \texttt{\textbackslash V\{clave\}}; claves revisadas por \texttt{generar\_results}. & correcto &
+Sin errores detectados. \\
 \bottomrule
 \end{longtable}
 }
 
 \paragraph{Resumen del registro.}
-50 usos relevantes: 19 correctos, 25 errores detectados y corregidos (4 de ellos por la propia IA antes de
+51 usos relevantes: 20 correctos, 25 errores detectados y corregidos (4 de ellos por la propia IA antes de
 entregar: N.° 7, 18, 33 y 50), 3 hipótesis refutadas (N.° 10, 24 y 39) y 3 confirmadas en parte (N.° 22, 40 y 45).
 Salvo las predicciones E1-P2 y E1-P3, que se reportan como incorrectas (E1-P1 resultó correcta), ningún error llegó a los resultados
 reportados: todos se detectaron por ejecución, por comparación con una referencia independiente o por

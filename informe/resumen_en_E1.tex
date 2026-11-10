@@ -1,0 +1,91 @@
+% Resumen de resultados en inglés (guía, sección 6, entregable 3). Una página; figuras en la segunda.
+% Los números salen de results.json a través de valores_E1.tex (macro V); no se escriben a mano.
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage[margin=1.9cm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs,array}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{../figuras/}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagestyle{empty}
+\input{valores_E1}
+
+\begin{document}
+\begin{center}
+{\large\bfseries The Riccati equation and weight design for a saturated Furuta pendulum}\\[2pt]
+{\small MT227C Modern and Optimal Control, UNI, 2026-2 --- Assignment E1 (Lab reports 3 and 4)}\\[1pt]
+{\small Zamudio Salazar, J.\,O.\ and Nava Laburiano, D.\,A.\ --- Repository \texttt{MT227C-E1}, file \texttt{results.json}}
+\end{center}
+
+\textbf{Research question.} Which method for the algebraic Riccati equation is reliable for this plant,
+when does it stop being reliable, and how do physical specifications translate into $(Q,R)$ with verifiable
+guarantees on the nonlinear, saturated plant (Quanser QUBE-Servo 2 model, $V_{\max}=10$~V, $T_s=2$~ms,
+2048-count encoders)?
+
+\textbf{Claim 1 --- Scaling, not the algorithm, decides accuracy} (evidence cards E1.1 and E1.3).
+For the baseline design the Hamiltonian-eigenvector, ordered-Schur and Newton--Kleinman solvers agree with
+\texttt{icare} within $\V{e11_err_schur_base}$. Against a 40-digit reference over $\V{e13_n_problemas}$ stress problems,
+unbalanced subspace methods lose up to $\V{e13_F1_cifras}$ digits for $R=10^{-8}$ and $\V{e13_F2_cifras}$ digits when the
+velocity units change; balancing the Hamiltonian fixes the units but not the small-$R$ case
+($\V{e13b_F1_hambal_Rmin}$), because forming $S=BR^{-1}B^\top$ already mixes scales. Our own extended-pencil solver with
+\texttt{icare}'s state/input scaling reaches $\V{e13e_hazSx_peor}$ in the worst case. A prediction registered before
+simulating (Schur more accurate than eigenvectors) was refuted: \texttt{eig} balances by default, \texttt{schur} does not.
+
+\textbf{Claim 2 --- A small residual certifies a small error only if $\|\mathcal L^{-1}\|$ is moderate}
+(evidence card E1.2). With $\mathcal L(X)=A_c^\top X+XA_c$, a constructed lightly damped case
+($\|\mathcal L^{-1}\|=\V{e12_nLinv_epsmin}$) gives a residual of only $\V{e12_res_peor_epsmin}$ for a $1\,\%$ error in $P$. For the
+pendulum $\|\mathcal L^{-1}\|=\V{e12_nLinv_pend}$, so the residual bound ($\le\V{e12_cota_max}$) does guarantee the computed
+solution.
+
+\textbf{Claim 3 --- Specifications are met by the baseline design, with a local certificate an order of magnitude
+smaller than the empirical region} (evidence cards E1.4--E1.6). Of $\V{e14_N}$ Pareto-optimal LQR designs,
+$\V{e15_malla_R1R4}$ satisfy decay $\sigma\ge\V{e15_sigma_min}$~s$^{-1}$, damping $\zeta\ge0.5$, $|\theta|\le\pi/2$ and at most
+$5\,\%$ saturation in the large-angle scenario. A single-seed optimization overstated the gain
+(winner's curse); with sample-average approximation and 20 independent seeds, the best design is not
+significantly better than the baseline ($J_{rel}=\V{e15b_saa_Jrel}\pm\V{e15b_saa_Jrel_desv}$, $t=\V{e15b_saa_t}$), so the
+baseline is kept. The ellipsoidal certificate ($\rho^\star=\V{e16_rho}$) covers $\V{e16_corte_alpha}$~rad on the pendulum
+axis, whereas the nonlinear plant recovers from $\V{e16_al_emp}$~rad; the certified radius is $\V{e16_razon_min}$--$\V{e16_razon_max}$
+times smaller (median $\V{e16_razon_med}$ over $\V{e16_n_dir}$ directions).
+
+\begin{center}\small
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\texttt{results.json} key & Value & Note \\
+\midrule
+\texttt{resid\_care} & $\V{rc_ham}$, $\V{rc_schur}$, $\V{rc_nk}$ & normalized residual: eigenvectors, Schur, Newton--Kleinman \\
+\texttt{K\_opt} & $[\V{K0_1}\;\;\V{K0_2}\;\;\V{K0_3}\;\;\V{K0_4}]$ & final design $=K_0$ (V/rad, V\,s/rad) \\
+\texttt{eig\_cl\_opt} & $\V{cl_lento_re}\pm\V{cl_lento_im}j$, $\V{cl_rapido_re}\pm\V{cl_rapido_im}j$ & closed-loop poles (s$^{-1}$) \\
+\texttt{rho\_elipse} & $\V{e16_rho}$ & certified sublevel set of $x^\top Px$ \\
+\texttt{mc\_region} & $\V{e16_mc_rec}\,\%$ of $\V{e16_mc_N}$ & 4D Monte Carlo recovery fraction in the declared box \\
+\texttt{C1} & $J=\V{esc_C1_J}$, $t_s=\V{esc_C1_ts}$~s & $\alpha_0=0.05$~rad, $\max|u_c|=\V{esc_C1_uc}$~V \\
+\texttt{C2} & $J=\V{esc_C2_J}$, $\max|\theta|=\V{esc_C2_th}$~rad & $\alpha_0=0.35$~rad, saturated $\V{esc_C2_sat}\,\%$ of the time \\
+\texttt{C3}, \texttt{C3b} & $J=\V{esc_C3_J}$, $\V{esc_C3b_J}$ & torque impulses; C3b saturated $\V{esc_C3b_sat}\,\%$ \\
+\texttt{C4} & $\V{esc_C4_exito}/\V{esc_C4_n}$ successful & $\pm20\,\%$ parameters, $J=\V{esc_C4_J}\pm\V{esc_C4_J_desv}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+{\small\textbf{Reproducibility.} \texttt{run\_all} regenerates every figure, table and number (cached long Monte Carlo
+runs with fixed seeds, option to recompute) and validates \texttt{results.json} with the course kit. All numbers in
+this page are read from \texttt{results.json}. AI assistance (Claude) is documented attempt by attempt in the AI
+annex.\par}
+
+\clearpage
+\begin{figure}[h]
+\centering\includegraphics[width=0.95\linewidth]{E1_3_icare_escalado.png}
+\caption{Claim 1. Forward error versus a 40-digit reference in the three stress families: the extended pencil
+with \texttt{icare}'s scaling (``Haz + Sx, Sr'') matches \texttt{icare}; without scaling accuracy is lost.}
+\end{figure}
+\begin{figure}[h]
+\centering\includegraphics[width=0.95\linewidth]{E1_6_cortes.png}
+\caption{Claim 3. 2D slices of the estimated region of attraction of the saturated nonlinear plant, with the
+certified ellipsoid (black) superimposed.}
+\end{figure}
+\end{document}
