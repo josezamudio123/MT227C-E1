@@ -1,23 +1,23 @@
 \section{Pruebas con respuesta conocida}
 Scripts: \texttt{pruebas\_kit.m} (kit, 22 de 22 superadas), \texttt{modelo\_propio.m} y
-\texttt{pruebas\_E1.m}.
+\texttt{pruebas\_E1.m}. Los valores obtenidos se toman de \texttt{results.json} (\texttt{valores\_informe}).
 
 \begin{center}\small
 \begin{tabularx}{\linewidth}{@{}X l l l@{}}
 \toprule
 Prueba & Esperado & Obtenido & Error \\
 \midrule
-Modelo propio $A$ frente al kit & \texttt{lineal\_qube} & coincide & $1.8\times10^{-16}$ \\
-Modelo propio $A$ frente al jacobiano numérico & diferencias centrales & coincide & $9.0\times10^{-13}$ \\
-Euler--Lagrange simbólico desde la geometría & $A$, $B$ propios & coincide & $1.7\times10^{-16}$ \\
-$\dot x=x+u$, $q=1$: ganancia & $K=1+\sqrt2=2.414214$ & 2.414214 & $\le1.8\times10^{-16}$ \\
-$\dot x=x+u$, $q=1$: margen de fase & $65.5^\circ$ & $65.5302^\circ$ (exacto, \texttt{fzero}) & -- \\
-$\dot x=x+u$, $q=1$: margen de fase con \texttt{margin} & $65.5302^\circ$ & $65.5292^\circ$ & $1\times10^{-3}$\,$^\circ$ \\
-$\dot x=x+u$, $q=1$: margen de ganancia con \texttt{margin} & $1/K=0.4142$ & 0.4142 & -- \\
-$\dot x=x+u$, $q\to0^+$: margen de fase & $\to60^\circ$ por encima & $60.0000^\circ$ ($q=10^{-6}$) & -- \\
-$\dot x=x+u$, $q\to0^+$: ganancia mínima tolerable & $\to1/2$ & 0.50000 ($q=10^{-6}$) & -- \\
-Tres solucionadores frente a $P_0$ del kit & diferencia $<10^{-10}$ & máx.\ $2.4\times10^{-12}$ & OK \\
-Tres solucionadores frente a \texttt{icare} & diferencia $<10^{-10}$ & máx.\ $2.4\times10^{-12}$ & OK \\
+Modelo propio $A$ frente al kit & \texttt{lineal\_qube} & coincide & $\V{m_A_kit}$ \\
+Modelo propio $A$ frente al jacobiano numérico & diferencias centrales & coincide & $\V{m_A_jac}$ \\
+Euler--Lagrange simbólico desde la geometría & $A$, $B$ propios & coincide & $\V{m_EL}$ \\
+$\dot x=x+u$, $q\in[10^{-6},1]$: ganancia & $K=1+\sqrt{1+q}$ & tres métodos & $\le\V{p1_err_escalar}$ \\
+$\dot x=x+u$, $q=1$: margen de fase & $65.5^\circ$ & $\V{p1_MF_q1}^\circ$ (exacto, \texttt{fzero}) & -- \\
+$\dot x=x+u$, $q=1$: margen de fase con \texttt{margin} & $\V{p1_MF_q1}^\circ$ & $\V{p1_MF_margin}^\circ$ & $\V{p1_MF_margin_dif}$\,$^\circ$ \\
+$\dot x=x+u$, $q=1$: margen de ganancia con \texttt{margin} & $1/K=0.4142$ & $\V{p1_GM_margin}$ & -- \\
+$\dot x=x+u$, $q\to0^+$: margen de fase & $\to60^\circ$ por encima & $\V{p1_MF_qmin}^\circ$ ($q=10^{-6}$) & -- \\
+$\dot x=x+u$, $q\to0^+$: ganancia mínima tolerable & $\to1/2$ & $\V{p1_gmin_qmin}$ ($q=10^{-6}$) & -- \\
+Tres solucionadores frente a $P_0$ del kit & diferencia $<10^{-10}$ & máx.\ $\V{p2_err_kit_max}$ & OK \\
+Tres solucionadores frente a \texttt{icare} & diferencia $<10^{-10}$ & máx.\ $\V{p2_err_icare_max}$ & OK \\
 \bottomrule
 \end{tabularx}
 \end{center}

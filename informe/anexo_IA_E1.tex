@@ -114,8 +114,8 @@ estructura del informe técnico.
 
 \paragraph{Resultado.}
 Todos los resultados reportados se obtuvieron ejecutando el código en MATLAB y se confirmaron por un
-segundo camino (sección~\ref{sec:registro}). Se registran 48 usos relevantes: 19 correctos al primer
-intento, 23 con errores o afirmaciones incorrectas de la IA detectados por verificación y corregidos, y
+segundo camino (sección~\ref{sec:registro}). Se registran 49 usos relevantes: 19 correctos al primer
+intento, 24 con errores o afirmaciones incorrectas de la IA detectados por verificación y corregidos, y
 6 hipótesis o lecturas de la IA refutadas o confirmadas solo en parte por los experimentos. Una predicción con
 base IA (E1-P3) resultó incorrecta, al igual que E1-P2 (base TEORIA).
 
@@ -291,7 +291,7 @@ Comparación con la solución analítica. & correcto &
 \texttt{icare} pierde 8 cifras con $\varepsilon=10^{-6}$. \\
 15 & -- & Fichas de evidencia de E1.1 y E1.2 en \LaTeX. &
 Compilación y revisión del PDF. & correcto &
-Números copiados a mano: pendiente sincronizarlos con \texttt{results.json}. \\
+Números copiados a mano; sincronizados con \texttt{results.json} en el N.° 49. \\
 16 & -- & Tabla de predicciones en \LaTeX. &
 Revisión del PDF: columnas deformadas al agregar el resultado de E1-P3. & error &
 Anchos de columna fijos. \\
@@ -390,12 +390,15 @@ El video de C2 falló porque la figura cambió de tamaño durante la grabación;
 48 & -- & \texttt{run\_all.m} con cachés de cálculos largos (vpa, E1.4, E1.5) y \texttt{crear\_caches\_E1\_5.m} desde resultados guardados. &
 Ejecución completa en MATLAB; la caché reproduce los valores de la corrida original ([204 200] evaluaciones; $J_{rel}$ 0.9625 y 0.9614). & correcto &
 18 de 18 pasos sin falla en 6.4~min; \texttt{results.json} válido. \\
+49 & -- & Sincronización de los números del informe: \texttt{src/anotar.m} en cada script, clave \texttt{valores\_informe} en \texttt{results.json} y \texttt{valores\_E1.tex} leído por las fichas, las predicciones y las pruebas. &
+Comparación de los números escritos a mano con \texttt{run\_all\_log.txt} y con los \texttt{.mat}. & error &
+Ocho números no coincidían con la última corrida (p.\,ej. $9.7\times10^{-15}$ por $9.6\times10^{-15}$, $t=-4.6$ por $-4.5$, $1.7\times10^{-19}$ por $1.5\times10^{-19}$) y dos afirmaciones de E1.3 eran inexactas (peor caso de F2 con balanceo, ``idénticos fila a fila''); corregidos. \\
 \bottomrule
 \end{longtable}
 }
 
 \paragraph{Resumen del registro.}
-48 usos relevantes: 19 correctos, 23 errores detectados y corregidos (3 de ellos por la propia IA antes de
+49 usos relevantes: 19 correctos, 24 errores detectados y corregidos (3 de ellos por la propia IA antes de
 entregar el código: N.° 7, 18 y 33), 3 hipótesis refutadas (N.° 10, 24 y 39) y 3 confirmadas en parte (N.° 22, 40 y 45).
 Salvo las predicciones E1-P2 y E1-P3, que se reportan como incorrectas (E1-P1 resultó correcta), ningún error llegó a los resultados
 reportados: todos se detectaron por ejecución, por comparación con una referencia independiente o por

@@ -1,7 +1,9 @@
 % =====================================================================
 % Fichas de evidencia del encargo E1 (sección 4.2 de la guía).
-% Una ficha por inciso. Los números deben coincidir con results.json
-% regenerado desde cero (se sincronizarán al cerrar el encargo).
+% Una ficha por inciso. Ningún resultado se escribe a mano: cada número sale de
+% results.json (clave valores_informe) a través de valores_E1.tex, con la macro V.
+% Las claves las registra cada script con src/anotar.m; generar_results.m escribe
+% valores_E1.tex y avisa si alguna clave usada aquí no existe.
 % =====================================================================
 \section{Fichas de evidencia}
 
@@ -11,28 +13,29 @@
 Afirmación &
 Los métodos (a) vectores propios de la Hamiltoniana, (b) Schur real ordenado y (c) Newton--Kleinman
 resuelven la ecuación de Riccati del diseño base $(Q_0,R_0)$ con una diferencia máxima entre ellos de
-$2.5\times10^{-12}$. En el banco de seis problemas, (a) y (c) quedan por debajo de $10^{-10}$ frente a
-\texttt{icare} en todos los casos; (b) supera esa tolerancia solo en el modelo de 5 estados con armadura
-($7.2\times10^{-9}$), cuya $P$ es casi singular ($\lambda_{\min}(P)=7.4\times10^{-14}$). \\[3pt]
+$\V{e11_difmax_base}$. En el banco de seis problemas, (a) y (c) quedan por debajo de $10^{-10}$ frente a
+\texttt{icare} en todos los casos (máximo $\V{e11_err_ac_max}$); (b) queda por debajo en los cinco problemas
+de 4 estados (máximo $\V{e11_err_b_max_4est}$) y la supera solo en el modelo de 5 estados con armadura
+($\V{e11_err_schur_5est}$), cuya $P$ es casi singular ($\lambda_{\min}(P)=\V{e11_mineigP_5est}$). \\[3pt]
 Evidencia &
 Tablas de \texttt{e1\_1\_metodos.m}; figura \texttt{figuras/E1\_1\_errores.png};
 datos en \texttt{resultados/E1\_1.mat}. Implementación en \texttt{src/riccati\_hamiltoniano.m},
 \texttt{src/riccati\_schur.m}, \texttt{src/riccati\_newton.m}. \\[3pt]
 Comprobación independiente &
-(1) Biblioteca: \texttt{icare}; diseño base: (a) $9.7\times10^{-15}$, (b) $2.4\times10^{-12}$,
-(c) $1.0\times10^{-13}$.
+(1) Biblioteca: \texttt{icare}; diseño base: (a) $\V{e11_err_ham_base}$, (b) $\V{e11_err_schur_base}$,
+(c) $\V{e11_err_nk_base}$.
 (2) Kit: $P_0$ de \texttt{diseno\_base\_ref.json} (\texttt{pruebas\_E1.m}); $K$ de Newton frente a
-$K_0$: $5.4\times10^{-14}$.
-(3) Respuesta conocida: $\dot x=x+u$, $K=1+\sqrt{1+q}$; error $\le 2.2\times10^{-16}$ para
+$K_0$: $\V{p2_K_vs_K0}$.
+(3) Respuesta conocida: $\dot x=x+u$, $K=1+\sqrt{1+q}$; error $\le \V{p1_err_escalar}$ para
 $q\in[10^{-6},1]$.
 (4) Convergencia cuadrática de Newton--Kleinman: residuo
-$1.7\times10^{-3}\to3.6\times10^{-5}\to1.2\times10^{-8}\to1.2\times10^{-15}$ (iteraciones 6 a 9). \\[3pt]
+$\V{p2_nk_res6}\to\V{p2_nk_res7}\to\V{p2_nk_res8}\to\V{p2_nk_res9}$ (iteraciones 6 a 9). \\[3pt]
 Supuestos &
 $(A,B)$ estabilizable y $(A,Q^{1/2})$ detectable. Newton requiere una ganancia inicial
-estabilizante: Bass con $\beta=20$ en 4 estados; en 5 estados Bass exigiría $\beta>7240$ y no
-estabiliza numéricamente, por lo que se usa $[K_0\;0]$. El método (b) se implementó sin escalado
-ni simetrización de $P$; con balanceo (como \texttt{icare}) su error debería disminuir, lo que
-cambiaría la ordenación de los métodos.
+estabilizante: Bass con $\beta=20$ en 4 estados; en 5 estados Bass exigiría $\beta>|p_e|$ (polo eléctrico,
+$p_e=\V{m_polo_e}$~rad/s) y no estabiliza numéricamente, por lo que se usa $[K_0\;0]$. El método (b) se
+implementó sin escalado ni simetrización de $P$; con balanceo (como \texttt{icare}) su error debería
+disminuir, lo que cambiaría la ordenación de los métodos (se comprueba en E1.3).
 \end{tabularx}
 \end{recuadro}
 
@@ -42,25 +45,25 @@ cambiaría la ordenación de los métodos.
 Afirmación &
 Un residuo pequeño no implica un error pequeño en $P$: en el oscilador
 $A=\left[\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right]$, $Q=\varepsilon^2 I$, una $P$ con error relativo
-de $1\,\%$ tiene residuo normalizado de solo $7.1\times10^{-9}$ para $\varepsilon=10^{-6}$, porque
-$\|\mathcal{L}^{-1}\|_2=7.07\times10^{5}$, con $\mathcal{L}(X)=A_c^\top X+XA_c$. En el péndulo,
-$\|\mathcal{L}^{-1}\|_2=86$ y la cota $\|\mathcal{L}^{-1}\|\,\|\mathrm{Res}\|/\|P\|\le 6.9\times10^{-10}$
-acota el error real ($\le 2.4\times10^{-12}$). Las tres soluciones del péndulo pasan las cuatro
-pruebas: residuo $\le1.4\times10^{-13}$, asimetría $\le1.9\times10^{-13}$,
-$\lambda_{\min}(P)=3.4\times10^{-4}>0$ y $\max\operatorname{Re}\lambda(A-BK)=-2.668$. \\[3pt]
+de $1\,\%$ tiene residuo normalizado de solo $\V{e12_res_peor_epsmin}$ para $\varepsilon=10^{-6}$, porque
+$\|\mathcal{L}^{-1}\|_2=\V{e12_nLinv_epsmin}$, con $\mathcal{L}(X)=A_c^\top X+XA_c$. En el péndulo,
+$\|\mathcal{L}^{-1}\|_2=\V{e12_nLinv_pend}$ y la cota $\|\mathcal{L}^{-1}\|\,\|\mathrm{Res}\|/\|P\|\le \V{e12_cota_max}$
+acota el error real ($\le \V{e12_err_real_max}$). Las tres soluciones del péndulo pasan las cuatro
+pruebas: residuo $\le\V{e12_res_max}$, asimetría $\le\V{e12_asim_max}$,
+$\lambda_{\min}(P)=\V{e12_mineigP}>0$ y $\max\operatorname{Re}\lambda(A-BK)=\V{e12_maxRe_cl}$. \\[3pt]
 Evidencia &
 Tablas de \texttt{e1\_2\_verificacion.m}; figura \texttt{figuras/E1\_2\_residuo\_vs\_error.png};
 datos en \texttt{resultados/E1\_2.mat}; \texttt{src/operador\_lyapunov.m}, \texttt{src/verificar\_riccati.m}. \\[3pt]
 Comprobación independiente &
 (1) Solución analítica del oscilador: $p_2=\varepsilon^2/(1+\sqrt{1+\varepsilon^2})$,
 $p_3=\sqrt{2p_2+\varepsilon^2}$, $p_1=p_3(1+p_2)$.
-(2) Primer orden: $\mathrm{Res}(P^\star+\Delta)\approx\mathcal{L}(\Delta)$ con discrepancia de $0.7\,\%$ en
-todas las filas (término cuadrático $\Delta S\Delta$).
-(3) Control: en una dirección aleatoria el mismo error da residuo $3.4\times10^{-3}$.
-(4) La propia \texttt{icare} pierde precisión frente a la solución exacta: de $1.8\times10^{-14}$
-($\varepsilon=10^{-1}$) a $2.1\times10^{-6}$ ($\varepsilon=10^{-6}$). \\[3pt]
+(2) Primer orden: $\mathrm{Res}(P^\star+\Delta)\approx\mathcal{L}(\Delta)$ con discrepancia entre
+$\V{e12_disc_min}\,\%$ y $\V{e12_disc_max}\,\%$ en todas las filas (término cuadrático $\Delta S\Delta$).
+(3) Control: en una dirección aleatoria el mismo error da residuo $\V{e12_res_azar_epsmin}$.
+(4) La propia \texttt{icare} pierde precisión frente a la solución exacta: de $\V{e12_icare_epsmax}$
+($\varepsilon=10^{-1}$) a $\V{e12_icare_epsmin}$ ($\varepsilon=10^{-6}$). \\[3pt]
 Supuestos &
-Análisis de primer orden (válido si $\|\Delta S\Delta\|\ll\|\mathcal{L}(\Delta)\|$, aquí $0.7\,\%$).
+Análisis de primer orden (válido si $\|\Delta S\Delta\|\ll\|\mathcal{L}(\Delta)\|$, aquí menos del $\V{e12_disc_max}\,\%$).
 La dirección ``peor'' es la del menor valor singular de $\mathcal{L}$ (caso pesimista); otra dirección
 da un residuo mayor. La normalización del residuo es la de \texttt{residuo\_riccati.m}; otra
 normalización cambia los valores, no la tendencia. $\|\mathcal{L}^{-1}\|$ no explica por completo el
@@ -74,35 +77,37 @@ error de \texttt{icare}, que crece más rápido; el condicionamiento completo de
 \begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.1cm} >{\raggedright\arraybackslash}X@{}}
 Afirmación &
 La precisión la decide el \emph{escalado de los datos}, no el método de subespacio. Sin balanceo,
-vectores propios y Schur pierden hasta 12 cifras con $R=10^{-8}$ ($1.2\times10^{-4}$) y 14 con las
-velocidades en otras unidades ($s=10^{6}$: $3.0\times10^{-2}$). Balancear $H$ recupera F2
-($1.6\times10^{-14}$), pero en F1 deja $3.6\times10^{-9}$: formar $S=BR^{-1}B^\top$ ya mezcla escalas
-incompatibles. \texttt{icare} evita ambos problemas: usa el haz extendido (no forma $S$) y escala
-estados y entrada; reproducido con código propio, alcanza su precisión (peor caso $9.8\times10^{-14}$).
-Con autovalores de $H$ cerca del eje imaginario, el error global sigue $\le2.4\times10^{-12}$, pero el
-de la entrada pequeña $P_{11}$ llega a $2.6\times10^{-9}$. \\[3pt]
+vectores propios y Schur pierden hasta $\V{e13_F1_cifras}$ cifras con $R=10^{-8}$ ($\V{e13_P3_schur}$) y
+$\V{e13_F2_cifras}$ con las velocidades en otras unidades ($s=10^{6}$: $\V{e13_F2_schur_smax}$). Balancear $H$
+recupera F2 (peor caso $\V{e13b_F2_bal_peor}$), pero en F1 deja $\V{e13b_F1_hambal_Rmin}$: formar $S=BR^{-1}B^\top$
+ya mezcla escalas incompatibles. \texttt{icare} evita ambos problemas: usa el haz extendido (no forma $S$) y
+escala estados y entrada; reproducido con código propio, alcanza su precisión (peor caso
+$\V{e13e_hazSx_peor}$). Con autovalores de $H$ cerca del eje imaginario (F3), el error global sigue
+$\le\V{e13_F3_max}$, pero el de la entrada pequeña $P_{11}$ llega a $\V{e13b_P11_nk_max}$ con Newton--Kleinman
+y a $\V{e13b_P11_schur_max}$ con Schur sin balanceo. \\[3pt]
 Evidencia &
-\texttt{e1\_3\_estres.m} (tres familias, 39 problemas), \texttt{e1\_3b\_balanceo.m}, \texttt{e1\_3c\_icare.m},
+\texttt{e1\_3\_estres.m} (tres familias, $\V{e13_n_problemas}$ problemas), \texttt{e1\_3b\_balanceo.m}, \texttt{e1\_3c\_icare.m},
 \texttt{e1\_3d\_escalado.m}, \texttt{e1\_3e\_icare\_escalado.m}; figuras \texttt{E1\_3\_*.png}; datos en
 \texttt{resultados/E1\_3*.mat}; \texttt{src/riccati\_pencil.m}, \texttt{src/escalar\_riccati.m}. \\[3pt]
 Comprobación independiente &
 (1) Referencia en precisión extendida: Newton--Kleinman con \texttt{vpa} de 40 dígitos y datos exactos
-(\texttt{sym(X,'f')}).
+(\texttt{sym(X,'f')}); última corrección $\le\V{e13_ref_correccion}$.
 (2) Experimento $2\times2$ \{vectores propios, Schur\} $\times$ \{con, sin balanceo\}: las columnas con el
-mismo balanceo coinciden en las 39 filas.
-(3) Haz extendido propio sin escalado frente a \texttt{icare(\ldots,'noscaling')}: F3 idénticos fila a fila
-(p.\ ej.\ $8.8\times10^{-10}$ ambos), F2 $6.4\times10^{-5}$ frente a $6.3\times10^{-5}$ ($s=10^5$); con $s=10^6$
-\texttt{icare} sin escalado no devuelve solución.
+mismo balanceo coinciden en orden de magnitud en las $\V{e13_n_problemas}$ filas.
+(3) Haz extendido propio sin escalado frente a \texttt{icare(\ldots,'noscaling')}: en F3 el mismo peor caso
+($\V{e13e_F3_haz_max}$ y $\V{e13e_F3_nosc_max}$) y la misma tendencia fila a fila; en F2,
+$\V{e13e_F2_haz_s5}$ frente a $\V{e13e_F2_nosc_s5}$ ($s=10^5$); con $s=10^6$ \texttt{icare} sin escalado no
+devuelve solución.
 (4) El mismo haz con los vectores de escalado de \texttt{icare} (\texttt{info.Sx}, \texttt{info.Sr}):
-peor caso F1/F2/F3 $9.8\times10^{-14}$, $8.4\times10^{-15}$, $1.6\times10^{-14}$, frente a \texttt{icare}
-$2.6\times10^{-13}$, $7.4\times10^{-15}$, $2.0\times10^{-14}$.
-(5) Hipótesis descartadas: simetrizar $P$ y $\operatorname{cond}(U_{11})$ (vale 4.0 en el peor caso).
-(6) Newton--Kleinman cuadrático frente a \texttt{vpa}: $e_k/e_{k-1}^2=0.81,\,1.03,\,1.07$. \\[3pt]
+peor caso F1/F2/F3 $\V{e13e_F1_hazSx_peor}$, $\V{e13e_F2_hazSx_peor}$, $\V{e13e_F3_hazSx_peor}$, frente a
+\texttt{icare} $\V{e13e_F1_icare_peor}$, $\V{e13e_F2_icare_peor}$, $\V{e13e_F3_icare_peor}$.
+(5) Hipótesis descartadas: simetrizar $P$ y $\operatorname{cond}(U_{11})$ (vale $\V{e13_condU11_peor}$ en el peor caso).
+(6) Newton--Kleinman cuadrático frente a \texttt{vpa}: $e_k/e_{k-1}^2=\V{e13_nk_cociente6},\,\V{e13_nk_cociente7},\,\V{e13_nk_cociente8}$. \\[3pt]
 Supuestos &
 Se reutiliza el escalado que elige \texttt{icare}, no su regla de elección. Los escalados propios
-ingenuos empeoran: igualar $\|S\|$ y $\|Q\|$ ignora $A$ ($5.3\times10^{-8}$ en F1), y \texttt{balance(A)}
+ingenuos empeoran: igualar $\|S\|$ y $\|Q\|$ ignora $A$ ($\V{e13d_F1_N3_peor}$ en F1), y \texttt{balance(A)}
 degenera porque la primera columna de $A$ es nula ($\theta$ no aparece en la dinámica), con
-$D=\operatorname{diag}(1,\,6\times10^{-8},\,1,\,1)$. El error en norma de Frobenius oculta el de entradas
+$D=\operatorname{diag}(1,\,\V{e13e_D6_2},\,1,\,1)$. El error en norma de Frobenius oculta el de entradas
 pequeñas; por eso se reporta también el de $P_{11}$. Cada familia varía un solo parámetro.
 \end{tabularx}
 \end{recuadro}
@@ -111,32 +116,34 @@ pequeñas; por eso se reporta también el de $P_{11}$. Cada familia varía un so
 \begin{recuadro}[title=Ficha de evidencia — E1.4: frente de Pareto]
 \begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.1cm} >{\raggedright\arraybackslash}X@{}}
 Afirmación &
-Los 625 diseños LQR obtenidos al escalar los pesos de brazo y péndulo entre $10^{-3}$ y $10^{3}$ (normalización
-de Bryson del diseño base) son todos estables y no dominados, y forman una superficie de Pareto con
-$J_\theta/(\pi/4)^2\in[8.96\times10^{-3},\,2.23\times10^{2}]$, $J_\alpha/(\pi/36)^2\in[2.03\times10^{-3},\,0.141]$ y
-$J_u/10^2\in[1.56\times10^{-3},\,1.11]$. En la planta no lineal, los 625 tienen éxito en C1, pero en C2 solo
-147 (estado real) y 115 (estimador base, cuantización y ruido); 101 cumplen además una fracción saturada
-$\le5\,\%$. 48 diseños exitosos con estado real fallan con el sensor. \\[3pt]
+Los $\V{e14_N}$ diseños LQR obtenidos al escalar los pesos de brazo y péndulo entre $10^{-3}$ y $10^{3}$
+(normalización de Bryson del diseño base) son todos estables ($\V{e14_n_estables}$) y no dominados
+($\V{e14_n_nd}$), y forman una superficie de Pareto con
+$J_\theta/(\pi/4)^2\in[\V{e14_Jth_min},\,\V{e14_Jth_max}]$, $J_\alpha/(\pi/36)^2\in[\V{e14_Jal_min},\,\V{e14_Jal_max}]$ y
+$J_u/10^2\in[\V{e14_Ju_min},\,\V{e14_Ju_max}]$. En la planta no lineal, $\V{e14_ok_C1}$ tienen éxito en C1, pero en
+C2 solo $\V{e14_ok_C2_ideal}$ (estado real) y $\V{e14_ok_C2_real}$ (estimador base, cuantización y ruido);
+$\V{e14_ok_C2_real_sat}$ cumplen además una fracción saturada $\le5\,\%$. $\V{e14_sensor_falla}$ diseños exitosos con
+estado real fallan con el sensor. \\[3pt]
 Evidencia &
 \texttt{e1\_4\_pareto.m}; figuras \texttt{figuras/E1\_4\_pareto3d.png} y \texttt{figuras/E1\_4\_proyecciones.png};
 datos en \texttt{resultados/E1\_4.mat} y simulaciones en \texttt{resultados/E1\_4\_sim.mat}. \\[3pt]
 Comprobación independiente &
 (1) Lyapunov por dos caminos: primal (gramiano, \texttt{sylvester}) y dual (una ecuación por objetivo,
-\texttt{lyap\_kron}): diferencia $\le1.3\times10^{-9}$.
+\texttt{lyap\_kron}): diferencia $\le\V{e14_dif_lyap}$.
 (2) Respuesta conocida: la suma ponderada de los objetivos coincide con $\operatorname{tr}(PX_0)$ del LQR
-($\le1.9\times10^{-10}$), y el filtro de Pareto declara no dominados 625 de 625, como predice la teoría.
-(3) Simulación lineal con \texttt{ode45} en 10 diseños: diferencia $\le2.3\times10^{-11}$.
-(4) \texttt{icare} frente a la Hamiltoniana balanceada: $\le8.9\times10^{-11}$.
-(5) El diseño base reproduce $K_0$ y los valores del kit: 9.12~V y 1.237~rad (estado real), 63.82~V y
-1.345~rad (con estimador).
-(6) El esfuerzo de Lyapunov ordena el esfuerzo no lineal: correlación de rangos de Spearman 0.960 entre
+($\le\V{e14_dif_suma}$), y el filtro de Pareto declara no dominados $\V{e14_n_nd}$ de $\V{e14_N}$, como predice la teoría.
+(3) Simulación lineal con \texttt{ode45} en $\V{e14_n_ode}$ diseños: diferencia $\le\V{e14_dif_ode}$.
+(4) \texttt{icare} frente a la Hamiltoniana balanceada: $\le\V{e14_dif_solver}$.
+(5) El diseño base reproduce $K_0$ y los valores del kit: $\V{e14_base_C1_uc}$~V y $\V{e14_base_C2_th}$~rad (estado real),
+$\V{e14_base_C2r_uc}$~V y $\V{e14_base_C2r_th}$~rad (con estimador).
+(6) El esfuerzo de Lyapunov ordena el esfuerzo no lineal: correlación de rangos de Spearman $\V{e14_spearman}$ entre
 $J_u$ y $\max|u_c|$ en C1. \\[3pt]
 Supuestos &
 Covarianza inicial declarada $X_0=\operatorname{diag}(0.1^2,\,0.05^2,\,0.5^2,\,0.5^2)$ (unidades SI): otra $X_0$
 cambia la forma del frente, no la no dominancia. Los objetivos esperados son lineales y no ven la
 saturación; por eso la factibilidad se juzga en la planta no lineal. C2 con sensor se simuló con una sola
-semilla de ruido: los 64 diseños que cambian de resultado entre estado real y sensor están cerca del límite
-y podrían cambiar con otra semilla. La malla varía dos pesos con $R$ fija; escalar $Q$ y $R$ a la vez no
+semilla de ruido: los $\V{e14_cambian}$ diseños que cambian de resultado entre estado real y sensor están cerca del
+límite y podrían cambiar con otra semilla. La malla varía dos pesos con $R$ fija; escalar $Q$ y $R$ a la vez no
 cambia $K$.
 \end{tabularx}
 \end{recuadro}
@@ -145,31 +152,34 @@ cambia $K$.
 \begin{recuadro}[title=Ficha de evidencia — E1.5: optimización de los pesos con restricciones]
 \begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.1cm} >{\raggedright\arraybackslash}X@{}}
 Afirmación &
-Con las restricciones del grupo (decaimiento $\sigma\ge0.458$~s$^{-1}$, amortiguamiento $\zeta\ge0.5$, C2 con
+Con las restricciones del grupo (decaimiento $\sigma\ge\V{e15_sigma_min}$~s$^{-1}$, amortiguamiento $\zeta\ge0.5$, C2 con
 $|\theta|\le\pi/2$ y saturación $\le5\,\%$, éxito en C1--C3b), ningún LQR mejora de forma significativa el
-costo oficial promedio del diseño base: el óptimo por promedio de 5 semillas ($r_\theta=1.58$, $r_\alpha=1$)
-da $J_{rel}=0.9994\pm0.0225$ en 20 semillas independientes ($t=0.12$). Hay un compromiso significativo:
-penalizar más el brazo mejora C2 ($+1.5\,\%$, $t=45.8$) y empeora C1 ($-1.2\,\%$, $t=-4.6$). El diseño base
-es factible ($\sigma=2.668$, $\zeta=0.742$, saturación 1.9\,\%, $\max|\theta|=1.345$~rad en C2) y se adopta
-como diseño final. \\[3pt]
+costo oficial promedio del diseño base: el óptimo por promedio de 5 semillas ($r_\theta=\V{e15b_r_th}$,
+$r_\alpha=\V{e15b_r_al}$) da $J_{rel}=\V{e15b_saa_Jrel}\pm\V{e15b_saa_Jrel_desv}$ en 20 semillas independientes
+($t=\V{e15b_saa_t}$). Hay un compromiso significativo: penalizar más el brazo mejora C2 ($+\V{e15b_saa_mej_C2}\,\%$,
+$t=\V{e15b_saa_t_C2}$) y empeora C1 ($\V{e15b_saa_mej_C1}\,\%$, $t=\V{e15b_saa_t_C1}$). El diseño base es factible
+($\sigma=\V{e15d_base_sigma}$, $\zeta=\V{e15d_base_zeta}$, saturación $\V{esc_C2_sat}\,\%$, $\max|\theta|=\V{esc_C2_th}$~rad en C2)
+y se adopta como diseño final. \\[3pt]
 Evidencia &
 \texttt{e1\_5\_restricciones.m}, \texttt{e1\_5b\_saa.m}, \texttt{e1\_5c\_sensibilidad.m}, \texttt{src/diseno\_final.m};
 figuras \texttt{figuras/E1\_5\_*.png}; datos en \texttt{resultados/E1\_5.mat} y \texttt{E1\_5b.mat}. \\[3pt]
 Comprobación independiente &
 (1) Validación con semillas 101--120, no usadas para elegir, en comparación pareada con el base (prueba
 $t$, 19 grados de libertad).
-(2) Dos búsquedas \texttt{fminsearch} desde puntos distintos llegan al mismo diseño ($J_{rel}=0.9625$ y
-$0.9614$ con la semilla 1).
-(3) Piso de ruido del costo oficial: perturbar $K_0$ en $10^{-15}$ cambia $J$ en 0.55\,\% (C1), 0.01\,\% (C2),
-3.1\,\% (C3) y 0.09\,\% (C3b) con cuantización, y en $\sim10^{-16}$ sin ella; explica el $J_{rel}=0.9991$ del base
-recalculado con \texttt{icare}.
-(4) $\sigma\ge0.458$ es coherente con la simulación: tiempo de establecimiento en C1 $\le0.132$~s.
-(5) La optimización con una sola semilla sobreestimó la mejora ($0.961$ frente a $0.9945\pm0.019$). \\[3pt]
+(2) Dos búsquedas \texttt{fminsearch} desde puntos distintos llegan al mismo diseño ($J_{rel}=\V{e15_fmin_desde_base}$ y
+$\V{e15_fmin_desde_malla}$ con la semilla 1).
+(3) Piso de ruido del costo oficial: perturbar $K_0$ en $10^{-15}$ cambia $J$ en $\V{e15c_piso_C1}\,\%$ (C1),
+$\V{e15c_piso_C2}\,\%$ (C2), $\V{e15c_piso_C3}\,\%$ (C3) y $\V{e15c_piso_C3b}\,\%$ (C3b) con cuantización, y como máximo en
+$\V{e15c_piso_ideal_max}$ sin ella; explica el $J_{rel}=\V{e15b_Jrel_base_malla}$ del base recalculado con \texttt{icare}.
+(4) $\sigma\ge\V{e15_sigma_min}$ es coherente con la simulación: tiempo de establecimiento en C1 $\le\V{e15_ts_C1_max}$~s.
+(5) La optimización con una sola semilla sobreestimó la mejora ($\V{e15_Jrel_semilla1}$ frente a
+$\V{e15_val_Jrel}\pm\V{e15_val_Jrel_desv}$). \\[3pt]
 Supuestos &
 $J_{rel}$ pondera igual los cuatro escenarios: dar más peso a C2 y C3b favorecería un diseño más agresivo
-(el óptimo de la semilla 1 mejora C3b en $5.2\,\%$, $t=8.3$, pero empeora C1 en $8.2\,\%$). Búsqueda en LQR con
-$Q$ diagonal; los pesos de las velocidades no ayudaron (\texttt{fminsearch} los llevó al mínimo). $\sigma_{\min}$
-proviene de una envolvente exponencial aproximada. La prueba $t$ supone diferencias aproximadamente normales.
+(el óptimo de la semilla 1 mejora C3b en $\V{e15b_s1_mej_C3b}\,\%$, $t=\V{e15b_s1_t_C3b}$, pero empeora C1 en
+$\V{e15b_s1_mej_C1}\,\%$). Búsqueda en LQR con $Q$ diagonal; los pesos de las velocidades no ayudaron (\texttt{fminsearch}
+los llevó al mínimo). $\sigma_{\min}$ proviene de una envolvente exponencial aproximada. La prueba $t$ supone
+diferencias aproximadamente normales.
 \end{tabularx}
 \end{recuadro}
 
@@ -177,30 +187,33 @@ proviene de una envolvente exponencial aproximada. La prueba $t$ supone diferenc
 \begin{recuadro}[title=Ficha de evidencia — E1.5 (bonificación): síntesis por regiones de polos con LMI]
 \begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.1cm} >{\raggedright\arraybackslash}X@{}}
 Afirmación &
-Imponer la región del grupo ($\sigma\ge0.458$, $\zeta\ge0.5$) por LMI con Lyapunov común cuesta $+2.5\,\%$ en
-$J_0$ aunque $K_0$ ya está en la región: el método es conservador (logra $\sigma=2.939$, $\zeta=0.885$). Frente
-al ajuste de los dos pesos de posición de $Q$, el ajuste de $Q$ es más barato al exigir decaimiento
-($\sigma\ge4$: $1.18$ frente a $1.57$; $\sigma\ge6$: $1.46$ frente a $2.79$, en $J_0/J_{0,base}$) y la LMI lo es al
-exigir amortiguamiento ($\zeta\ge0.85$: $1.18$ frente a $1.48$; $\zeta\ge0.9$: $1.25$ frente a $1.98$). Una región
-alcanzable en el modelo lineal no garantiza la planta saturada: con $\sigma\ge4$ el diseño cumple C1 pero
-falla C2 incluso con estado real ($99.9\,\%$ del tiempo saturado). \\[3pt]
+Imponer la región del grupo ($\sigma\ge\V{e15_sigma_min}$, $\zeta\ge0.5$) por LMI con Lyapunov común cuesta
+$+\V{e15d_costo_region}\,\%$ en $J_0$ aunque $K_0$ ya está en la región: el método es conservador (logra
+$\sigma=\V{e15d_sigma_g}$, $\zeta=\V{e15d_zeta_g}$). Frente al ajuste de los dos pesos de posición de $Q$, el ajuste de
+$Q$ es más barato al exigir decaimiento ($\sigma\ge4$: $\V{e15d_s4_Q}$ frente a $\V{e15d_s4_LMI}$; $\sigma\ge6$:
+$\V{e15d_s6_Q}$ frente a $\V{e15d_s6_LMI}$, en $J_0/J_{0,base}$) y la LMI lo es al exigir amortiguamiento
+($\zeta\ge0.85$: $\V{e15d_z85_LMI}$ frente a $\V{e15d_z85_Q}$; $\zeta\ge0.9$: $\V{e15d_z90_LMI}$ frente a $\V{e15d_z90_Q}$).
+Una región alcanzable en el modelo lineal no garantiza la planta saturada: con $\sigma\ge4$ el diseño cumple C1
+pero falla C2 incluso con estado real ($\V{e15d_s4_C2_sat_ideal}\,\%$ del tiempo saturado). \\[3pt]
 Evidencia &
 \texttt{e1\_5d\_lmi.m}, \texttt{src/lqr\_region\_lmi.m} (LMI Lab); figura \texttt{figuras/E1\_5\_lmi.png};
 datos en \texttt{resultados/E1\_5\_lmi.mat}. \\[3pt]
 Comprobación independiente &
-(1) Respuesta conocida: sin región, la LMI reproduce el LQR ($\|K-K_0\|/\|K_0\|=1.3\times10^{-4}$, costo
-$1.000000\,J_{0,base}$).
-(2) Los polos de cada diseño, calculados con \texttt{eig}, cumplen la región pedida en los 16 casos.
-(3) La cota $\operatorname{tr}(Z)$ queda por encima del costo real $J_0$ (Lyapunov propio) en todos los casos.
+(1) Respuesta conocida: sin región, la LMI reproduce el LQR ($\|K-K_0\|/\|K_0\|=\V{e15d_K_lmi_vs_K0}$, costo
+$\V{e15d_J_lmi_libre}\,J_{0,base}$).
+(2) Los polos de cada diseño, calculados con \texttt{eig}, cumplen la región pedida en $\V{e15d_n_region_ok}$ de
+$\V{e15d_n_casos}$ casos.
+(3) La cota $\operatorname{tr}(Z)$ queda por encima del costo real $J_0$ (Lyapunov propio) en $\V{e15d_n_cota_ok}$ de
+$\V{e15d_n_casos}$ casos.
 (4) Validación no lineal con semillas 101--120: el diseño LMI de la región del grupo cumple R3--R4 en
-20 de 20, pero no mejora a $K_0$ ($J_{rel}=0.9982\pm0.0216$, $t=0.37$): mejora C3b ($+7.6\,\%$) y empeora C1
-($-6.6\,\%$) y C2 ($-3.2\,\%$). \\[3pt]
+$\V{e15d_val_ok}$ de 20, pero no mejora a $K_0$ ($J_{rel}=\V{e15d_val_Jrel}\pm\V{e15d_val_Jrel_desv}$, $t=\V{e15d_val_t}$):
+mejora C3b ($+\V{e15d_val_mej_C3b}\,\%$) y empeora C1 ($\V{e15d_val_mej_C1}\,\%$) y C2 ($\V{e15d_val_mej_C2}\,\%$). \\[3pt]
 Supuestos &
 Una sola matriz de Lyapunov para el costo y la región (formulación de Chilali y Gahinet): la cota es
 conservadora. La comparación con el ajuste de $Q$ usa solo los pesos de posición de la malla de E1.4; con
 pesos en las velocidades el LQR podría amortiguar más barato. Con 5 semillas (1--5) el diseño LMI parecía
-$2.3\,\%$ mejor ($0.977\pm0.009$); no se confirmó con 20 semillas independientes. Precisión del solucionador
-LMI: $\sim10^{-4}$ en $K$.
+$\V{e15d_5sem_mejora}\,\%$ mejor ($\V{e15d_5sem_Jrel}\pm\V{e15d_5sem_desv}$); no se confirmó con 20 semillas independientes.
+Precisión del solucionador LMI: del orden de $\V{e15d_K_lmi_vs_K0}$ en $K$.
 \end{tabularx}
 \end{recuadro}
 
@@ -208,24 +221,26 @@ LMI: $\sim10^{-4}$ en $K$.
 \begin{recuadro}[title=Ficha de evidencia — E1.6: región de atracción del regulador saturado]
 \begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.1cm} >{\raggedright\arraybackslash}X@{}}
 Afirmación &
-\emph{Certificado} (modelo lineal sin saturación): $\rho^\star=V_{\max}^2/(KP^{-1}K^\top)=1.635\times10^{-2}$; el
-elipsoide $\{x^\top Px\le\rho^\star\}$ llega a $0.0377$~rad sobre el eje $\alpha$ y a $0.144$~rad sobre $\theta$.
-\emph{Estimado} (planta no lineal saturada, lazo digital): el péndulo se recupera desde $\alpha_0=0.430$~rad
-(estado real) y cumple además $|\theta|\le\pi/2$ hasta $0.388$~rad; con estimador, cuantización y ruido,
-hasta $0.378$~rad ($-2.4\,\%$). El certificado subestima el radio entre 8.5 y 32 veces (mediana 12.2 en 200
-direcciones). En la caja declarada se recupera el $44.8\,\%$ de 20\,000 condiciones iniciales ($34.6\,\%$ sin
-exceder $|\theta|\le\pi/2$). C2 ($\alpha_0=0.35$~rad) queda dentro de la región, a $0.028$~rad del borde. \\[3pt]
+\emph{Certificado} (modelo lineal sin saturación): $\rho^\star=V_{\max}^2/(KP^{-1}K^\top)=\V{e16_rho}$; el
+elipsoide $\{x^\top Px\le\rho^\star\}$ llega a $\V{e16_corte_alpha}$~rad sobre el eje $\alpha$ y a $\V{e16_corte_theta}$~rad
+sobre $\theta$. \emph{Estimado} (planta no lineal saturada, lazo digital): el péndulo se recupera desde
+$\alpha_0=\V{e16_al_emp}$~rad (estado real) y cumple además $|\theta|\le\pi/2$ hasta $\V{e16_rad_ideal_exito}$~rad; con
+estimador, cuantización y ruido, hasta $\V{e16_rad_oficial_exito}$~rad ($\V{e16_efecto_sensor}\,\%$). El certificado
+subestima el radio entre $\V{e16_razon_min}$ y $\V{e16_razon_max}$ veces (mediana $\V{e16_razon_med}$ en $\V{e16_n_dir}$
+direcciones). En la caja declarada se recupera el $\V{e16_mc_rec}\,\%$ de $\V{e16_mc_N}$ condiciones iniciales
+($\V{e16_mc_exito}\,\%$ sin exceder $|\theta|\le\pi/2$). C2 ($\alpha_0=0.35$~rad) queda dentro de la región, a
+$\V{e16_C2_margen}$~rad del borde. \\[3pt]
 Evidencia &
 \texttt{e1\_6\_region.m}, \texttt{src/simular\_lote.m}; figuras \texttt{figuras/E1\_6\_cortes.png} y
 \texttt{figuras/E1\_6\_razon.png}; datos en \texttt{resultados/E1\_6.mat}. \\[3pt]
 Comprobación independiente &
-(1) $\max|Kx|$ en $10^5$ puntos de la frontera: $9.996$~V ($\le10$).
-(2) $\dot V<0$ en la frontera para el modelo lineal y para el no lineal (100\,\% de los puntos); $\dot V\le0$
-en todo el espacio, con convergencia por LaSalle: $(A,Q_0^{1/2})$ observable (rango 4).
-(3) 5000 condiciones dentro del elipsoide, planta no lineal con retención de orden cero: 5000
-recuperadas, $\max|u_c|=9.815$~V, ninguna muestra saturada.
-(4) El simulador por lotes coincide con \texttt{simular\_qube} en 60 de 60 condiciones (diferencia final
-$\le1.7\times10^{-19}$).
+(1) $\max|Kx|$ en $10^5$ puntos de la frontera: $\V{e16_max_Kx}$~V ($\le10$).
+(2) $\dot V<0$ en la frontera para el modelo lineal y para el no lineal ($\V{e16_dV_neg}\,\%$ de los puntos); $\dot V\le0$
+en todo el espacio, con convergencia por LaSalle: $(A,Q_0^{1/2})$ observable (rango $\V{e16_rango_obs}$).
+(3) $\V{e16_in_n}$ condiciones dentro del elipsoide, planta no lineal con retención de orden cero: $\V{e16_in_rec}$
+recuperadas, $\max|u_c|=\V{e16_in_max_uc}$~V, $\V{e16_in_sat}$ con alguna muestra saturada.
+(4) El simulador por lotes coincide con \texttt{simular\_qube} en $\V{e16_lote_coinc}$ de $\V{e16_lote_n}$ condiciones
+(diferencia final $\le\V{e16_lote_dif}$).
 (5) Radio sobre $\alpha$ confirmado con el simulador oficial del kit (5 semillas). \\[3pt]
 Supuestos &
 El certificado vale para el modelo lineal en tiempo continuo, con estado exacto y sin límite de
@@ -233,8 +248,8 @@ recorrido; que se cumpla en la planta no lineal y muestreada es evidencia numér
 conservador porque exige que el motor nunca sature y porque se limita a un conjunto de nivel de una
 función de Lyapunov cuadrática. Las fracciones del Monte Carlo dependen de la caja declarada
 ($|\theta|\le\pi/2$, $|\alpha|\le0.8$~rad, velocidades $\le10$~rad/s, semilla 2026); la caja recorta la región en
-$\theta$ (radio estimado 4.6~rad), por lo que la razón de volúmenes (5506) es una cota inferior. La bisección
-supone que la región es estrellada desde el origen; cerca del borde, la cuantización hace el resultado
-sensible (radio de recuperación oficial $0.457$~rad, mayor que el ideal). Horizonte de 5~s.
+$\theta$ (radio estimado $\V{e16_radio_theta}$~rad), por lo que la razón de volúmenes ($\V{e16_vol_razon}$) es una cota
+inferior. La bisección supone que la región es estrellada desde el origen; cerca del borde, la cuantización hace
+el resultado sensible (radio de recuperación oficial $\V{e16_rad_oficial_rec}$~rad, mayor que el ideal). Horizonte de 5~s.
 \end{tabularx}
 \end{recuadro}
