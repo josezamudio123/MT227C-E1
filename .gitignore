@@ -1,0 +1,14 @@
+# Auxiliares de LaTeX
+*.aux
+*.log
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+# Temporales
+*.tmp
+*.asv
+_to_delete/
+# Excepción: el registro de run_all es evidencia de reproducibilidad
+!resultados/run_all_log.txt
