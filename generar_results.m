@@ -48,6 +48,26 @@ s.C4 = r4;
 s.C5 = struct('estado', 'no_aplica');
 % Números que cita el informe (fichas, predicciones, pruebas), registrados con anotar por cada script
 anotar('esc_C2_sat', s.C2.frac_sat, 'p1'); anotar('esc_C2_th', s.C2.max_theta, 'f3');
+for i = 1:4, anotar(sprintf('mod_eigA_%d', i), s.eig_A(i), 'f3'); anotar(sprintf('K0_%d', i), d.K0(i), 'f3'); end
+anotar('mod_B3', s.B(3), 'f3'); anotar('mod_B4', s.B(4), 'f3');
+for ij = [3 2; 3 3; 3 4; 4 2; 4 3; 4 4]'
+    anotar(sprintf('mod_A%d%d', ij(1), ij(2)), s.A(ij(1), ij(2)), 'f3');
+end
+K5 = e11.res(6).K;                                   % E1.1, problema 6: regulador de 5 estados
+anotar('e11_K5_dif', norm(K5(1:4) - d.K0)/norm(d.K0), 'e1'); anotar('e11_K5_ia', K5(5), 'f4');
+e13 = R('E1_3.mat'); anotar('e13_nk_F1_max', max(e13.res(1).E(:,4)), 'e1');   % Newton-Kleinman en F1
+e15m = R('E1_5.mat'); anotar('e15_malla_R1R4', sum(e15m.fact), 'd');
+e15s = R('E1_5b.mat'); anotar('e15b_n_malla', size(e15s.X, 1), 'd');
+anotar('cl_lento_re', s.eig_cl_opt(1,1), 'f3'); anotar('cl_lento_im', abs(s.eig_cl_opt(1,2)), 'f2');
+anotar('cl_rapido_re', s.eig_cl_opt(3,1), 'f2'); anotar('cl_rapido_im', abs(s.eig_cl_opt(3,2)), 'f2');
+for c = {'C1', 'C2', 'C3', 'C3b'}
+    m = s.(c{1});
+    anotar(['esc_' c{1} '_J'], m.J, 'f4'); anotar(['esc_' c{1} '_uc'], m.max_uc, 'f2');
+    anotar(['esc_' c{1} '_ts'], m.ts, 'f3'); anotar(['esc_' c{1} '_sat'], m.frac_sat, 'p1');
+end
+anotar('esc_C4_n', s.C4.n, 'd'); anotar('esc_C4_exito', s.C4.n_exito, 'd');
+anotar('esc_C4_J', s.C4.J.media, 'f4'); anotar('esc_C4_J_desv', s.C4.J.desv, 'f4');
+anotar('esc_C4_th_p95', s.C4.max_theta.p95, 'f3'); anotar('esc_C4_ts_p95', s.C4.ts.p95, 'f3');
 Vi = load(fullfile(raiz, 'resultados', 'valores_informe.mat')); Vi = Vi.V;
 claves = fieldnames(Vi);
 for i = 1:numel(claves), s.valores_informe.(claves{i}) = Vi.(claves{i}).valor; end

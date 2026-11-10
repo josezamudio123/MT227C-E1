@@ -33,6 +33,17 @@ por defecto; para recalcular todo, poner `regenerar = true` en `run_all.m` (unos
 | `resultados/E1_5_cache.mat` | optimización con `fminsearch` y validación (20 semillas) | ~10 min |
 | `resultados/E1_5b_cache.mat` | malla con 5 semillas y validación (semillas 101–120) | ~11 min |
 
+**Números del informe.** Ningún número del informe se escribe a mano: cada script los registra con
+`src/anotar.m`, `generar_results.m` los copia a `results.json` (clave `valores_informe`) y escribe
+`informe/valores_E1.tex`, que el informe lee con `\V{clave}`. `generar_results` avisa si el informe usa una
+clave que no existe.
+
+**Referencias.** `verificar_referencias` (requiere internet; no está en `run_all`) consulta Crossref para cada
+DOI de `informe/referencias.bib` y escribe `informe/verificacion_referencias.tex` con tres estados: resuelve,
+metadatos coinciden y respaldo revisado (este último lo marca el grupo con `revisado = {si}` tras leer la fuente).
+
+**Informe.** En `informe/`: `latexmk -pdf informe_E1.tex` y `latexmk -pdf anexo_IA_E1.tex`.
+
 ## Software
 
 - MATLAB R2026b Update 1 (26.2.0.3433840), Windows 11.
