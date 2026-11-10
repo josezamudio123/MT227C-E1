@@ -15,7 +15,7 @@ e11 = R('E1_1.mat'); e16 = R('E1_6.mat'); sc = R('escenarios.mat');
 [K, info] = diseno_final();
 
 s = struct();
-s.grupo = 'MT227C-E1 (Zamudio Salazar, Joseluis Omar; [integrantes])';
+s.grupo = 'MT227C-E1 (Zamudio Salazar, Joseluis Omar; Nava Laburiano, David Adrián; [integrantes])';
 s.software = sprintf('MATLAB %s; Symbolic Math, Control System y Robust Control Toolbox; kit MT227C v1.1.1', version);
 s.semillas = struct('escenarios_C1_C3b', 1, 'C4_plantas', '1000+i, i = 1..200', 'C4_ruido', 'i, i = 1..200', ...
                     'E1_5_optimizacion', 1:5, 'E1_5_validacion', 101:120, 'E1_6_montecarlo', e16.mc_region.semilla);
