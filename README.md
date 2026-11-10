@@ -42,7 +42,8 @@ clave que no existe.
 DOI de `informe/referencias.bib` y escribe `informe/verificacion_referencias.tex` con tres estados: resuelve,
 metadatos coinciden y respaldo revisado (este último lo marca el grupo con `revisado = {si}` tras leer la fuente).
 
-**Informe.** En `informe/`: `latexmk -pdf informe_E1.tex` y `latexmk -pdf anexo_IA_E1.tex`.
+**Informe.** En `informe/`: `latexmk -pdf informe_E1.tex`, `latexmk -pdf anexo_IA_E1.tex` y `latexmk -pdf resumen_en_E1.tex`
+(resumen de resultados en inglés, una página más figuras).
 
 ## Software
 

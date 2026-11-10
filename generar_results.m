@@ -68,6 +68,8 @@ end
 anotar('esc_C4_n', s.C4.n, 'd'); anotar('esc_C4_exito', s.C4.n_exito, 'd');
 anotar('esc_C4_J', s.C4.J.media, 'f4'); anotar('esc_C4_J_desv', s.C4.J.desv, 'f4');
 anotar('esc_C4_th_p95', s.C4.max_theta.p95, 'f3'); anotar('esc_C4_ts_p95', s.C4.ts.p95, 'f3');
+anotar('rc_ham', s.resid_care.hamiltoniana, 'e1'); anotar('rc_schur', s.resid_care.schur, 'e1');
+anotar('rc_nk', s.resid_care.newton_kleinman, 'e1');
 Vi = load(fullfile(raiz, 'resultados', 'valores_informe.mat')); Vi = Vi.V;
 claves = fieldnames(Vi);
 for i = 1:numel(claves), s.valores_informe.(claves{i}) = Vi.(claves{i}).valor; end
@@ -109,7 +111,7 @@ end
 fclose(fv);
 % Comprobación: toda clave \V{...} que usa el informe existe en results.json
 txt = '';
-for f = {'informe_E1.tex', 'fichas_E1.tex', 'predicciones_E1.tex', 'pruebas_conocidas_E1.tex'}
+for f = {'informe_E1.tex', 'fichas_E1.tex', 'predicciones_E1.tex', 'pruebas_conocidas_E1.tex', 'resumen_en_E1.tex'}
     txt = [txt fileread(fullfile(raiz, 'informe', f{1}))]; %#ok<AGROW>
 end
 tok = regexp(txt, '\\V\{(\w+)\}', 'tokens');
