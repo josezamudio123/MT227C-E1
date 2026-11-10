@@ -9,7 +9,6 @@ Docente: Dr. Alcides Guillermo Joo Aguayo.
 |---|---|---|
 | Zamudio Salazar, Joseluis Omar | 20193529C | [ ] |
 | Nava Laburiano, David Adrián | 20211012C | Verificación de los códigos; desarrollo independiente de la mitad del laboratorio para comparar resultados |
-| [Apellidos, Nombres] | [código] | [ ] |
 
 ## Cómo reproducir todo
 
