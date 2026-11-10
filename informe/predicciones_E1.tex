@@ -1,0 +1,28 @@
+\section{Predicciones}
+Registradas el 2026-11-07 (16:42, hora de Lima) por correo institucional, antes de cualquier
+simulación de los incisos E1.1--E1.6.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{1.1cm} >{\raggedright\arraybackslash}p{1.9cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{3.3cm} >{\raggedright\arraybackslash}p{3.6cm}@{}}
+\toprule
+\texttt{id} & Registro (H1) & Enunciado (tipo, base) & Resultado & Acierto \\
+\midrule
+E1-P1 & 2026-11-07 &
+El certificado elipsoidal del diseño base no garantiza $|\alpha_0|>0.055$~rad (resto en cero); el Monte
+Carlo no lineal recupera desde ángulos al menos 5 veces mayores ($\ge0.27$~rad). (LIMITE, TEORIA) &
+Certificado $0.0377$~rad; recuperación desde $0.430$~rad (estado real) y $0.378$~rad con éxito en el simulador oficial. &
+SI: el certificado queda bajo la franja $V_{\max}/|K_2|=0.055$~rad y la región real es 10 a 11 veces mayor. \\
+E1-P2 & 2026-11-07 &
+Cumplir C2 ($|\theta|\le\pi/2$, $\le5\,\%$ saturado) exige $R\ge10R_0$, o bien $|K_2|\le40$~V/rad.
+(ORDEN, TEORIA) &
+El diseño base ($R_0$, $K_2=182.5$~V/rad) ya cumple C2: saturado 1.9\,\%, $\max|\theta|=1.345$~rad. Con $Q_0$ y $R\ge17.8R_0$ ($K_2\le60$) el brazo supera $\pi/2$. &
+NO: la tendencia es la opuesta. La saturación dura poco ($\approx95$~ms) y un regulador más suave deja que el brazo se aleje más. \\
+E1-P3 & 2026-11-07 &
+Al reducir $R$ de 1 a $10^{-8}$, el error de la Hamiltoniana crece más rápido que el de Schur; con
+$R=10^{-8}$: Hamiltoniana $>10^{-6}$, Schur $<10^{-9}$. (SIGNO, TEORIA + IA) &
+Hamiltoniana $3.6\times10^{-9}$, Schur $1.2\times10^{-4}$; pendientes $-0.85$ y $-1.17$. &
+NO: la tendencia fue la opuesta. \texttt{eig} balancea $H$ por defecto y \texttt{schur} no; con el
+mismo balanceo ambos métodos dan el mismo error (E1.3). \\
+\bottomrule
+\end{tabularx}
+\end{center}

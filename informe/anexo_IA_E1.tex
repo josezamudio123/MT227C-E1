@@ -1,0 +1,405 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\IfFileExists{spanish.ldf}
+  {\usepackage[spanish,es-noshorthands,es-tabla]{babel}}
+  {\usepackage{babel}\babelprovide[import,main]{spanish}}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array,booktabs,tabularx,longtable,multirow}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fvextra}
+
+% ---------- Estilo: una sola familia tipográfica, grises sobrios ----------
+\definecolor{grisborde}{gray}{0.45}
+\definecolor{grisfondo}{gray}{0.95}
+\definecolor{grisfila}{gray}{0.91}
+
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.2em}{0.6em}
+
+\newtcolorbox{recuadro}[1][]{enhanced,breakable,colback=grisfondo,colframe=grisborde,
+  boxrule=0.5pt,arc=1pt,left=6pt,right=6pt,top=4pt,bottom=4pt,
+  fonttitle=\normalfont\bfseries,coltitle=black,colbacktitle=grisfila,#1}
+\newtcolorbox{pregunta}{enhanced,breakable,colback=white,colframe=black,
+  boxrule=0.8pt,arc=0pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+
+\setlist{itemsep=1pt,topsep=3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\arraystretch}{1.18}
+
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small MT227 Control Moderno y Óptimo — 2026-2}
+\rhead{\small \TipoDoc{} — Encargo \Encargo}
+\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\sat}{\operatorname{sat}}
+\newcommand{\Encargo}{E1}
+\newcommand{\TipoDoc}{Informe anexo de uso de IA}
+\newcommand{\TituloEncargo}{La ecuación de Riccati y el diseño de las ponderaciones}
+
+\begin{document}
+\noindent
+\begin{minipage}[c]{0.17\linewidth}
+  \IfFileExists{logo_uni.png}{\includegraphics[width=\linewidth]{logo_uni.png}}{}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.79\linewidth}
+  \centering
+  {\large\bfseries UNIVERSIDAD NACIONAL DE INGENIERÍA}\\[2pt]
+  {\normalsize MT227C — Control Moderno y Óptimo — 2026-2}\\[8pt]
+  {\Large\bfseries \TipoDoc{} — Encargo \Encargo}\\[4pt]
+  {\large \TituloEncargo}
+\end{minipage}
+
+\vspace{1em}
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+Integrante & Código & Subsección de la que es responsable \\
+\midrule
+Zamudio Salazar, Joseluis Omar & 20193529C & {[ ]} \\
+{[Apellidos, Nombres]} & {[código]} & {[ ]} \\
+{[Apellidos, Nombres]} & {[código]} & {[ ]} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{recuadro}[title=Estado de este documento]
+Registro parcial (2026-11-08). Cubre el hito H1 y los incisos E1.1 a E1.6.
+Se completará con E1.4--E1.6, los escenarios C1--C4, el informe técnico y el resumen en inglés.
+\end{recuadro}
+
+% =====================================================================
+\section{Resumen del trabajo}
+
+\paragraph{Herramientas.}
+\begin{itemize}
+\item \textbf{Asistente de IA:} Claude (Anthropic), en la aplicación de escritorio con acceso a la carpeta
+  del proyecto. Identificador del modelo configurado en la sesión: \texttt{claude-opus-5-5}
+  (el modelo que atiende cada turno puede diferir). Una sola conversación, del 2026-11-07 al 2026-11-08.
+\item \textbf{Cómputo:} MATLAB R2026b Update 1 (26.2.0.3433840) en Windows 11, con Symbolic Math Toolbox,
+  System Identification Toolbox, Mapping Toolbox y Simulink (salida de \texttt{ver}), en el computador del
+  integrante. El Control System Toolbox no estaba instalado durante H1 y E1.1--E1.3 (\texttt{lyap},
+  \texttt{care} y \texttt{margin} no disponibles); se instaló el 2026-11-08, al iniciar E1.4. La función
+  \texttt{icare} usada como referencia desde el inicio es la oficial de MathWorks, en la
+  biblioteca compartida \texttt{toolbox\textbackslash shared\textbackslash controllib\textbackslash
+  engine\textbackslash numerics\textbackslash icare.m} (verificado con \texttt{which icare -all}). La IA no ejecuta MATLAB: escribe los
+  archivos en la carpeta y el integrante los ejecuta y pega la salida en la conversación.
+\item \textbf{Comprobaciones previas de la IA:} Python 3.10 con NumPy y mpmath, en un entorno aislado
+  vinculado a la carpeta, para probar fórmulas antes de entregar el código MATLAB.
+\item \textbf{Documentos:} \LaTeX\ (\texttt{latexmk}/\texttt{pdflatex}) sobre las plantillas del docente.
+\end{itemize}
+
+\paragraph{Partes desarrolladas con asistencia de IA.}
+Lectura y resumen de la guía y del kit; deducción del modelo por Euler--Lagrange y su linealización;
+todos los scripts de \texttt{repo\_lab34} (\texttt{modelo\_propio.m}, \texttt{pruebas\_E1.m},
+\texttt{e1\_1\_metodos.m}, \texttt{e1\_2\_verificacion.m}, \texttt{e1\_3*.m}) y las funciones de
+\texttt{src/}; la formulación de las tres predicciones; las fichas de evidencia de E1.1--E1.3 y la
+estructura del informe técnico.
+
+\paragraph{Resultado.}
+Todos los resultados reportados se obtuvieron ejecutando el código en MATLAB y se confirmaron por un
+segundo camino (sección~\ref{sec:registro}). Se registran 48 usos relevantes: 19 correctos al primer
+intento, 23 con errores o afirmaciones incorrectas de la IA detectados por verificación y corregidos, y
+6 hipótesis o lecturas de la IA refutadas o confirmadas solo en parte por los experimentos. Una predicción con
+base IA (E1-P3) resultó incorrecta, al igual que E1-P2 (base TEORIA).
+
+\paragraph{División del trabajo entre el grupo y la IA.}
+La IA propuso la mayor parte de la secuencia de pasos, las hipótesis y el diseño de los experimentos, y
+escribió el código y los borradores. El grupo tomó las decisiones del encargo (elección de E1, revisión y
+envío de las predicciones), ejecutó todo el código en MATLAB y aportó las salidas con las que se
+verificó cada resultado.
+
+% =====================================================================
+\section{Prompts}
+
+\paragraph{Protocolo de interacción.}
+Cada tarea siguió el mismo ciclo: (1) prompt del integrante; (2) la IA genera o modifica archivos en el
+repositorio (\texttt{.m}, \texttt{.tex}) y, cuando procede, prueba las fórmulas en Python; (3) el integrante
+ejecuta el código en MATLAB y devuelve la salida a la conversación; (4) la IA contrasta la salida con una
+referencia independiente y, si hay discrepancia, corrige y se repite el ciclo. Por eso los prompts de
+tarea son breves: el contexto técnico de cada uno lo aportan la guía, el kit, el código ya generado y las
+salidas de MATLAB de los ciclos anteriores. Las salidas devueltas (capturas de la ventana de comandos y
+de las figuras) no se transcriben aquí; están en la exportación de la conversación.
+
+\paragraph{Fuente y criterio.}
+Los prompts se reproducen \emph{íntegros}, sin corregir ortografía ni redacción, tal como exige la
+sección~7 de la guía. Exportación completa de la conversación: \texttt{ia/conversacion\_E1}
+{[completar con el enlace o archivo exportado]}. La columna \emph{Reg.} remite a las filas de la
+sección~\ref{sec:registro} originadas por cada prompt.
+
+{\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.7cm} >{\raggedright\arraybackslash}p{1.8cm} >{\raggedright\arraybackslash}p{2.2cm} >{\raggedright\arraybackslash\ttfamily\footnotesize}p{4.9cm} >{\raggedright\arraybackslash}p{4.1cm} >{\raggedright\arraybackslash}p{1.0cm}@{}}
+\toprule
+ID & Fecha y hora & Categoría & \normalfont\small Prompt (texto íntegro) & Objetivo técnico y artefactos & Reg. \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+P01 & 2026-11-07\newline 08:17 & Lectura de documentos &
+labo 3 Y 4: ME AYUDARAS A RELIZALO PARA ESO PRIMERO NECESITO QUE REVISES LOS ARCHIVOS QUE ME ENVIE EL
+PROFESOR, TE PASO LA RUTA C:\textbackslash{}LABORATORIOS\_ MODERNO 26-2\textbackslash{}LABO 3 Y 4 &
+Revisión de la guía v0.3, el kit v1.1.1 y las plantillas; identificación de hitos, encargos y entregables. & -- \\
+P02 & 2026-11-07\newline 08:32 & Lectura de documentos &
+EN PALABRAS SENCILLAS QUE ES LO QUE ME PIDE HACER ESTOS LABOS Y QUE NECESITO PREGUNTAR AL PROFESOR? &
+Síntesis del alcance y lista de consultas al docente (fechas, registro de predicciones, versión de MATLAB). & -- \\
+P03 & 2026-11-07\newline 08:54 & Lectura de documentos &
+EN QUE PARTE DE LA GUIA DICE QUE DARAN UN ENCARGO A CADA GRUPO &
+Localización en la guía (sección 2.1). & -- \\
+P04 & 2026-11-07\newline 09:07 & Lectura de documentos &
+y los 5 encargos posible en que parte de la guia esta &
+Localización en la guía (sección 3 y anexos A y D). & -- \\
+P05 & 2026-11-07\newline 09:36 & Planificación &
+buen dia entre todos cada uno haga uno y que no se repita ESA FUE LA REPSUESTA DEL ING JOO, yo entiendo que
+dice que entre todos los grupos escojamos uno y que no se repita, cual es mas sencillo para ya escogerlo &
+Comparación de la carga técnica de E1--E5 para la elección del encargo (decisión del grupo: E1). & -- \\
+P06 & 2026-11-07\newline 09:54 & Deducción &
+ok pedire eso empezamos &
+Euler--Lagrange con armadura, reducción a 4 estados y linealización por el jacobiano. & 1 \\
+P07 & 2026-11-07\newline 10:10 & Programación &
+tengo mat lab, la ultima version. quieres que lo habra ? o crearas el archivo dentro de mi carpeta &
+\texttt{modelo\_propio.m}: verificación del modelo por tres caminos (OE1). & 2 \\
+P08 & 2026-11-07\newline 12:58 & Verificación &
+hay que correr las pruebas kit &
+Ejecución e interpretación de \texttt{pruebas\_kit} (22 de 22). & 3 \\
+P09 & 2026-11-07\newline 13:12 & Programación &
+nos toca el encargo 1 &
+\texttt{src/riccati\_*.m}, \texttt{ganancia\_bass.m}, \texttt{pruebas\_E1.m}: pruebas con respuesta conocida. & 4--5 \\
+P10 & 2026-11-07\newline 16:24 & Redacción &
+si &
+Predicciones E1-P1 a E1-P3 (formato del anexo C): \texttt{predicciones.md} y texto del correo. & 6 \\
+P11 & 2026-11-07\newline 16:27 & Lectura de documentos &
+predicciones de que se tiene que enviar? &
+Explicación de la sección 4.3 y de los tipos SIGNO, ORDEN y LIMITE. & -- \\
+P12 & 2026-11-07\newline 16:42 & Programación y depuración &
+ya esta enviado &
+E1.1 (\texttt{e1\_1\_metodos.m}) y E1.2 (\texttt{e1\_2\_verificacion.m}, \texttt{operador\_lyapunov.m}), con dos ciclos de corrección cada uno. & 7--14 \\
+P13 & 2026-11-08\newline 17:51 & Redacción &
+si ya la extraji &
+\texttt{informe\_E1.tex} sobre la plantilla del docente; fichas de evidencia de E1.1 y E1.2. & 15--16 \\
+P14 & 2026-11-08\newline 18:18 & Programación y depuración &
+si tengo &
+E1.3: referencia \texttt{vpa} (\texttt{riccati\_vpa.m}), \texttt{e1\_3\_estres.m}, \texttt{e1\_3b\_balanceo.m}. & 17--21 \\
+P15 & 2026-11-08\newline 18:40 & Depuración y búsqueda bibliográfica &
+terminemos el penduiente honesto &
+Explicación de la precisión de \texttt{icare}: \texttt{riccati\_pencil.m}, \texttt{escalar\_riccati.m}, \texttt{e1\_3c}--\texttt{e1\_3e}; consulta de la documentación de \texttt{icare}. & 22--26 \\
+P16 & 2026-11-08\newline 21:11 & Redacción &
+ya hazlo &
+Este anexo (\texttt{anexo\_IA\_E1.tex}). & -- \\
+\end{longtable}
+}
+
+% =====================================================================
+\section{Forma de resolución}
+
+\paragraph{Hito H1 — modelo propio.}
+(1) La IA leyó la guía y el kit. (2) Dedujo las energías, las ecuaciones de Euler--Lagrange y la
+linealización por el jacobiano, y comprobó en Python que $A$ y $B$ coinciden con el kit.
+(3) Escribió \texttt{modelo\_propio.m} con tres caminos: fórmulas a mano, jacobiano numérico de un
+modelo no lineal propio y Euler--Lagrange simbólico desde la geometría. (4) El integrante lo ejecutó:
+todas las comparaciones por debajo de $10^{-12}$. (5) \texttt{pruebas\_kit}: 22 de 22.
+
+\paragraph{Hito H1 — pruebas con respuesta conocida y predicciones.}
+(1) La IA programó los tres solucionadores y la ganancia inicial de Bass, y los probó en Python.
+(2) \texttt{pruebas\_E1.m} en MATLAB: caso escalar y diseño base dentro de tolerancia. (3) La IA propuso
+tres predicciones con su justificación; el grupo las revisó y envió por correo institucional el
+2026-11-07 (16:42) antes de cualquier simulación de E1.1--E1.6.
+
+\paragraph{E1.1.}
+Banco de seis problemas comunes a los tres métodos; tabla de errores frente a \texttt{icare}, residuo,
+simetría, semidefinición, carácter Hurwitz, tiempos e iteraciones; dos correcciones (criterio de parada,
+figura) y nueva ejecución.
+
+\paragraph{E1.2.}
+Explicación del condicionamiento del operador de Lyapunov; caso construido (oscilador con
+$Q=\varepsilon^2I$) probado primero en Python; detección de una fila anómala; cambio de la referencia a
+la solución analítica; nueva ejecución.
+
+\paragraph{E1.3.}
+Tres familias de problemas con referencia \texttt{vpa}; resultado contrario a la predicción E1-P3;
+cadena de cuatro experimentos para explicar la diferencia (balanceo $2\times2$, haz extendido, escalado
+progresivo, escalado de \texttt{icare}); consulta de la documentación de \texttt{icare}; ficha de evidencia.
+
+% =====================================================================
+\section{Registro de intentos y verificaciones}\label{sec:registro}
+Resultado: \emph{correcto} (sin error), \emph{error} (la IA produjo algo incorrecto), \emph{refutada} o
+\emph{parcial} (hipótesis de la IA que el experimento contradijo o confirmó solo en parte).
+
+{\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.5cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{3.9cm} >{\raggedright\arraybackslash}p{4.1cm} >{\raggedright\arraybackslash}p{1.5cm} >{\raggedright\arraybackslash}p{4.5cm}@{}}
+\toprule
+N.° & Inciso & Qué produjo la IA & Verificación aplicada & Resultado & Corrección (si hubo error) \\
+\midrule
+\endhead
+1 & H1 & Deducción por Euler--Lagrange, reducción a 4 estados y $A$, $B$ linealizados. &
+Python: comparación con el kit; MATLAB: \texttt{modelo\_propio.m}. & correcto &
+Error relativo $1.8\times10^{-16}$ ($A$) frente al kit. \\
+2 & H1 & \texttt{modelo\_propio.m}: jacobiano numérico y Euler--Lagrange simbólico. &
+Ejecución en MATLAB; matriz de masa simbólica simplificada a mano. & correcto &
+Todas las comparaciones $<10^{-12}$. \\
+3 & H1 & Lectura de la salida de \texttt{pruebas\_kit} (las líneas ``NO válido'' son pruebas negativas del validador). &
+Código de \texttt{pruebas\_kit.m}, líneas 75--93. & correcto & -- \\
+4 & H1 & Tres solucionadores, Bass y caso escalar (\texttt{pruebas\_E1.m}). &
+Ejecución en MATLAB frente a solución analítica, $P_0$ e \texttt{icare}. & correcto &
+Máx.\ $2.4\times10^{-12}$. \\
+5 & H1 & Detección del Control System Toolbox con \texttt{exist('margin','file')}. &
+Salida de MATLAB: no apareció la línea de \texttt{margin}. & error &
+Se reemplazó por \texttt{try/catch}. \\
+6 & H1 & Tres predicciones con su justificación (E1-P3 con base IA). &
+Contraste con los resultados (E1-P3 en E1.3). & error &
+E1-P3 y E1-P2 incorrectas: en ambas la tendencia fue la opuesta. Se explican en E1.3 y E1.5. \\
+7 & E1.1 & Ganancia inicial de Bass para el modelo de 5 estados. &
+Prueba en Python antes de entregar: con $\beta=7966$, $\max\operatorname{Re}\lambda=+23.9$ (no estabiliza). & error &
+Detectado por la IA antes de entregar; se usa $[K_0\;0]$. \\
+8 & E1.1 & Criterio de parada de Newton--Kleinman con tolerancia $10^{-14}$. &
+Ejecución: problema 4 llegó al máximo de 50 iteraciones. & error &
+Tolerancia $10^{-12}$ más detección de estancamiento: 9 iteraciones. \\
+9 & E1.1 & Figura de errores en escala logarítmica. &
+Inspección: los errores exactamente nulos no se dibujaban. & error &
+Piso $10^{-17}$ con etiqueta ``0'' y nombres de problemas. \\
+10 & E1.1 & Hipótesis: Schur es menos preciso por la asimetría de $P$. &
+E1.3: Schur simetrizado da el mismo error en las 39 filas. & refutada &
+Se descarta en la ficha de E1.3. \\
+11 & E1.2 & Explicación ``residuo pequeño no implica error pequeño'' y caso construido. &
+Python antes de entregar y ejecución en MATLAB. & correcto &
+Residuo $7.1\times10^{-9}$ con error de 1\,\%. \\
+12 & E1.2 & Referencia del caso construido calculada con \texttt{icare}. &
+Ejecución: fila $\varepsilon=10^{-5}$ anómala; la comprobación $\mathrm{Res}\approx\mathcal{L}(\Delta)$ dio 0.99 en vez de 0.007. & error &
+Solución analítica deducida a mano; con ella todas las filas dan 0.007. \\
+13 & E1.2 & Texto de salida: ``la cota y el error real son del mismo orden''. &
+Lectura de la tabla: la cota es 100 a 2000 veces mayor. & error &
+Texto corregido: cota conservadora pero válida. \\
+14 & E1.2 & Interpretación de la columna ``icare vs exacta'' como límite de \texttt{icare}. &
+Comparación con la solución analítica. & correcto &
+\texttt{icare} pierde 8 cifras con $\varepsilon=10^{-6}$. \\
+15 & -- & Fichas de evidencia de E1.1 y E1.2 en \LaTeX. &
+Compilación y revisión del PDF. & correcto &
+Números copiados a mano: pendiente sincronizarlos con \texttt{results.json}. \\
+16 & -- & Tabla de predicciones en \LaTeX. &
+Revisión del PDF: columnas deformadas al agregar el resultado de E1-P3. & error &
+Anchos de columna fijos. \\
+17 & E1.3 & Referencia en precisión extendida (\texttt{riccati\_vpa.m}). &
+Última corrección de Newton en \texttt{vpa} $\ll10^{-16}$; coincide con \texttt{icare} en casos bien condicionados. & correcto & -- \\
+18 & E1.3 & Línea de \texttt{polyfit} con una matriz como segundo argumento. &
+Revisión del código por la IA antes de la ejecución. & error &
+Línea eliminada antes de entregar. \\
+19 & E1.3 & Adelanto en la conversación: ``con $R=10^{-8}$ todos los métodos pierden precisión'' (basado en una prueba en Python sin \texttt{icare}). &
+Ejecución en MATLAB: \texttt{icare} mantiene $2.6\times10^{-13}$. & error &
+Generalización excesiva; corregida en el análisis. \\
+20 & E1.3 & Hipótesis: la diferencia es el balanceo (\texttt{eig} balancea, \texttt{schur} no). &
+Experimento $2\times2$ (\texttt{e1\_3b\_balanceo.m}). & correcto &
+Confirmada en las 39 filas. \\
+21 & E1.3 & Hipótesis: el error en $P_{11}$ queda oculto por la norma de Frobenius (F3). &
+Error componente a componente de $P_{11}$. & correcto &
+Hasta $2.6\times10^{-9}$ con error global $\le2.4\times10^{-12}$. \\
+22 & E1.3 & Hipótesis: \texttt{icare} es exacta porque no forma $S$ (haz extendido). &
+\texttt{e1\_3c\_icare.m} con haz extendido propio. & parcial &
+Mejora 30 veces en F1, pero falla en F2: falta el escalado. \\
+23 & E1.3 & Veredicto automático del script \texttt{e1\_3c} (umbral de mejora de 100 veces). &
+Lectura de la tabla. & error &
+El veredicto ``NO'' era demasiado estricto; el resultado era parcial. \\
+24 & E1.3 & Escalados propios N2 (\texttt{balance(A)}) y N3 ($\|S\|=\|Q\|$). &
+\texttt{e1\_3d\_escalado.m}. & refutada &
+N3 empeora F1 ($5.3\times10^{-8}$); N2 degenera por la columna nula de $A$. \\
+25 & E1.3 & \texttt{e1\_3e}: manejo del caso en que \texttt{icare(\ldots,'noscaling')} no devuelve solución. &
+Ejecución en MATLAB: error de dimensiones. & error &
+Se registra como fallo (\texttt{Inf}). \\
+26 & E1.3 & Convención del escalado de \texttt{icare} deducida de su documentación ($X=D_xVU^{-1}D_x$). &
+Haz propio con \texttt{info.Sx}, \texttt{info.Sr}. & correcto &
+Alcanza a \texttt{icare} (peor caso $9.8\times10^{-14}$). \\
+27 & E1.4 & \texttt{e1\_4\_pareto.m} con \texttt{lyap} para el camino primal de Lyapunov, suponiendo disponible el Control System Toolbox. &
+Ejecución en MATLAB: \texttt{lyap} no reconocida. & error &
+Se usa \texttt{sylvester} (MATLAB base, Bartels--Stewart). \\
+28 & E1.4 & Origen de \texttt{icare} sin el Control System Toolbox (consulta del integrante: posible archivo que oculte la función). &
+Búsqueda de archivos homónimos en el proyecto y \texttt{which icare -all}. & correcto &
+\texttt{icare} oficial en \texttt{toolbox/shared/controllib}; no hay archivos homónimos. \\
+29 & E1.4 & \texttt{e1\_4\_pareto.m}: 625 diseños, Lyapunov por dos caminos, \texttt{ode45} y simulación no lineal en el kit. &
+Comprobaciones con respuesta conocida y valores de referencia del kit. & correcto &
+Todas dentro de tolerancia; diseño base idéntico al kit. \\
+30 & E1.3 & Propuesta de usar \texttt{care} como verificación adicional de biblioteca, y su opción \texttt{'nobalance'}. &
+Documentación actual de \texttt{care}; ejecución de \texttt{e1\_3c\_icare.m} con el toolbox instalado. & error &
+\texttt{'nobalance'} no existe en la versión actual (se retiró la columna). \texttt{care} coincide con \texttt{icare} en las 26 filas de F1 y F2 hasta la última cifra mostrada: no es un camino independiente. \\
+31 & H1 & Tolerancia de $10^{-4}$ grados para comparar el margen de fase exacto con \texttt{margin()}. &
+Ejecución con el toolbox instalado: \texttt{margin} da 65.5292$^\circ$ frente a 65.5302$^\circ$ exacto. & error &
+Tolerancia de 0.01$^\circ$ (\texttt{margin} halla el cruce numéricamente) y comparación adicional con \texttt{allmargin}. El margen de ganancia coincide: 0.4142 $=1/K$. \\
+32 & E1.5 & Primera formulación: minimizar el costo lineal $J_0=\operatorname{tr}(P_KX_0)$ con las restricciones R1--R3. &
+Ejecución: el diseño base es factible y \texttt{fminsearch} vuelve a $K_0$ (ninguna restricción activa). & error &
+Planteamiento trivial: $J_0$ se minimiza exactamente con $K_0$. Por decisión del grupo se minimiza el costo oficial del anexo B en el simulador oficial (C1, C2, C3, C3b). \\
+33 & E1.5 & Figura con \texttt{boxplot} (Statistics Toolbox, no instalado). &
+Revisión de la IA contra la lista de toolboxes antes de entregar. & error &
+Detectado antes de entregar; reemplazado por puntos y barras de error. \\
+34 & E1.5 & Optimización del costo oficial con una sola realización del ruido (semilla 1). &
+Validación con 20 semillas: $J_{rel}=0.961$ con la semilla 1, pero $0.9945\pm0.019$ en promedio (mejora dentro del ruido). & error &
+Sobreajuste a la realización del ruido. Se rehace con promedio de 5 semillas y validación con 20 semillas independientes (\texttt{e1\_5b\_saa.m}). \\
+35 & E1.5 & Hipótesis: el costo oficial tiene un piso de ruido por la cuantización (explica $J_{rel}=0.9991$ del base recalculado). &
+\texttt{e1\_5c\_sensibilidad.m}: $K_0(1+\delta)$ con $\delta=10^{-15}$ en simulador oficial e ideal. & correcto &
+Confirmada: con cuantización $J$ cambia 0.5\,\% (C1), 0.01\,\% (C2), 3\,\% (C3), 0.09\,\% (C3b); en el ideal, $\sim10^{-16}$. \\
+36 & E1.5 & Recomendación del diseño final con una regla de decisión explícita (cambiar $K_0$ solo si la mejora es significativa en semillas independientes). &
+Resultados de \texttt{e1\_5b\_saa.m}; decisión del grupo. & correcto &
+El grupo adoptó $K_0$ (\texttt{src/diseno\_final.m}). \\
+37 & E1.5 & \texttt{src/lqr\_region\_lmi.m}: LQR con regiones de polos por LMI Lab (escrito sin poder ejecutarse antes). &
+Prueba de respuesta conocida (sin región = LQR) y polos con \texttt{eig}. & correcto &
+$K$ coincide con $K_0$ a $1.3\times10^{-4}$; regiones cumplidas en los 16 casos. \\
+38 & E1.5 & Raíces de $Q$, $R$, $X_0$ con \texttt{sqrtm}. &
+Ejecución: avisos de matriz singular ($Q_0$ es semidefinida). & error &
+Raíz por descomposición espectral (\texttt{raiz\_psd}); resultados sin cambio. \\
+39 & E1.5 & Hipótesis: el fracaso del diseño LMI con $\sigma\ge4$ se debe al sensor (cuantización y ruido). &
+Simulación del mismo diseño con estado real y sin ruido. & refutada &
+Falla también en el ideal (C2 saturado $99.9\,\%$): la causa es la saturación, no el sensor. \\
+40 & E1.5 & Lectura de la verificación con semillas 1--5: el diseño LMI parecía $2.3\,\%$ mejor que $K_0$. &
+Validación con 20 semillas independientes (101--120). & parcial &
+No se confirmó ($J_{rel}=0.9982\pm0.0216$, $t=0.37$): 5 semillas no bastan, C3 domina la varianza. \\
+41 & E1.6 & Simulador vectorizado \texttt{src/simular\_lote.m} (mismo modelo y lazo digital que el kit). &
+Comparación con \texttt{simular\_qube} en 60 condiciones iniciales. & correcto &
+60 de 60 coincidentes; diferencia final $\le1.7\times10^{-19}$. \\
+42 & E1.6 & Mensaje ``todos $<0$'' para los autovalores de $A_{cl}^\top P+PA_{cl}$. &
+Lectura de la salida: un autovalor es $3.3\times10^{-14}$ (cero numérico). & error &
+Matriz semidefinida ($Q_0$ singular): se corrigió el texto y se agregó la condición de LaSalle (observabilidad, rango 4). \\
+43 & E1.6 & Comprobación del certificado con los puntos del Monte Carlo que caen en el elipsoide. &
+Salida: solo 2 de 20\,000 puntos dentro. & error &
+Prueba débil; se agregaron 5000 puntos sorteados dentro del elipsoide (5000 recuperados). \\
+44 & E1.6 & Confirmación en el kit del radio sobre $\alpha$ hallado con el criterio ``recuperado''. &
+El kit reporta ``éxito'' (incluye $|\theta|\le\pi/2$): criterios distintos. & error &
+Bisección separada por criterio y por simulador (tabla $2\times2$). \\
+45 & E1.6 & Lectura: ``el sensor achica notablemente la región de atracción''. &
+Tabla $2\times2$ del radio sobre $\alpha$. & parcial &
+Con el criterio de éxito el radio baja solo $2.4\,\%$; con el de recuperación sube ($0.457$ frente a $0.430$~rad). \\
+46 & C1--C4 & \texttt{escenarios\_E1.m}: escenarios oficiales, C4 con 200 plantas, trayectorias y videos. &
+Ejecución en MATLAB. & error &
+El video de C2 falló porque la figura cambió de tamaño durante la grabación; se graba en una figura invisible de tamaño fijo. \\
+47 & -- & \texttt{generar\_results.m}: \texttt{results.json} desde los resultados guardados y tabla del informe desde el JSON. &
+\texttt{validar\_results} del kit. & correcto &
+``results.json válido para E1''. \\
+48 & -- & \texttt{run\_all.m} con cachés de cálculos largos (vpa, E1.4, E1.5) y \texttt{crear\_caches\_E1\_5.m} desde resultados guardados. &
+Ejecución completa en MATLAB; la caché reproduce los valores de la corrida original ([204 200] evaluaciones; $J_{rel}$ 0.9625 y 0.9614). & correcto &
+18 de 18 pasos sin falla en 6.4~min; \texttt{results.json} válido. \\
+\bottomrule
+\end{longtable}
+}
+
+\paragraph{Resumen del registro.}
+48 usos relevantes: 19 correctos, 23 errores detectados y corregidos (3 de ellos por la propia IA antes de
+entregar el código: N.° 7, 18 y 33), 3 hipótesis refutadas (N.° 10, 24 y 39) y 3 confirmadas en parte (N.° 22, 40 y 45).
+Salvo las predicciones E1-P2 y E1-P3, que se reportan como incorrectas (E1-P1 resultó correcta), ningún error llegó a los resultados
+reportados: todos se detectaron por ejecución, por comparación con una referencia independiente o por
+revisión del PDF.
+
+\end{document}

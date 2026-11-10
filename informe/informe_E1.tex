@@ -1,0 +1,132 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\IfFileExists{spanish.ldf}
+  {\usepackage[spanish,es-noshorthands,es-tabla]{babel}}
+  {\usepackage{babel}\babelprovide[import,main]{spanish}}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array,booktabs,tabularx,longtable,multirow}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{../figuras/}}
+
+% ---------- Estilo: una sola familia tipográfica, grises sobrios ----------
+\definecolor{grisborde}{gray}{0.45}
+\definecolor{grisfondo}{gray}{0.95}
+\definecolor{grisfila}{gray}{0.91}
+
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.2em}{0.6em}
+
+\newtcolorbox{recuadro}[1][]{enhanced,breakable,colback=grisfondo,colframe=grisborde,
+  boxrule=0.5pt,arc=1pt,left=6pt,right=6pt,top=4pt,bottom=4pt,
+  fonttitle=\normalfont\bfseries,coltitle=black,colbacktitle=grisfila,#1}
+\newtcolorbox{pregunta}{enhanced,breakable,colback=white,colframe=black,
+  boxrule=0.8pt,arc=0pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+
+\setlist{itemsep=1pt,topsep=3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\arraystretch}{1.18}
+
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small MT227 Control Moderno y Óptimo — 2026-2}
+\rhead{\small \TipoDoc{} — Encargo \Encargo}
+\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\sat}{\operatorname{sat}}
+\newcommand{\Encargo}{E1}
+\newcommand{\TipoDoc}{Informe técnico}
+\newcommand{\TituloEncargo}{La ecuación de Riccati y el diseño de las ponderaciones}
+
+\begin{document}
+\noindent
+\begin{minipage}[c]{0.17\linewidth}
+  \IfFileExists{logo_uni.png}{\includegraphics[width=\linewidth]{logo_uni.png}}{}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.79\linewidth}
+  \centering
+  {\large\bfseries UNIVERSIDAD NACIONAL DE INGENIERÍA}\\[2pt]
+  {\normalsize MT227C — Control Moderno y Óptimo — 2026-2}\\[8pt]
+  {\Large\bfseries \TipoDoc{} — Encargo \Encargo}\\[4pt]
+  {\large \TituloEncargo}
+\end{minipage}
+
+\vspace{1em}
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+Integrante & Código & Subsección de la que es responsable \\
+\midrule
+Zamudio Salazar, Joseluis Omar & 20193529C & {[ ]} \\
+{[Apellidos, Nombres]} & {[código]} & {[ ]} \\
+{[Apellidos, Nombres]} & {[código]} & {[ ]} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{pregunta}
+\textbf{Pregunta de investigación.} ¿Qué método de solución de la ecuación algebraica de Riccati es
+confiable para esta planta, cuándo deja de serlo, y cómo se traducen especificaciones físicas en
+$(Q,R)$ con garantías verificables sobre la planta no lineal y saturada?
+\end{pregunta}
+
+\section*{Resumen}
+[Pendiente: respuesta en tres frases, con números, al cerrar E1.3--E1.6.]
+
+\tableofcontents
+
+\section{Introducción y estado del arte}
+% Mínimo 10 referencias verificadas.
+
+\section{Modelo y simulador}
+% Pendiente de redacción. Resultado ya verificado (modelo_propio.m): A y B propios coinciden
+% con el kit con error relativo 1.8e-16 / 4.0e-16 y con el jacobiano numérico con 9.0e-13 / 0.
+
+\input{pruebas_conocidas_E1}
+
+\section{Resultados}
+\subsection{E1.1 — Tres métodos de solución de la ecuación de Riccati}
+% Pendiente de redacción (planteamiento, desarrollo, verificación, interpretación).
+\subsection{E1.2 — Verificación de las soluciones y condicionamiento}
+% Pendiente de redacción.
+\subsection{E1.3 — Estudio de estrés numérico}
+% Pendiente de redacción.
+\subsection{E1.4 — Frente de Pareto}
+% Pendiente de redacción.
+\subsection{E1.5 — Optimización de los pesos con restricciones}
+% Pendiente de redacción.
+\subsection{E1.6 — Región de atracción del regulador saturado}
+% Pendiente de redacción.
+
+\section{Escenarios C1--C5}
+Diseño final: $K_0$ (sección E1.5). Simulador oficial del kit con saturación, estimador base, cuantización y ruido base
+(semilla 1 en C1--C3b; en C4, planta $i$ con semilla $1000+i$ y ruido con semilla $i$). Tabla generada desde \texttt{results.json}.
+
+\input{tabla_escenarios}
+\section{Conclusiones}
+
+\clearpage
+\appendix
+\input{fichas_E1}
+\input{predicciones_E1}
+
+\section{Verificación de referencias}
+% Salida del script contra Crossref.
+
+\end{document}

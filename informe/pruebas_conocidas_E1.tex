@@ -1,0 +1,23 @@
+\section{Pruebas con respuesta conocida}
+Scripts: \texttt{pruebas\_kit.m} (kit, 22 de 22 superadas), \texttt{modelo\_propio.m} y
+\texttt{pruebas\_E1.m}.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}X l l l@{}}
+\toprule
+Prueba & Esperado & Obtenido & Error \\
+\midrule
+Modelo propio $A$ frente al kit & \texttt{lineal\_qube} & coincide & $1.8\times10^{-16}$ \\
+Modelo propio $A$ frente al jacobiano numérico & diferencias centrales & coincide & $9.0\times10^{-13}$ \\
+Euler--Lagrange simbólico desde la geometría & $A$, $B$ propios & coincide & $1.7\times10^{-16}$ \\
+$\dot x=x+u$, $q=1$: ganancia & $K=1+\sqrt2=2.414214$ & 2.414214 & $\le1.8\times10^{-16}$ \\
+$\dot x=x+u$, $q=1$: margen de fase & $65.5^\circ$ & $65.5302^\circ$ (exacto, \texttt{fzero}) & -- \\
+$\dot x=x+u$, $q=1$: margen de fase con \texttt{margin} & $65.5302^\circ$ & $65.5292^\circ$ & $1\times10^{-3}$\,$^\circ$ \\
+$\dot x=x+u$, $q=1$: margen de ganancia con \texttt{margin} & $1/K=0.4142$ & 0.4142 & -- \\
+$\dot x=x+u$, $q\to0^+$: margen de fase & $\to60^\circ$ por encima & $60.0000^\circ$ ($q=10^{-6}$) & -- \\
+$\dot x=x+u$, $q\to0^+$: ganancia mínima tolerable & $\to1/2$ & 0.50000 ($q=10^{-6}$) & -- \\
+Tres solucionadores frente a $P_0$ del kit & diferencia $<10^{-10}$ & máx.\ $2.4\times10^{-12}$ & OK \\
+Tres solucionadores frente a \texttt{icare} & diferencia $<10^{-10}$ & máx.\ $2.4\times10^{-12}$ & OK \\
+\bottomrule
+\end{tabularx}
+\end{center}
