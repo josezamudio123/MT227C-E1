@@ -7,8 +7,8 @@ Docente: Dr. Alcides Guillermo Joo Aguayo.
 
 | Integrante | Código | Subsección responsable |
 |---|---|---|
-| Zamudio Salazar, Joseluis Omar | 20193529C | Desarrollo de E1.1–E1.6, escenarios y repositorio |
-| Nava Laburiano, David Adrián | 20211012C | Verificación de los códigos; desarrollo independiente de la mitad del laboratorio para comparar resultados |
+| Zamudio Salazar, Joseluis Omar | 20193529C | E1.4–E1.6 (Pareto, optimización con restricciones y LMI, región de atracción), escenarios C1–C4 y repositorio |
+| Nava Laburiano, David Adrián | 20211012C | E1.1–E1.3 (métodos de Riccati, verificación y estrés numérico); verificación cruzada de los códigos |
 
 ## Cómo reproducir todo
 
