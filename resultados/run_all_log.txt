@@ -1,0 +1,1171 @@
+
+################ [1/18] modelo_propio ################
+=== OE1: verificación del modelo linealizado (tolerancia 1e-06) ===
+
+A propio  vs A kit (lineal_qube)             1.803e-16   OK
+B propio  vs B kit (lineal_qube)             3.956e-16   OK
+A propio  vs A kit (diseno_base_ref)         1.662e-16   OK
+B propio  vs B kit (diseno_base_ref)         3.127e-16   OK
+A propio  vs Jacobiano num. f_propio         9.001e-13   OK
+B propio  vs Jacobiano num. f_propio         0.000e+00   OK
+A propio  vs Jacobiano num. modelo_qube      9.001e-13   OK
+B propio  vs Jacobiano num. modelo_qube      0.000e+00   OK
+A5 propio vs A5 kit                          7.077e-18   OK
+B5 propio vs B5 kit                          0.000e+00   OK
+A5 propio vs Jacobiano num. f5_propio        2.193e-14   OK
+B5 propio vs Jacobiano num. f5_propio        0.000e+00   OK
+
+Regla de signos: B3 = 18.0674, B4 = 17.8573  -> OK
+
+Polos 4 estados: [-17.6271 -4.01986 0 9.94718]
+Polos 5 estados: [-7240.62 -17.6278 -4.02011 0 9.94724]
+Polo eléctrico: -7240.6 rad/s  (-Rm/Lm = -7241.4 rad/s)
+Separación polo eléctrico / polo mecánico más rápido: 411 veces
+
+A propio =
+         0         0    1.0000         0
+         0         0         0    1.0000
+         0   54.2358   -6.1790   -1.7857
+         0  167.6749   -6.1072   -5.5208
+
+B propio =
+         0
+         0
+   18.0674
+   17.8573
+
+
+Matriz de masa simbólica M(alpha):
+[Jr + (mp*(2*Lp^2 - 2*Lp^2*cos(al)^2 + 6*r^2))/6, -(Lp*mp*r*cos(al))/2]
+[                           -(Lp*mp*r*cos(al))/2,          (Lp^2*mp)/3]
+ 
+
+=== Euler-Lagrange simbólico (desde la geometría) ===
+A propio  vs A simbólico                     1.660e-16   OK
+B propio  vs B simbólico                     1.978e-16   OK
+
+RESULTADO OE1: TODAS LAS VERIFICACIONES SUPERADAS
+
+################ [2/18] pruebas_kit ################
+[OK]    jacobiano vs modelo lineal: error relativo 7.9e-13
+[OK]    regla de signos: B3 = 18.067, B4 = 17.857
+[OK]    (A,B) coincide con diseno_base_ref.json
+[OK]    C1   ideal: max|u_c| =   9.12 V (ref   9.12), max|theta| = 0.107 rad (ref 0.107)
+[OK]    C2   ideal: max|u_c| =  63.87 V (ref  63.87), max|theta| = 1.237 rad (ref 1.237)
+[OK]    C3   ideal: max|u_c| =   7.34 V (ref   7.34), max|theta| = 0.020 rad (ref 0.020)
+[OK]    C3b  ideal: max|u_c| =  25.03 V (ref  25.03), max|theta| = 0.146 rad (ref 0.146)
+[OK]    C1   con estimador y ruido: ok, J = 0.0331, max|u_c| = 8.96 V, max|theta| = 0.109 rad
+[OK]    C2   con estimador y ruido: ok, J = 3.3267, max|u_c| = 63.82 V, max|theta| = 1.345 rad
+[OK]    C3   con estimador y ruido: ok, J = 0.0185, max|u_c| = 5.56 V, max|theta| = 0.036 rad
+[OK]    C3b  con estimador y ruido: ok, J = 0.2970, max|u_c| = 26.50 V, max|theta| = 0.248 rad
+[OK]    impulso de C3 en t = 1.000 s, salto de dtheta = 2.168 rad/s
+[OK]    violación de recorrido en la última muestra detectada
+[OK]    costo con ZOH: J = 0.368281 (exacto 0.368281)
+[OK]    tiempo de establecimiento: caso normal, sin establecer (null) y sin salir de banda (0)
+[OK]    geometría: extremo del péndulo en z = +Lp (arriba) y z = -Lp (abajo)
+[OK]    animación: 151 cuadros, incluye t = 0 y t = 5.000 s
+results.json válido para E1 (formato y concordancia del modelo con el kit).
+La validación no certifica la corrección científica de los resultados.
+results.json NO válido para E1:
+  - "K0" está vacío o es null
+results.json NO válido para E1:
+  - C1: "J" está vacío o es null
+results.json NO válido para E1:
+  - C5: solo se exige a E4; para este encargo use "estado": "no_aplica"
+results.json NO válido para E1:
+  - "A" debe ser numérico de 4x4
+[OK]    validador: acepta un archivo correcto y rechaza campo vacío, métrica null, C5 indebido y dimensión errónea
+results.json válido para E4 (formato y concordancia del modelo con el kit).
+La validación no certifica la corrección científica de los resultados.
+results.json NO válido para E4:
+  - C5: "t_levantamiento" está vacío o es null
+results.json válido para E4 (formato y concordancia del modelo con el kit).
+La validación no certifica la corrección científica de los resultados.
+[OK]    validador E4: C5 fallido con t_levantamiento null aceptado; C5 exitoso exige t_levantamiento
+[OK]    C4: resumen de 3 plantas, 3 exitosas
+[OK]    animación hacia abajo: z mínimo = -0.1290 m, límite inferior = -0.1483 m
+[OK]    visor interactivo: el deslizador lleva escena, título y cursores al último instante
+
+22 de 22 pruebas superadas.
+
+################ [3/18] pruebas_E1 ################
+=== PRUEBA 1: xdot = x + u, Q = q, R = 1 ===
+
+        q   K exacta   err Ham.  err Schur  err Newt.  MF [deg]   MF num.    g_min         
+    1e+00   2.414214    0.0e+00    0.0e+00    0.0e+00   65.5302   65.5302  0.41421       OK
+    1e-01   2.048809    0.0e+00    0.0e+00    2.2e-16   60.7850   60.7850  0.48809       OK
+    1e-02   2.004988    0.0e+00    0.0e+00    0.0e+00   60.0823   60.0823  0.49876       OK
+    1e-04   2.000050    0.0e+00    0.0e+00    0.0e+00   60.0008   60.0008  0.49999       OK
+    1e-06   2.000000    2.2e-16    2.2e-16    2.2e-16   60.0000   60.0000  0.50000       OK
+
+q = 1: MF = 65.53 grados (guía: 65.5)  -> OK
+q -> 0: MF -> 60.0000 grados (debe tender a 60 por encima), g_min -> 0.50000 (debe tender a 0.5)
+Control System Toolbox, margin():    MF = 65.5292 grados (dif. 9.7e-04), margen de ganancia = 0.4142 (1/K = 0.4142)
+Control System Toolbox, allmargin(): MF = 65.5292 grados (dif. 9.7e-04), margen de ganancia = 0.4142
+PRUEBA 1: OK
+
+=== PRUEBA 2: péndulo de Furuta, diseño base (Q0, R0) ===
+
+Ganancia inicial (Bass, beta = 20): K_ini = [-390.18 847.95 -58.868 63.385]
+  polos de A - B*K_ini: max parte real = -20.000 (estabilizante)
+
+Método                  vs P0 kit   vs icare    residuo  asimetría  min eig P  max Re cl
+(a) Hamiltoniana         2.41e-15   9.65e-15   3.84e-15   2.20e-15   3.43e-04     -2.668  OK
+(b) Schur (Laub)         2.42e-12   2.43e-12   1.43e-13   1.90e-13   3.43e-04     -2.668  OK
+(c) Newton-Kleinman      1.09e-13   1.01e-13   8.84e-16   0.00e+00   3.43e-04     -2.668  OK
+
+Diferencias entre métodos:
+  (a) Hamiltoniana     vs (b) Schur (Laub)        2.42e-12  OK
+  (a) Hamiltoniana     vs (c) Newton-Kleinman     1.10e-13  OK
+  (b) Schur (Laub)     vs (c) Newton-Kleinman     2.53e-12  OK
+
+K (Newton) = [-12.732395 182.47867 -6.5313312 10.032719]
+K0 (kit)   = [-12.732395 182.47867 -6.5313312 10.032719]
+error relativo = 5.38e-14  OK
+
+Convergencia de Newton-Kleinman (10 iteraciones):
+ iter        residuo    cambio de K
+    1      1.688e-01      5.472e-01
+    2      1.831e-01      5.624e-01
+    3      8.747e-02      4.047e-01
+    4      3.662e-02      2.674e-01
+    5      1.160e-02      1.521e-01
+    6      1.696e-03      5.840e-02
+    7      3.563e-05      8.472e-03
+    8      1.242e-08      1.581e-04
+    9      1.186e-15      4.952e-08
+   10      8.842e-16      4.682e-14
+
+Tiempos [ms]: Hamiltoniana 6.60, Schur 3.40, Newton 8.73
+PRUEBA 2: OK
+
+RESULTADO PRUEBAS E1: TODAS SUPERADAS
+
+################ [4/18] e1_1_metodos ################
+
+=== Problema 1: Escalar xdot = x + u, q = 1 ===
+Ganancia inicial de Newton: K = 2 (max Re eig(A-BK_ini) = -1.00)
+Método              vs icare    residuo  asimetría  min eig P  max Re cl     t [ms]   iter
+(a) Hamiltoniana    0.00e+00   0.00e+00   0.00e+00   2.41e+00     -1.414      0.007    NaN
+(b) Schur           0.00e+00   0.00e+00   0.00e+00   2.41e+00     -1.414      0.012    NaN
+(c) Newton-K.       0.00e+00   0.00e+00   0.00e+00   2.41e+00     -1.414      0.096      5
+icare (ref.)               -   0.00e+00   0.00e+00   2.41e+00     -1.414
+Máxima diferencia entre los tres métodos: 0.00e+00
+
+=== Problema 2: Péndulo, diseño base (Q0, R0) ===
+Ganancia inicial de Newton: Bass, beta = 20 (max Re eig(A-BK_ini) = -20.00)
+Método              vs icare    residuo  asimetría  min eig P  max Re cl     t [ms]   iter
+(a) Hamiltoniana    9.65e-15   3.84e-15   2.20e-15   3.43e-04     -2.668      0.055    NaN
+(b) Schur           2.43e-12   1.43e-13   1.90e-13   3.43e-04     -2.668      0.035    NaN
+(c) Newton-K.       1.01e-13   8.84e-16   0.00e+00   3.43e-04     -2.668      0.227     10
+icare (ref.)               -   4.54e-15   0.00e+00   3.43e-04     -2.668
+Máxima diferencia entre los tres métodos: 2.53e-12
+
+=== Problema 3: Péndulo, Q0 y R = 100 R0 ===
+Ganancia inicial de Newton: Bass, beta = 20 (max Re eig(A-BK_ini) = -20.00)
+Método              vs icare    residuo  asimetría  min eig P  max Re cl     t [ms]   iter
+(a) Hamiltoniana    7.64e-15   4.52e-15   1.36e-16   2.95e-03     -2.582      0.037    NaN
+(b) Schur           7.37e-14   3.33e-14   3.72e-15   2.95e-03     -2.582      0.046    NaN
+(c) Newton-K.       1.58e-15   6.21e-16   0.00e+00   2.95e-03     -2.582      0.697     14
+icare (ref.)               -   3.47e-16   0.00e+00   2.95e-03     -2.582
+Máxima diferencia entre los tres métodos: 8.14e-14
+
+=== Problema 4: Péndulo, Q0 y R = R0/100 ===
+Ganancia inicial de Newton: Bass, beta = 20 (max Re eig(A-BK_ini) = -20.00)
+Método              vs icare    residuo  asimetría  min eig P  max Re cl     t [ms]   iter
+(a) Hamiltoniana    2.57e-12   2.91e-13   1.60e-14   1.42e-05     -2.670      0.036    NaN
+(b) Schur           7.62e-11   3.62e-12   6.57e-11   1.42e-05     -2.670      0.046    NaN
+(c) Newton-K.       7.87e-13   3.23e-14   0.00e+00   1.42e-05     -2.670      0.380      9
+icare (ref.)               -   2.36e-13   0.00e+00   1.42e-05     -2.670
+Máxima diferencia entre los tres métodos: 7.57e-11
+
+=== Problema 5: Péndulo, Q = I, R = 1 ===
+Ganancia inicial de Newton: Bass, beta = 20 (max Re eig(A-BK_ini) = -20.00)
+Método              vs icare    residuo  asimetría  min eig P  max Re cl     t [ms]   iter
+(a) Hamiltoniana    1.91e-14   8.12e-15   1.89e-16   2.24e-02     -0.949      0.034    NaN
+(b) Schur           4.14e-14   4.69e-14   3.04e-15   2.24e-02     -0.949      0.030    NaN
+(c) Newton-K.       1.27e-15   1.17e-16   0.00e+00   2.24e-02     -0.949      0.431     14
+icare (ref.)               -   5.65e-16   0.00e+00   2.24e-02     -0.949
+Máxima diferencia entre los tres métodos: 4.02e-14
+
+=== Problema 6: Péndulo 5 estados (con armadura), Q0 ampliada, R0 ===
+Ganancia inicial de Newton: [K0 0] (max Re eig(A-BK_ini) = -2.67)
+Método              vs icare    residuo  asimetría  min eig P  max Re cl     t [ms]   iter
+(a) Hamiltoniana    5.70e-12   9.15e-13   2.99e-13   7.37e-14     -2.668      0.049    NaN
+(b) Schur           7.21e-09   1.69e-10   2.70e-09   7.37e-14     -2.668      0.056    NaN
+(c) Newton-K.       2.32e-14   4.77e-17   0.00e+00   7.37e-14     -2.668      0.221      4
+icare (ref.)               -   1.85e-13   0.00e+00   7.37e-14     -2.668
+Máxima diferencia entre los tres métodos: 7.22e-09
+
+K (5 estados) = [-12.7324 182.66 -6.5356 10.0516 0.07094]
+K0 (4 estados) = [-12.7324 182.479 -6.53133 10.0327]
+Diferencia relativa en la parte mecánica: 9.94e-04 (ganancia sobre la corriente: 0.0709 V/A)
+
+Guardado: resultados/E1_1.mat y figuras/E1_1_errores.png
+
+################ [5/18] e1_2_verificacion ################
+=== PARTE A: péndulo, diseño base ===
+Polos de lazo cerrado: [-33.76+30.47i -33.76-30.47i -2.668+2.36i -2.668-2.36i]
+sep(L) = sigma_min = 1.162e-02   ||L^-1|| = 8.602e+01
+
+Método               residuo  asimetría  min eig P  max Re cl |   cota error   error real
+(a) Hamiltoniana    3.84e-15   2.20e-15   3.43e-04     -2.668 |     1.86e-11     9.65e-15
+(b) Schur           1.43e-13   1.90e-13   3.43e-04     -2.668 |     6.94e-10     2.43e-12
+(c) Newton-K.       8.84e-16   0.00e+00   3.43e-04     -2.668 |     4.28e-12     1.01e-13
+
+En el péndulo ||L^-1|| es moderado: la cota queda siempre POR ENCIMA del error real
+(es conservadora, 2 a 3 órdenes), pero es pequeña; aquí un residuo pequeño SÍ
+garantiza un error pequeño.
+
+=== PARTE B: caso construido (oscilador casi sin amortiguamiento) ===
+Se perturba P* con un error relativo FIJO de 1% en dos direcciones:
+  "peor"  : dirección del menor valor singular de L (la que L casi no ve)
+  "azar"  : dirección simétrica aleatoria (semilla fija)
+
+     eps  Re(polo cl)     ||L^-1||      error P    res. peor    res. azar  L(D) vs Res icare vs ex.
+   1e-01    -7.07e-02     7.15e+00     1.00e-02     6.48e-04     3.70e-03     7.02e-03     1.78e-14
+   1e-02    -7.07e-03     7.07e+01     1.00e-02     6.98e-05     3.40e-03     7.03e-03     3.68e-13
+   1e-03    -7.07e-04     7.07e+02     1.00e-02     7.03e-06     3.38e-03     7.04e-03     1.80e-11
+   1e-04    -7.07e-05     7.07e+03     1.00e-02     7.04e-07     3.38e-03     7.04e-03     1.56e-08
+   1e-05    -7.07e-06     7.07e+04     1.00e-02     7.04e-08     3.38e-03     7.04e-03     9.87e-07
+   1e-06    -7.07e-07     7.07e+05     1.00e-02     7.11e-09     3.38e-03     7.11e-03     2.13e-06
+
+Lectura: el error de P es SIEMPRE 1%, pero en la dirección "peor" el residuo cae
+proporcional a eps (hasta ~1e-8), mientras ||L^-1|| crece como 1/eps.
+Un residuo de 1e-8 NO certifica 8 cifras correctas: aquí solo hay 2.
+En una dirección al azar el residuo sí refleja el error (~1e-2).
+
+Guardado: resultados/E1_2.mat y figuras/E1_2_residuo_vs_error.png
+
+################ [6/18] e1_3_estres ################
+Referencias vpa cargadas de la caché (C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\resultados\E1_3_ref.mat).
+Peor última corrección de la referencia: 3.4e-42 (debe ser << 1e-16)
+
+=== F1: escala de R ===
+       R |Hamiltoniana      Schur Schur simetr.  Newton-K.      icare |   itN |  cond(X1) cond(U11)  ||L^-1||  min|ReH|
+   1e-08 |   3.6e-09    1.2e-04    1.2e-04    2.1e-09    2.6e-13 |    18 |   4.8e+03   4.0e+00   1.8e+03   2.7e+00
+   1e-07 |   6.3e-10    3.5e-06    3.5e-06    7.2e-11    1.1e-14 |    15 |   2.7e+03   4.2e+00   1.0e+03   2.7e+00
+   1e-06 |   1.5e-10    1.9e-07    1.9e-07    3.6e-11    2.3e-14 |    14 |   1.5e+03   4.4e+00   5.8e+02   2.7e+00
+   1e-05 |   1.9e-11    2.9e-09    2.9e-09    6.9e-12    9.0e-15 |    11 |   8.7e+02   5.0e+00   3.3e+02   2.7e+00
+   1e-04 |   2.6e-12    7.6e-11    6.9e-11    7.9e-13    5.0e-15 |     9 |   5.0e+02   5.9e+00   2.0e+02   2.7e+00
+   1e-03 |   1.9e-14    4.9e-12    4.6e-12    4.6e-13    4.9e-15 |     9 |   2.9e+02   7.9e+00   1.2e+02   2.7e+00
+   1e-02 |   1.2e-14    2.4e-12    2.4e-12    9.8e-14    2.4e-15 |    10 |   1.8e+02   1.2e+01   8.6e+01   2.7e+00
+   1e-01 |   1.3e-15    3.4e-13    3.4e-13    7.6e-15    3.8e-16 |    12 |   1.4e+02   2.4e+01   7.4e+01   2.7e+00
+   1e+00 |   7.6e-15    7.4e-14    7.4e-14    1.6e-15    7.2e-17 |    14 |   1.7e+02   7.5e+01   8.2e+01   2.6e+00
+   1e+01 |   2.9e-15    3.4e-14    3.4e-14    7.7e-16    3.4e-15 |    15 |   6.4e+02   4.6e+02   9.5e+01   1.2e+00
+   1e+02 |   1.8e-15    1.8e-13    1.8e-13    1.7e-17    2.9e-16 |    17 |   4.0e+03   3.9e+03   1.3e+02   3.7e-01
+   1e+03 |   8.5e-14    2.9e-14    2.9e-14    1.8e-15    4.0e-16 |    18 |   3.7e+04   3.7e+04   2.8e+02   1.2e-01
+   1e+04 |   1.5e-13    1.4e-11    1.4e-11    1.1e-15    2.1e-15 |    20 |   3.7e+05   3.6e+05   8.5e+02   3.7e-02
+
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.369564e-17.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  3.042849e-17.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.785070e-17.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.145317e-17.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.407151e-17.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  9.109509e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  7.241240e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  6.988113e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  6.983763e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  6.983761e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.317349e-17.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  7.719888e-17.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.317707e-20.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  7.722163e-20.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.378995e-19.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  6.103006e-19.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.211402e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.815862e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.112721e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.155785e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.156500e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.156500e-18.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.317742e-23.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  7.722390e-23.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.379067e-22.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  6.103194e-22.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.211439e-21.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.815918e-21.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.112786e-21.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.155850e-21.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.156566e-21.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.156566e-21.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.317746e-26.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  7.722413e-26.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.379074e-25.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  6.103213e-25.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.211443e-24.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  1.815923e-24.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.112792e-24.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.155857e-24.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.156572e-24.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+[Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  2.156573e-24.] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('lyap_kron', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m', 7)" style="font-weight:bold">lyap_kron</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\lyap_kron.m',7,0)">line 7</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('riccati_newton', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m', 22)" style="font-weight:bold">riccati_newton</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\src\riccati_newton.m',22,0)">line 22</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('e1_3_estres', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m', 83)" style="font-weight:bold">e1_3_estres</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\e1_3_estres.m',83,0)">line 83</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run', 'C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m', 100)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2026b\toolbox\matlab\lang\run.m',100,0)">line 100</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all>ejecutar_paso', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 55)" style="font-weight:bold">run_all>ejecutar_paso</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',55,0)">line 55</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('run_all', 'C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m', 31)" style="font-weight:bold">run_all</a> (<a href="matlab: opentoline('C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\run_all.m',31,0)">line 31</a>)
+] 
+=== F2: unidades de las velocidades, T = diag(1,1,s,s) ===
+       s |Hamiltoniana      Schur Schur simetr.  Newton-K.      icare |   itN |  cond(X1) cond(U11)  ||L^-1||  min|ReH|
+   1e-06 |   6.3e-14    3.7e-05    3.7e-05    2.0e-13    1.5e-15 |    10 |   3.7e+06   1.6e+11   1.5e+10   2.7e+00
+   1e-05 |   1.9e-13    3.9e-07    3.9e-07    8.3e-14    4.1e-15 |    10 |   3.7e+05   1.6e+09   3.6e+08   2.7e+00
+   1e-04 |   3.3e-15    5.8e-09    5.8e-09    4.0e-13    2.4e-15 |    10 |   3.7e+04   1.6e+07   3.6e+06   2.7e+00
+   1e-03 |   5.2e-15    7.0e-11    7.0e-11    5.2e-14    1.5e-15 |    10 |   3.7e+03   1.6e+05   3.6e+04   2.7e+00
+   1e-02 |   5.7e-14    3.1e-13    3.1e-13    1.2e-13    2.3e-15 |    10 |   3.4e+02   1.6e+03   3.6e+02   2.7e+00
+   1e-01 |   1.1e-13    2.6e-14    2.2e-14    1.3e-14    2.0e-15 |    10 |   2.7e+01   2.6e+01   6.2e+00   2.7e+00
+   1e+00 |   1.2e-14    2.4e-12    2.4e-12    9.8e-14    2.4e-15 |    10 |   1.8e+02   1.2e+01   8.6e+01   2.7e+00
+   1e+01 |   1.3e-14    1.8e-11    1.8e-11    5.5e-14    2.1e-15 |    10 |   1.9e+03   1.2e+01   8.5e+03   2.7e+00
+   1e+02 |   8.1e-14    1.1e-08    1.1e-08    2.2e-14    3.7e-15 |    10 |   1.9e+04   1.2e+01   8.5e+05   2.7e+00
+   1e+03 |   8.2e-14    3.0e-07    2.6e-07    3.4e-14    7.4e-15 |    10 |   1.9e+05   1.2e+01   8.5e+07   2.7e+00
+   1e+04 |   3.5e-14    1.8e-05    1.8e-05    9.4e-14    1.0e-15 |    10 |   1.9e+06   1.2e+01   1.5e+10   2.7e+00
+   1e+05 |   3.8e-15    2.1e-03    2.1e-03    8.5e-14    3.6e-16 |    10 |   1.9e+07   1.2e+01   8.2e+10   2.7e+00
+   1e+06 |   1.5e-14    3.0e-02    3.0e-02    9.1e-14    2.0e-15 |    10 |   1.9e+08   1.2e+01   7.0e+11   2.7e+00
+
+=== F3: Q(1,1) = f*Q0(1,1) (autovalores de H -> eje imaginario) ===
+       f |Hamiltoniana      Schur Schur simetr.  Newton-K.      icare |   itN |  cond(X1) cond(U11)  ||L^-1||  min|ReH|
+   1e+00 |   1.2e-14    2.4e-12    2.4e-12    9.8e-14    2.4e-15 |    10 |   1.8e+02   1.2e+01   8.6e+01   2.7e+00
+   1e-01 |   2.5e-14    1.5e-12    1.5e-12    3.0e-15    8.7e-16 |    12 |   1.5e+02   7.2e+00   6.8e+01   1.5e+00
+   1e-02 |   2.1e-14    1.8e-12    1.8e-12    2.2e-15    2.5e-15 |    14 |   1.3e+02   5.7e+00   6.9e+01   8.2e-01
+   1e-03 |   3.7e-15    3.6e-13    2.9e-13    5.0e-15    2.7e-15 |    15 |   1.2e+02   5.1e+00   1.3e+02   4.8e-01
+   1e-04 |   4.8e-15    8.7e-13    8.2e-13    2.7e-15    1.3e-15 |    17 |   1.2e+02   4.9e+00   4.8e+02   3.1e-01
+   1e-05 |   2.6e-15    2.4e-13    1.8e-13    1.1e-15    2.9e-15 |    18 |   1.4e+02   4.8e+00   1.9e+03   1.3e-01
+   1e-06 |   4.9e-15    9.6e-13    9.0e-13    3.1e-15    1.9e-15 |    20 |   1.2e+02   4.7e+00   7.0e+03   3.7e-02
+   1e-07 |   1.8e-15    1.2e-12    1.2e-12    5.7e-16    5.8e-16 |    21 |   1.1e+02   4.7e+00   2.3e+04   1.2e-02
+   1e-08 |   2.5e-15    1.1e-12    1.1e-12    4.1e-15    2.8e-15 |    23 |   1.1e+02   4.7e+00   7.6e+04   3.7e-03
+   1e-09 |   4.0e-15    1.1e-12    1.1e-12    2.3e-16    2.6e-15 |    24 |   1.1e+02   4.7e+00   2.4e+05   1.2e-03
+   1e-10 |   3.1e-15    2.0e-12    2.0e-12    9.7e-15    2.3e-15 |    26 |   1.1e+02   4.7e+00   7.6e+05   3.7e-04
+   1e-11 |   4.1e-16    6.4e-13    6.4e-13    3.4e-15    1.5e-14 |    27 |   1.1e+02   4.7e+00   2.4e+06   1.2e-04
+   1e-12 |   6.5e-15    1.0e-12    9.9e-13    8.4e-16    2.0e-14 |    29 |   1.1e+02   4.7e+00   7.6e+06   3.7e-05
+
+=== Predicción E1-P3 ===
+R = 1e-8: error Hamiltoniana = 3.6e-09 (predicho > 1e-6), Schur = 1.2e-04 (predicho < 1e-9)
+Pendiente log10(error) vs log10(R), R en [1e-8, 1]: Hamiltoniana -0.85, Schur -1.17
+(pendiente más negativa = el error crece más rápido al bajar R)
+
+=== Convergencia de Newton-Kleinman (diseño base, error frente a vpa) ===
+ iter        error    e(k)/e(k-1)^2
+    1    1.299e+01                -
+    2    3.552e+00        2.106e-02
+    3    1.488e+00        1.180e-01
+    4    5.400e-01        2.437e-01
+    5    1.408e-01        4.827e-01
+    6    1.615e-02        8.147e-01
+    7    2.680e-04        1.028e+00
+    8    7.662e-08        1.067e+00
+    9    9.051e-14        1.542e+01
+   10    9.817e-14        1.198e+13
+Cociente e(k)/e(k-1)^2 aproximadamente constante en la fase final -> convergencia cuadrática.
+
+Guardado: resultados/E1_3.mat, figuras/E1_3_estres.png, figuras/E1_3_newton.png
+
+################ [7/18] e1_3b_balanceo ################
+=== F1: escala de R ===
+       R | Hamilt. con bal. Hamilt. sin bal.   Schur sin bal.   Schur con bal. |  max/min |H|
+   1e-08 |          3.6e-09          1.2e-04          1.2e-04          3.5e-09 |      3.3e+10
+   1e-07 |          6.3e-10          3.5e-06          3.5e-06          6.6e-10 |      3.3e+09
+   1e-06 |          1.5e-10          1.9e-07          1.9e-07          1.4e-10 |      3.3e+08
+   1e-05 |          1.9e-11          2.9e-09          2.9e-09          1.7e-11 |      3.3e+07
+   1e-04 |          2.6e-12          7.6e-11          7.6e-11          2.3e-12 |      3.3e+06
+   1e-03 |          1.9e-14          4.9e-12          4.9e-12          4.1e-14 |      3.3e+05
+   1e-02 |          1.2e-14          2.4e-12          2.4e-12          7.1e-15 |      3.3e+04
+   1e-01 |          1.3e-15          3.4e-13          3.4e-13          8.4e-15 |      3.3e+03
+   1e+00 |          7.6e-15          7.4e-14          7.4e-14          6.9e-15 |      3.3e+02
+   1e+01 |          2.9e-15          3.2e-14          3.4e-14          1.9e-15 |      1.7e+02
+   1e+02 |          1.8e-15          2.0e-13          1.8e-13          7.4e-16 |      1.7e+02
+   1e+03 |          8.5e-14          1.1e-14          2.9e-14          8.3e-14 |      5.3e+02
+   1e+04 |          1.5e-13          1.3e-11          1.4e-11          1.3e-13 |      5.3e+03
+
+=== F2: unidades de las velocidades, T = diag(1,1,s,s) ===
+       s | Hamilt. con bal. Hamilt. sin bal.   Schur sin bal.   Schur con bal. |  max/min |H|
+   1e-06 |          6.3e-14          3.7e-05          3.7e-05          6.6e-14 |      3.1e+13
+   1e-05 |          1.9e-13          3.9e-07          3.9e-07          1.8e-13 |      3.1e+10
+   1e-04 |          3.3e-15          5.8e-09          5.8e-09          1.8e-14 |      3.1e+07
+   1e-03 |          5.2e-15          7.0e-11          7.0e-11          4.5e-15 |      3.1e+04
+   1e-02 |          5.7e-14          2.0e-13          3.1e-13          4.9e-14 |      2.4e+02
+   1e-01 |          1.1e-13          2.5e-14          2.6e-14          1.1e-13 |      2.0e+02
+   1e+00 |          1.2e-14          2.4e-12          2.4e-12          7.1e-15 |      3.3e+04
+   1e+01 |          1.3e-14          1.8e-11          1.8e-11          6.8e-15 |      3.3e+07
+   1e+02 |          8.1e-14          1.1e-08          1.1e-08          8.6e-14 |      3.3e+10
+   1e+03 |          8.2e-14          3.0e-07          3.0e-07          8.9e-14 |      3.3e+13
+   1e+04 |          3.5e-14          1.8e-05          1.8e-05          4.2e-14 |      3.3e+16
+   1e+05 |          3.8e-15          2.1e-03          2.1e-03          8.2e-15 |      3.3e+19
+   1e+06 |          1.5e-14          3.0e-02          3.0e-02          1.6e-14 |      3.3e+22
+
+=== F3: Q(1,1) = f*Q0(1,1) (autovalores de H -> eje imaginario) ===
+       f | Hamilt. con bal. Hamilt. sin bal.   Schur sin bal.   Schur con bal. |  max/min |H|
+   1e+00 |          1.2e-14          2.4e-12          2.4e-12          7.1e-15 |      3.3e+04
+   1e-01 |          2.5e-14          1.5e-12          1.5e-12          2.8e-14 |      2.0e+05
+   1e-02 |          2.1e-14          1.8e-12          1.8e-12          1.9e-14 |      2.0e+06
+   1e-03 |          3.7e-15          3.6e-13          3.6e-13          4.4e-15 |      2.0e+07
+   1e-04 |          4.8e-15          8.8e-13          8.7e-13          4.3e-15 |      2.0e+08
+   1e-05 |          2.6e-15          2.7e-13          2.4e-13          3.6e-15 |      2.0e+09
+   1e-06 |          4.9e-15          9.6e-13          9.6e-13          6.2e-15 |      2.0e+10
+   1e-07 |          1.8e-15          1.2e-12          1.2e-12          2.2e-15 |      2.0e+11
+   1e-08 |          2.5e-15          1.1e-12          1.1e-12          3.3e-15 |      2.0e+12
+   1e-09 |          4.0e-15          1.1e-12          1.1e-12          4.4e-15 |      2.0e+13
+   1e-10 |          3.1e-15          2.0e-12          2.0e-12          3.1e-15 |      2.0e+14
+   1e-11 |          4.1e-16          6.6e-13          6.4e-13          6.0e-16 |      2.0e+15
+   1e-12 |          6.5e-15          1.0e-12          1.0e-12          6.5e-15 |      2.0e+16
+
+=== F3: error relativo de la entrada P(1,1) (modo del brazo) ===
+       f |      Hamilt.        Schur   Schur bal.    Newton-K.        icare |    P11 ref    P11/||P||
+   1e+00 |      6.6e-15      2.3e-12      2.7e-15      2.1e-14      1.3e-15 |   7.88e-01      6.6e-02
+   1e-01 |      3.0e-14      6.4e-13      3.2e-14      3.2e-14      4.3e-16 |   1.28e-01      1.8e-02
+   1e-02 |      4.1e-14      3.0e-12      4.3e-14      7.6e-14      2.1e-15 |   2.19e-02      3.9e-03
+   1e-03 |      9.4e-15      2.8e-12      7.4e-15      3.0e-13      3.7e-15 |   3.97e-03      7.9e-04
+   1e-04 |      4.7e-15      1.2e-11      4.5e-15      5.1e-15      3.6e-15 |   7.86e-04      1.6e-04
+   1e-05 |      4.5e-16      1.2e-10      4.5e-16      1.8e-13      1.2e-14 |   1.80e-04      3.9e-05
+   1e-06 |      3.8e-14      7.8e-11      3.8e-14      2.9e-13      2.6e-14 |   4.81e-05      1.0e-05
+   1e-07 |      1.3e-13      2.4e-10      1.3e-13      7.6e-12      8.8e-15 |   1.42e-05      3.1e-06
+   1e-08 |      2.4e-12      1.5e-09      2.4e-12      1.3e-11      2.7e-12 |   4.40e-06      9.6e-07
+   1e-09 |      1.5e-11      4.6e-09      1.5e-11      1.1e-11      5.5e-13 |   1.38e-06      3.0e-07
+   1e-10 |      3.8e-11      1.0e-08      3.8e-11      4.1e-11      1.0e-12 |   4.36e-07      9.5e-08
+   1e-11 |      1.3e-10      5.0e-09      1.3e-10      2.6e-10      4.2e-11 |   1.38e-07      3.0e-08
+   1e-12 |      9.0e-10      1.1e-07      9.0e-10      2.6e-09      4.1e-12 |   4.35e-08      9.5e-09
+
+Lectura: el error relativo de TODA la matriz puede ser pequeño aunque una entrada
+pequeña (P11) esté mal; la norma de Frobenius queda dominada por las entradas grandes.
+
+Guardado: resultados/E1_3b.mat y figuras/E1_3_balanceo.png
+
+################ [8/18] e1_3c_icare ################
+=== F1: escala de R ===
+       R | Hamilt. bal.   Schur bal.   Haz propio        icare         care | ||S||/||A,Q||
+   1e-08 |      3.6e-09      3.5e-09      1.2e-10      2.6e-13      2.6e-13 |      3.7e+08
+   1e-07 |      6.3e-10      6.6e-10      3.1e-12      1.1e-14      1.1e-14 |      3.7e+07
+   1e-06 |      1.5e-10      1.4e-10      2.0e-12      2.3e-14      2.3e-14 |      3.7e+06
+   1e-05 |      1.9e-11      1.7e-11      1.1e-13      9.0e-15      9.0e-15 |      3.7e+05
+   1e-04 |      2.6e-12      2.3e-12      1.1e-13      5.0e-15      5.0e-15 |      3.7e+04
+   1e-03 |      1.9e-14      4.1e-14      1.2e-14      4.9e-15      4.9e-15 |      3.7e+03
+   1e-02 |      1.2e-14      7.1e-15      1.8e-14      2.4e-15      2.4e-15 |      3.7e+02
+   1e-01 |      1.3e-15      8.4e-15      3.9e-15      3.8e-16      3.8e-16 |      3.7e+01
+   1e+00 |      7.6e-15      6.9e-15      3.3e-14      7.2e-17      7.2e-17 |      3.7e+00
+   1e+01 |      2.9e-15      1.9e-15      3.8e-15      3.4e-15      3.4e-15 |      3.7e-01
+   1e+02 |      1.8e-15      7.4e-16      3.1e-14      2.9e-16      2.9e-16 |      3.7e-02
+   1e+03 |      8.5e-14      8.3e-14      1.2e-13      4.0e-16      4.0e-16 |      3.7e-03
+   1e+04 |      1.5e-13      1.3e-13      8.9e-14      2.1e-15      2.1e-15 |      3.7e-04
+
+=== F2: unidades de las velocidades, T = diag(1,1,s,s) ===
+       s | Hamilt. bal.   Schur bal.   Haz propio        icare         care | ||S||/||A,Q||
+   1e-06 |      6.3e-14      6.6e-14      1.2e-10      1.5e-15      1.5e-15 |      4.6e-14
+   1e-05 |      1.9e-13      1.8e-13      5.3e-13      4.1e-15      4.1e-15 |      4.6e-11
+   1e-04 |      3.3e-15      1.8e-14      1.6e-09      2.4e-15      2.4e-15 |      4.6e-08
+   1e-03 |      5.2e-15      4.5e-15      4.0e-13      1.5e-15      1.5e-15 |      4.6e-05
+   1e-02 |      5.7e-14      4.9e-14      1.1e-13      2.3e-15      2.3e-15 |      4.6e-02
+   1e-01 |      1.1e-13      1.1e-13      4.5e-15      2.0e-15      2.0e-15 |      4.9e+00
+   1e+00 |      1.2e-14      7.1e-15      1.8e-14      2.4e-15      2.4e-15 |      3.7e+02
+   1e+01 |      1.3e-14      6.8e-15      1.3e-15      2.1e-15      2.1e-15 |      3.7e+03
+   1e+02 |      8.1e-14      8.6e-14      2.0e-11      3.7e-15      3.7e-15 |      3.7e+04
+   1e+03 |      8.2e-14      8.9e-14      4.2e-11      7.4e-15      7.4e-15 |      3.7e+05
+   1e+04 |      3.5e-14      4.2e-14      9.5e-11      1.0e-15      1.0e-15 |      3.7e+06
+   1e+05 |      3.8e-15      8.2e-15      6.4e-05      3.6e-16      3.6e-16 |      3.7e+07
+   1e+06 |      1.5e-14      1.6e-14      3.9e-01      2.0e-15      2.0e-15 |      3.7e+08
+
+R = 1e-8:  Hamiltoniana bal. 3.6e-09 | Schur bal. 3.5e-09 | haz propio 1.2e-10 | icare 2.6e-13
+-> El haz extendido propio NO recupera la precisión: la hipótesis no se confirma.
+
+Guardado: resultados/E1_3c.mat y figuras/E1_3_haz_extendido.png
+
+################ [9/18] e1_3d_escalado ################
+=== F1: escala de R ===
+       R |      Haz N0      Haz N1      Haz N2      Haz N3  Hamilt.+N3       icare
+   1e-08 |     1.2e-10     3.5e-12     1.8e-11     5.3e-08     5.1e-08     2.6e-13
+   1e-07 |     3.1e-12     2.7e-12     1.4e-11     8.5e-14     1.0e-08     1.1e-14
+   1e-06 |     2.0e-12     8.4e-14     1.8e-11     1.5e-13     4.5e-10     2.3e-14
+   1e-05 |     1.1e-13     2.1e-13     1.2e-12     1.0e-13     4.9e-12     9.0e-15
+   1e-04 |     1.1e-13     2.9e-14     7.5e-14     2.7e-14     3.1e-12     5.0e-15
+   1e-03 |     1.2e-14     6.2e-15     3.2e-14     1.7e-14     2.9e-13     4.9e-15
+   1e-02 |     1.8e-14     8.4e-15     1.5e-15     4.6e-15     3.9e-14     2.4e-15
+   1e-01 |     3.9e-15     1.1e-14     7.9e-16     4.6e-15     7.8e-15     3.8e-16
+   1e+00 |     3.3e-14     3.3e-14     1.5e-15     2.9e-15     8.4e-15     7.2e-17
+   1e+01 |     3.8e-15     1.0e-15     1.3e-15     8.7e-15     5.8e-15     3.4e-15
+   1e+02 |     3.1e-14     1.9e-15     1.7e-15     2.2e-15     5.7e-15     2.9e-16
+   1e+03 |     1.2e-13     2.8e-13     4.8e-14     1.4e-15     3.6e-14     4.0e-16
+   1e+04 |     8.9e-14     1.6e-12     8.1e-14     2.9e-14     2.7e-14     2.1e-15
+Peor caso de la familia:  Haz N0 1.2e-10 | Haz N1 3.5e-12 | Haz N2 1.8e-11 | Haz N3 5.3e-08 | Hamilt.+N3 5.1e-08 | icare 2.6e-13 | 
+
+=== F2: unidades de las velocidades, T = diag(1,1,s,s) ===
+       s |      Haz N0      Haz N1      Haz N2      Haz N3  Hamilt.+N3       icare
+   1e-06 |     1.2e-10     1.2e-11     6.9e-11     1.2e-13     1.6e-13     1.5e-15
+   1e-05 |     5.3e-13     6.5e-12     2.2e-12     7.8e-15     3.8e-14     4.1e-15
+   1e-04 |     1.6e-09     1.8e-09     3.7e-13     4.3e-15     1.0e-13     2.4e-15
+   1e-03 |     4.0e-13     1.6e-12     4.0e-12     2.8e-13     1.3e-13     1.5e-15
+   1e-02 |     1.1e-13     4.3e-13     1.7e-12     4.5e-14     1.2e-14     2.3e-15
+   1e-01 |     4.5e-15     1.0e-15     1.0e-15     1.8e-14     1.0e-14     2.0e-15
+   1e+00 |     1.8e-14     8.4e-15     1.5e-15     4.6e-15     3.9e-14     2.4e-15
+   1e+01 |     1.3e-15     1.5e-12     6.2e-15     3.7e-14     9.8e-14     2.1e-15
+   1e+02 |     2.0e-11     1.8e-11     3.7e-14     5.4e-14     7.0e-14     3.7e-15
+   1e+03 |     4.2e-11     1.1e-10     8.7e-13     1.5e-10     6.7e-14     7.4e-15
+   1e+04 |     9.5e-11     2.3e-10     2.3e-10     2.4e-08     3.2e-14     1.0e-15
+   1e+05 |     6.4e-05     9.2e-06     9.6e-01     4.0e-08     1.1e-14     3.6e-16
+   1e+06 |     3.9e-01     3.8e-01     9.1e-01     2.9e-03     8.4e-14     2.0e-15
+Peor caso de la familia:  Haz N0 3.9e-01 | Haz N1 3.8e-01 | Haz N2 9.6e-01 | Haz N3 2.9e-03 | Hamilt.+N3 1.6e-13 | icare 7.4e-15 | 
+
+=== F3: Q(1,1) = f*Q0(1,1) (autovalores de H -> eje imaginario) ===
+       f |      Haz N0      Haz N1      Haz N2      Haz N3  Hamilt.+N3       icare
+   1e+00 |     1.8e-14     8.4e-15     1.5e-15     4.6e-15     3.9e-14     2.4e-15
+   1e-01 |     4.0e-15     1.2e-14     6.3e-15     8.2e-15     3.0e-14     8.7e-16
+   1e-02 |     1.3e-14     1.5e-15     3.8e-15     7.3e-16     7.8e-15     2.5e-15
+   1e-03 |     1.4e-14     1.8e-14     3.3e-14     1.2e-14     7.5e-15     2.7e-15
+   1e-04 |     1.5e-14     1.1e-14     1.9e-15     2.8e-15     1.9e-16     1.3e-15
+   1e-05 |     9.4e-14     5.4e-14     2.0e-15     3.4e-16     5.6e-15     2.9e-15
+   1e-06 |     2.2e-14     2.0e-14     6.0e-15     1.0e-15     1.0e-15     1.9e-15
+   1e-07 |     1.3e-11     1.3e-11     2.3e-14     1.6e-15     1.8e-15     5.8e-16
+   1e-08 |     3.3e-12     3.4e-12     6.0e-14     4.6e-13     2.2e-16     2.8e-15
+   1e-09 |     6.7e-11     6.7e-11     5.7e-15     4.2e-14     2.2e-16     2.6e-15
+   1e-10 |     8.8e-10     8.8e-10     1.1e-14     4.2e-15     1.2e-16     2.3e-15
+   1e-11 |     6.0e-12     6.0e-12     2.1e-12     4.8e-13     5.9e-15     1.5e-14
+   1e-12 |     1.9e-11     1.9e-11     4.1e-11     1.7e-15     6.9e-15     2.0e-14
+Peor caso de la familia:  Haz N0 8.8e-10 | Haz N1 8.8e-10 | Haz N2 4.1e-11 | Haz N3 4.8e-13 | Hamilt.+N3 3.9e-14 | icare 2.0e-14 | 
+
+Guardado: resultados/E1_3d.mat y figuras/E1_3_escalado.png
+
+################ [10/18] e1_3e_icare_escalado ################
+=== F1: escala de R ===
+       R |        icare  icare nosc.       Haz N0  Haz + Sx,Sr |   max/min Sx         Sr
+   1e-08 |      2.6e-13      3.9e-10      1.2e-10      9.8e-14 |      1.6e+01    1.0e+03
+   1e-07 |      1.1e-14      2.4e-12      3.1e-12      5.5e-14 |      1.6e+01    5.1e+02
+   1e-06 |      2.3e-14      1.3e-11      2.0e-12      7.5e-15 |      3.2e+01    2.6e+02
+   1e-05 |      9.0e-15      4.4e-13      1.1e-13      7.1e-15 |      3.2e+01    3.2e+01
+   1e-04 |      5.0e-15      1.9e-13      1.1e-13      9.0e-15 |      1.6e+01    1.6e+01
+   1e-03 |      4.9e-15      7.2e-15      1.2e-14      6.7e-15 |      1.6e+01    8.0e+00
+   1e-02 |      2.4e-15      2.6e-14      1.8e-14      4.7e-16 |      1.6e+01    4.0e+00
+   1e-01 |      3.8e-16      1.7e-14      3.9e-15      2.0e-15 |      1.6e+01    4.0e+00
+   1e+00 |      7.2e-17      1.3e-14      3.3e-14      2.5e-16 |      1.6e+01    2.0e+00
+   1e+01 |      3.4e-15      1.8e-14      3.8e-15      3.3e-15 |      8.0e+00    5.0e-01
+   1e+02 |      2.9e-16      2.6e-14      3.1e-14      2.9e-15 |      8.0e+00    2.5e-01
+   1e+03 |      4.0e-16      3.2e-13      1.2e-13      2.2e-14 |      8.0e+00    1.2e-01
+   1e+04 |      2.1e-15      2.9e-12      8.9e-14      1.7e-14 |      8.0e+00    6.2e-02
+Peor caso:  icare 2.6e-13 | icare nosc. 3.9e-10 | Haz N0 1.2e-10 | Haz + Sx,Sr 9.8e-14
+Fallos (sin solución, Inf): icare 0 | icare nosc. 0 | Haz N0 0 | Haz + Sx,Sr 0  (de 13)
+
+=== F2: unidades de las velocidades, T = diag(1,1,s,s) ===
+       s |        icare  icare nosc.       Haz N0  Haz + Sx,Sr |   max/min Sx         Sr
+   1e-06 |      1.5e-15      2.7e-09      1.2e-10      3.1e-15 |      2.6e+05    4.0e+00
+   1e-05 |      4.1e-15      2.4e-10      5.3e-13      3.3e-16 |      3.3e+04    4.0e+00
+   1e-04 |      2.4e-15      1.7e-09      1.6e-09      4.0e-15 |      2.0e+03    4.0e+00
+   1e-03 |      1.5e-15      9.8e-13      4.0e-13      3.3e-16 |      2.6e+02    4.0e+00
+   1e-02 |      2.3e-15      3.4e-13      1.1e-13      4.6e-15 |      3.2e+01    4.0e+00
+   1e-01 |      2.0e-15      8.6e-15      4.5e-15      2.8e-15 |      8.0e+00    8.0e+00
+   1e+00 |      2.4e-15      2.6e-14      1.8e-14      4.7e-16 |      1.6e+01    4.0e+00
+   1e+01 |      2.1e-15      1.9e-15      1.3e-15      3.6e-15 |      2.6e+02    8.0e+00
+   1e+02 |      3.7e-15      1.7e-11      2.0e-11      8.4e-15 |      2.0e+03    8.0e+00
+   1e+03 |      7.4e-15      4.1e-10      4.2e-11      1.1e-15 |      1.6e+04    8.0e+00
+   1e+04 |      1.0e-15      1.1e-10      9.5e-11      4.0e-15 |      2.6e+05    8.0e+00
+   1e+05 |      3.6e-16      6.3e-05      6.4e-05      6.3e-16 |      1.0e+06    8.0e+00
+   1e+06 |      2.0e-15          Inf      3.9e-01      4.1e-15 |      1.7e+07    8.0e+00
+Peor caso:  icare 7.4e-15 | icare nosc. Inf | Haz N0 3.9e-01 | Haz + Sx,Sr 8.4e-15
+Fallos (sin solución, Inf): icare 0 | icare nosc. 1 | Haz N0 0 | Haz + Sx,Sr 0  (de 13)
+
+=== F3: Q(1,1) = f*Q0(1,1) (autovalores de H -> eje imaginario) ===
+       f |        icare  icare nosc.       Haz N0  Haz + Sx,Sr |   max/min Sx         Sr
+   1e+00 |      2.4e-15      2.6e-14      1.8e-14      4.7e-16 |      1.6e+01    4.0e+00
+   1e-01 |      8.7e-16      4.4e-15      4.0e-15      1.4e-16 |      1.6e+01    8.0e+00
+   1e-02 |      2.5e-15      2.3e-14      1.3e-14      1.3e-15 |      3.2e+01    8.0e+00
+   1e-03 |      2.7e-15      3.6e-15      1.4e-14      3.2e-15 |      3.2e+01    4.0e+00
+   1e-04 |      1.3e-15      1.4e-14      1.5e-14      3.2e-15 |      1.3e+02    4.0e+00
+   1e-05 |      2.9e-15      9.9e-15      9.4e-14      1.5e-15 |      2.6e+02    4.0e+00
+   1e-06 |      1.9e-15      5.0e-14      2.2e-14      1.9e-15 |      5.1e+02    4.0e+00
+   1e-07 |      5.8e-16      1.3e-11      1.3e-11      1.9e-16 |      1.0e+03    4.0e+00
+   1e-08 |      2.8e-15      3.4e-12      3.3e-12      2.7e-16 |      2.0e+03    4.0e+00
+   1e-09 |      2.6e-15      6.7e-11      6.7e-11      6.0e-15 |      1.0e+03    1.0e+00
+   1e-10 |      2.3e-15      8.8e-10      8.8e-10      5.6e-15 |      8.2e+03    1.0e+00
+   1e-11 |      1.5e-14      6.0e-12      6.0e-12      1.6e-14 |      4.1e+03    5.0e-01
+   1e-12 |      2.0e-14      1.9e-11      1.9e-11      4.7e-15 |      8.2e+03    5.0e-01
+Peor caso:  icare 2.0e-14 | icare nosc. 8.8e-10 | Haz N0 8.8e-10 | Haz + Sx,Sr 1.6e-14
+Fallos (sin solución, Inf): icare 0 | icare nosc. 0 | Haz N0 0 | Haz + Sx,Sr 0  (de 13)
+
+F2, s = 1e6: diag(D) de balance(A,'noperm') = [1 5.96e-08 1 1]
+Columna 1 de A (theta no aparece en la dinámica): [0 0 0 0]
+icare eligió max/min Sx = 1.68e+07, Sr = 8
+
+Guardado: resultados/E1_3e.mat y figuras/E1_3_icare_escalado.png
+
+################ [11/18] e1_4_pareto ################
+X0 = diag([0.01 0.0025 0.25 0.25])
+
+=== Comprobaciones (625 diseños) ===
+Todos estables: 625 de 625 (max Re = -0.080)
+icare vs Hamiltoniana (eig balanceada): máx. diferencia relativa 8.9e-11
+Lyapunov primal (sylvester) vs dual (lyap_kron): máx. diferencia relativa 1.3e-09
+Suma ponderada de objetivos vs tr(P X0): máx. diferencia relativa 1.9e-10
+No dominados: 625 de 625 (teoría: todos, por ser LQR con pesos positivos)
+Diseño base: K = [-12.732 182.48 -6.5313 10.033]  (K0 del kit: [-12.732 182.48 -6.5313 10.033])
+Rango de los objetivos normalizados:
+  J_th/(pi/4)^2  : 8.96e-03 a 2.23e+02
+  J_al/(pi/36)^2 : 2.03e-03 a 1.41e-01
+  J_u/10^2       : 1.56e-03 a 1.11e+00
+
+=== Lyapunov vs simulación lineal (ode45, 10 diseños) ===
+diseño     r_th     r_al |   err J_th   err J_al    err J_u
+     1  1.0e-03  1.0e-03 |    8.7e-15    1.2e-12    1.0e-13
+    70  3.2e-03  5.6e+01 |    2.3e-11    1.7e-12    2.7e-12
+   140  1.8e-02  3.2e+00 |    1.9e-12    2.1e-12    1.6e-12
+   209  1.0e-01  1.0e-01 |    2.5e-13    1.6e-12    5.8e-14
+   313  1.0e+00  1.0e+00 |    7.2e-13    1.8e-12    9.7e-13
+   348  1.8e+00  3.2e+02 |    4.0e-12    1.6e-12    2.6e-12
+   417  1.0e+01  1.0e+01 |    7.7e-13    7.5e-13    2.0e-12
+   486  5.6e+01  3.2e-01 |    3.0e-13    2.7e-12    9.2e-13
+   556  3.2e+02  1.8e-02 |    4.3e-13    2.4e-12    1.6e-12
+   625  1.0e+03  1.0e+03 |    2.8e-12    6.5e-14    2.7e-12
+
+Simulaciones no lineales cargadas de la caché.
+
+=== Verificación no lineal en el kit ===
+Diseño base, ideal: C1 max|u_c| = 9.12 V (ref. 9.12), C2 max|theta| = 1.237 rad (ref. 1.237)
+Diseño base, C2 real: max|u_c| = 63.82 V (pruebas_kit: 63.82), max|theta| = 1.345 rad (1.345)
+Éxito: C1 ideal 625 | C2 ideal 147 | C2 real 115   (de 625)
+C2 con |theta| <= pi/2 y saturación <= 5 %: ideal 115 | real 101   (de 625)
+Diseños con éxito en C2 ideal que FALLAN en C2 real (efecto del sensor): 48
+Diseños que fallan en ideal y tienen éxito en real: 16
+Correlación de rangos (Spearman) entre J_u (Lyapunov) y max|u_c| en C1 ideal: 0.960
+
+Guardado: resultados/E1_4.mat, figuras/E1_4_pareto3d.png, figuras/E1_4_proyecciones.png
+
+################ [12/18] e1_5_restricciones ################
+Restricciones: sigma >= 0.458 s^-1, zeta >= 0.50, C2 saturado <= 5 %, éxito en C1, C2, C3, C3b
+Diseño base, costo oficial (semilla 1): J = [0.03308 3.327 0.01853 0.297]  (C1, C2, C3, C3b)
+
+=== A) Malla de E1.4 (625 diseños) ===
+Cumplen R1: 537 | R2: 625 | R3 (C2 oficial): 101 | R1-R3: 101
+Evaluando el costo oficial de los 101 diseños que cumplen R1-R3...
+(costo oficial de la malla, refinamiento y validación: caché C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\resultados\E1_5_cache.mat)
+Cumplen además R4 (éxito en los 4 escenarios): 101   (0 s)
+Mejor de la malla: r_th = 3.16, r_al = 1.78, Jrel = 0.9716   (base: Jrel = 1)
+Cinco mejores de la malla (r_th, r_al, Jrel): [3.16 1.78 0.972;1.78 1 0.986;1 0.562 0.987;1.78 1.78 0.989;1 1 0.996]
+
+=== B) Refinamiento (fminsearch, 4 pesos, dos puntos de partida) ===
+Desde diseño base       : 204 evaluaciones; mejor Jrel factible = 0.9625
+Desde mejor de la malla : 200 evaluaciones; mejor Jrel factible = 0.9614
+404 evaluaciones en 0 s (404 factibles).
+Diseño óptimo: pesos r = [3.158 1.777 1e-06 1e-06]
+  K = [-22.626 252.16 -10.104 14.238]   (K0 = [-12.732 182.48 -6.5313 10.033])
+  Jrel = 0.9614  (J por escenario: [0.03579 3.262 0.01639 0.2669])
+  sigma = 3.126, zeta = 0.734, polos = [-38.57+35.74i -38.57-35.74i -3.126+2.664i -3.126-2.664i]
+  Costo lineal J0/J0b = 1.0540 (precio en el modelo lineal sin saturación)
+
+=== C) Predicción E1-P2: R = m*R0 con Q = Q0 (C2 oficial, semilla 1) ===
+       m K2 [V/rad]    max|th|    sat [%]  éxito
+    1.00      182.5      1.345        1.9      1
+    1.78      142.5      1.369        1.8      1
+    3.16      112.4      1.402        1.7      1
+    5.62       89.7      1.445        1.5      1
+   10.00       72.8      1.501        1.4      1
+   17.78       60.1      1.571        1.2      0
+   31.62       50.8      1.661        1.0      0
+   56.23       43.9      1.768        0.8      0
+  100.00       39.0      1.901        0.6      0
+  177.83       35.6      2.052        0.4      0
+  316.23       33.1      2.225        0.3      0
+  562.34       31.3      2.408        0.2      0
+ 1000.00       30.1      2.586        0.1      0
+
+=== D) Validación: base frente a óptimo, 20 semillas de ruido ===
+base    R3 en 20/20, R4 en 20/20 | C2: saturado máx 2.0 %, max|theta| máx 1.358 rad | ts(C1) máx 0.132 s
+óptimo  R3 en 20/20, R4 en 20/20 | C2: saturado máx 2.3 %, max|theta| máx 1.293 rad | ts(C1) máx 0.130 s
+
+Mejora del óptimo sobre el base (1 - J_opt/J_base), media ± desv. est. en 20 semillas:
+  C1     -8.2 % ±  1.2 %   (mejora en 0 de 20 semillas)
+  C2     +1.8 % ±  0.1 %   (mejora en 20 de 20 semillas)
+  C3     +2.1 % ±  5.0 %   (mejora en 13 de 20 semillas)
+  C3b    +6.5 % ±  2.8 %   (mejora en 19 de 20 semillas)
+  Jrel medio: 0.9945 ± 0.0188   (semilla 1, usada en la optimización: 0.9614)
+
+Guardado: resultados/E1_5.mat y figuras E1_5_factibilidad, E1_5_validacion, E1_5_barrido_R
+
+################ [13/18] e1_5b_saa ################
+(malla y validación: caché C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\resultados\E1_5b_cache.mat)
+
+Factibles: 49 de 82.  Base (malla): Jrel = 0.9991 ± 0.0021
+Óptimo SAA: log10 r = [0.20 0.00] (r_th = 1.58, r_al = 1), Jrel = 0.9806 ± 0.0030 (5 semillas)
+Óptimo previo (semilla 1): Jrel = 0.9891 ± 0.0054 en las semillas 1..5
+Cinco mejores (log10 r_th, log10 r_al, Jrel, error estándar):
+    0.2000         0    0.9806    0.0030
+    0.4000    0.2000    0.9843    0.0073
+    0.2000    0.2000    0.9874    0.0055
+    0.4000    0.4000    0.9890    0.0063
+    0.4994    0.2498    0.9891    0.0054
+
+K_saa = [-16.029 192.78 -7.4875 11.046]   (K0 = [-12.732 182.48 -6.5313 10.033])
+sigma = 3.027, zeta = 0.742
+
+=== Validación con semillas 101..120 (no usadas para elegir) ===
+
+óptimo SAA: R3-R4 en 20 de 20 semillas; C2 max|theta| máx 1.313 rad (base 1.353)
+  C1   mejora   -1.2 % ±  1.2 %  (t =  -4.55, significativo; mejora en  3 de 20)
+  C2   mejora   +1.5 % ±  0.1 %  (t = +45.82, significativo; mejora en 20 de 20)
+  C3   mejora   -1.1 % ±  5.8 %  (t =  -0.82, no significativo; mejora en  8 de 20)
+  C3b  mejora   +1.0 % ±  3.1 %  (t =  +1.49, no significativo; mejora en 11 de 20)
+  Jrel = 0.9994 ± 0.0225  (t = +0.12, no significativo)
+
+óptimo semilla 1: R3-R4 en 20 de 20 semillas; C2 max|theta| máx 1.290 rad (base 1.353)
+  C1   mejora   -8.2 % ±  1.1 %  (t = -33.84, significativo; mejora en  0 de 20)
+  C2   mejora   +1.8 % ±  0.2 %  (t = +41.38, significativo; mejora en 20 de 20)
+  C3   mejora   +0.6 % ±  4.8 %  (t =  +0.54, no significativo; mejora en 12 de 20)
+  C3b  mejora   +5.2 % ±  2.8 %  (t =  +8.30, significativo; mejora en 20 de 20)
+  Jrel = 1.0014 ± 0.0184  (t = -0.35, no significativo)
+
+Guardado: resultados/E1_5b.mat, figuras/E1_5_saa.png, figuras/E1_5_saa_validacion.png
+
+################ [14/18] e1_5c_sensibilidad ################
+=== Simulador oficial (cuantización + ruido, semilla 1) ===
+   delta |           C1           C2           C3          C3b   (cambio relativo de J frente a delta = 0)
+   0e+00 |     0.00e+00     0.00e+00     0.00e+00     0.00e+00
+   1e-15 |     5.48e-03     9.54e-05     3.08e-02     9.26e-04
+   1e-12 |     5.83e-03     4.19e-05     1.26e-02     6.01e-04
+   1e-09 |     6.78e-04     3.22e-05     2.84e-02     5.43e-04
+   1e-06 |     3.10e-03     1.14e-05     1.93e-02     2.55e-04
+
+=== Simulador ideal (sin cuantización ni ruido) ===
+   delta |           C1           C2           C3          C3b   (cambio relativo de J frente a delta = 0)
+   0e+00 |     0.00e+00     0.00e+00     0.00e+00     0.00e+00
+   1e-15 |     1.19e-16     2.81e-16     5.89e-16     0.00e+00
+   1e-12 |     3.75e-14     3.88e-14     6.25e-14     9.63e-15
+   1e-09 |     3.48e-11     3.78e-11     6.22e-11     9.92e-12
+   1e-06 |     3.48e-08     3.78e-08     6.22e-08     9.92e-09
+
+Diferencia entre K de icare (Q0, R0) y K0 del kit: 1.9e-14 (relativa)
+
+################ [15/18] e1_5d_lmi ################
+=== 0) Sin región (debe reproducir el LQR) ===
+K_lmi = [-12.7306 182.456 -6.53028 10.0305]
+K0    = [-12.7324 182.479 -6.53133 10.0327]
+error relativo = 1.3e-04;  cota tr(Z)/J0b = 1.000003;  J0(K_lmi)/J0b = 1.000000
+
+=== 1) Región del grupo (sigma >= 0.458, zeta >= 0.50) ===
+K_lmi = [-15.369 255.17 -9.5907 15.08]
+polos = [-50.92+16.78i -50.92-16.78i -2.939+1.543i -2.939-1.543i]  (sigma = 2.939, zeta = 0.885)
+cota/J0b = 1.1405, J0(K_lmi)/J0b = 1.0251  -> costo de imponer la región: +2.51 %
+(el diseño base ya está en la región: sigma = 2.668, zeta = 0.742)
+
+=== 2.1) Barrido de sigma (zeta fijo) ===
+  sigma |   cota/J0b  J0lmi/J0b  sigma, zeta lmi | mejor LQR/J0b
+  0.458 |     1.1405     1.0251   2.939,  0.885 |       1.0000
+  1.000 |     1.1405     1.0251   2.939,  0.885 |       1.0000
+  2.000 |     1.2551     1.0496   3.435,  0.747 |       1.0000
+  2.668 |     1.4058     1.1058   3.684,  0.680 |       1.0000
+  3.000 |     1.6747     1.1864   4.086,  0.678 |       1.0240
+  4.000 |     2.7772     1.5655   5.370,  0.667 |       1.1776
+  5.000 |     4.3711     2.0982   6.662,  0.674 |       1.2947
+  6.000 |     6.5927     2.7949   7.956,  0.680 |       1.4642
+
+=== 2.2) Barrido de zeta (sigma fijo) ===
+   zeta |   cota/J0b  J0lmi/J0b  sigma, zeta lmi | mejor LQR/J0b
+  0.500 |     1.1405     1.0251   2.939,  0.885 |       1.0000
+  0.600 |     1.2310     1.0482   3.004,  0.941 |       1.0000
+  0.700 |     1.3630     1.0838   2.736,  1.000 |       1.0000
+  0.742 |     1.4370     1.1043   2.264,  1.000 |       1.0000
+  0.800 |     1.5670     1.1409   1.891,  1.000 |       1.2980
+  0.850 |     1.7190     1.1842   1.631,  1.000 |       1.4814
+  0.900 |     1.9383     1.2476   1.385,  1.000 |       1.9785
+  0.950 |     2.3208     1.3488   1.127,  1.000 |       2.3106
+
+=== 3) Verificación no lineal del diseño LMI (simulador oficial, semillas 1..5) ===
+base K0            K = [-12.73 182.5 -6.531 10.03]              Jrel = 1.0000 ± 0.0000 | R3-R4 en las 5 semillas: 1 | sat. máx C2 2.0 %
+LMI región grupo   K = [-15.37 255.2 -9.591 15.08]              Jrel = 0.9772 ± 0.0088 | R3-R4 en las 5 semillas: 1 | sat. máx C2 2.0 %
+LMI sigma >= 4     K = [-52 333.8 -18.17 22.31]                 Jrel = 3138.2144 ± 25.3747 | R3-R4 en las 5 semillas: 0 | sat. máx C2 99.8 %
+
+=== 4) Validación del diseño LMI (región del grupo), semillas 101..120 ===
+R3-R4 en 20 de 20 semillas; C2 max|theta| máx 1.385 rad (base 1.353)
+  C1   mejora   -6.6 % ±  1.7 %  (t = -17.19, significativo; mejora en  0 de 20)
+  C2   mejora   -3.2 % ±  0.1 %  (t = -172.26, significativo; mejora en  0 de 20)
+  C3   mejora   +3.0 % ±  5.7 %  (t =  +2.32, significativo; mejora en 14 de 20)
+  C3b  mejora   +7.6 % ±  2.9 %  (t = +11.79, significativo; mejora en 20 de 20)
+  Jrel = 0.9982 ± 0.0216  (t = +0.37, no significativo)
+-> Según la regla del grupo, se mantiene K0 como diseño final.
+
+=== 5) Diagnóstico del diseño LMI sigma >= 4 ===
+C1  ideal: éxito 1, max|u_c| =    16.7 V, saturado   0.2 % | oficial: éxito 1, max|u_c| =    16.4 V, saturado   0.2 %
+C2  ideal: éxito 0, max|u_c| =  8767.0 V, saturado  99.9 % | oficial: éxito 0, max|u_c| = 11997.8 V, saturado  99.8 %
+Ganancia por una cuenta del encoder en alpha: K0: 0.56 V | LMI sigma>=4: 1.02 V
+
+Guardado: resultados/E1_5_lmi.mat y figuras/E1_5_lmi.png
+
+################ [16/18] e1_6_region ################
+=== (a) Certificado elipsoidal (modelo lineal, sin saturación) ===
+rho* = Vmax^2/(K P^-1 K') = 1.6352e-02
+Sobre cada eje (resto en 0):  theta 0.1441 rad | alpha 0.0377 rad | dtheta 0.4674 rad/s | dalpha 0.4362 rad/s
+Proyección máxima por eje:    theta 0.2515 rad | alpha 0.0987 rad | dtheta 4.8292 rad/s | dalpha 4.9745 rad/s
+Cota de franja sobre alpha: Vmax/|K2| = 0.0548 rad (el corte del elipsoide debe ser <= esto)
+Comprobación: máx |Kx| en 1e5 puntos de la frontera = 9.996147 V (debe ser <= 10 y cercano)
+dV/dt en la frontera: lineal máx -5.015e-04 (debe ser < 0) | NO lineal máx -5.568e-04, negativo en 100.00 % de los puntos
+Autovalores de Acl'P + P Acl = -(Q0 + K'R0K): [-466 -2.18 -0.3 3.29e-14]
+  -> semidefinida negativa: Q0 no pesa las velocidades y un autovalor es ~0, así que dV/dt <= 0
+     (no < 0). La convergencia se obtiene por LaSalle si (A, Q0^1/2) es observable.
+  rango de la matriz de observabilidad de (A, Q0^1/2): 4 de 4
+Dentro del elipsoide (5000 puntos, planta no lineal, retención de orden cero): recuperados 5000 de 5000;
+  max|u_c| = 9.815 V; puntos con alguna muestra saturada: 0
+
+=== Verificación de simular_lote frente a simular_qube (ideal) ===
+Clasificación coincidente en 60 de 60 condiciones; máx. diferencia del estado final (recuperadas): 1.5e-19
+
+=== (b) Monte Carlo 4D: 20000 condiciones uniformes en la caja |x| <= [1.57 0.8 10 10] (26 s) ===
+Recuperadas: 44.79 % | recuperadas sin exceder |theta| <= pi/2: 34.59 %
+Dentro del elipsoide certificado: 2 puntos (0.0100 % de la caja); recuperados de ellos: 2 (deben ser todos)
+Volumen estimado de la región / volumen del elipsoide: 5506
+
+=== Búsqueda radial (bisección, 18 iteraciones) ===
+  +theta   radio estimado   4.6141 | certificado   0.1441 | razón    32.0
+  +alpha   radio estimado   0.4296 | certificado   0.0377 | razón    11.4
+  +dtheta  radio estimado  10.4289 | certificado   0.4674 | razón    22.3
+  +dalpha  radio estimado   6.9186 | certificado   0.4362 | razón    15.9
+  -theta   radio estimado   4.6141 | certificado   0.1441 | razón    32.0
+  -alpha   radio estimado   0.4296 | certificado   0.0377 | razón    11.4
+  -dtheta  radio estimado  10.4289 | certificado   0.4674 | razón    22.3
+  -dalpha  radio estimado   6.9186 | certificado   0.4362 | razón    15.9
+200 direcciones aleatorias: razón estimado/certificado mediana 12.2 (mín 8.5, máx 31.9)
+
+=== Cortes 2D (81 x 81, demás estados en 0) ===
+  (alpha, dalpha)   recuperadas 50.16 % | sin exceder pi/2: 45.83 %  (rectángulo [0.8 10])
+  (theta, alpha)    recuperadas 52.39 % | sin exceder pi/2: 40.65 %  (rectángulo [1.57 0.8])
+  (dtheta, dalpha)  recuperadas 64.12 % | sin exceder pi/2: 58.51 %  (rectángulo [10 10])
+
+=== Radio sobre el eje alpha (bisección, 14 iteraciones) ===
+                       ideal (estado real)    oficial (estimador, cuantización, ruido; 5 semillas)
+  recuperado             0.4295 rad            0.4573 rad
+  éxito (|theta|<=pi/2)   0.3877 rad            0.3783 rad
+  certificado            0.0377 rad
+  Efecto del sensor sobre el radio (éxito): -2.4 %
+  C2 (alpha0 = 0.35 rad) queda DENTRO del radio oficial de éxito.
+
+=== Predicción E1-P1 ===
+Certificado sobre alpha: 0.0377 rad (predicho: <= 0.055) -> cumple
+Estimado sobre alpha:    0.4296 rad ideal, 0.3783 rad oficial con éxito (predicho: >= 5 x 0.055 = 0.27) -> cumple
+
+Guardado: resultados/E1_6.mat, figuras/E1_6_cortes.png, figuras/E1_6_razon.png
+
+################ [17/18] escenarios_E1 ################
+Diseño final: Diseño base K0 (Q0, R0), adoptado tras E1.5
+K = [-12.7324 182.479 -6.53133 10.0327]
+
+esc. estado         J   ts [s]  max|u_c|    max|u|   sat [%] max|theta|  éxito
+C1   ok        0.0331    0.114      8.96      8.96       0.0      0.109      1
+C2   ok        3.3267    1.136     63.82     10.00       1.9      1.345      1
+C3   ok        0.0185    0.050      5.56      5.56       0.0      0.036      1
+C3b  ok        0.2970    0.416     26.50     10.00       1.1      0.248      1
+
+C4: Monte Carlo de 200 plantas (mp, Lp, Rm, kt en +-20 %)...
+C4: éxito en 200 de 200 plantas (100.0 %), 51 s. Fallidas: zeros(1,0)
+    J: media 0.0349, desv. 0.0035, p95 0.0416 | max|theta|: media 0.115, p95 0.131 rad
+Guardado: resultados/escenarios.mat y trayectorias/C1-C3b.csv
+
+Generando videos de C1 y C2 (animar_qube, desde las trayectorias del kit)...
+Video guardado: C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\videos\C1.mp4
+Video guardado: C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\videos\C2.mp4
+Guardado: videos/C1.mp4 y videos/C2.mp4
+
+################ [18/18] generar_results ################
+Escrito: C:\LABORATORIOS_ MODERNO 26-2\LABO 3 Y 4\repo_lab34\results.json
+
+results.json válido para E1 (formato y concordancia del modelo con el kit).
+La validación no certifica la corrección científica de los resultados.
+Escrito: informe/tabla_escenarios.tex (desde results.json)
+
+================ RESUMEN DE run_all ================
+modelo_propio              3.4 s   ok
+pruebas_kit                7.9 s   ok
+pruebas_E1                 1.4 s   ok
+e1_1_metodos               5.8 s   ok
+e1_2_verificacion          2.2 s   ok
+e1_3_estres                4.5 s   ok
+e1_3b_balanceo             2.5 s   ok
+e1_3c_icare                2.3 s   ok
+e1_3d_escalado             2.7 s   ok
+e1_3e_icare_escalado       2.5 s   ok
+e1_4_pareto                9.0 s   ok
+e1_5_restricciones         7.9 s   ok
+e1_5b_saa                  3.4 s   ok
+e1_5c_sensibilidad         5.1 s   ok
+e1_5d_lmi                 34.0 s   ok
+e1_6_region              134.7 s   ok
+escenarios_E1            156.5 s   ok
+generar_results            0.3 s   ok
+Tiempo total: 6.4 min (límite de la guía: 30 min). Cachés: usadas
